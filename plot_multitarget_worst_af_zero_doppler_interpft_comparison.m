@@ -73,8 +73,8 @@ lgd.Box = 'off';
 cv_tag = cv_filename_tag(CV_max);
 out_png = fullfile(fig_dir, sprintf('AF_Multitarget_Worst_Zero_Doppler_Cut_%s.png', cv_tag));
 out_pdf = fullfile(fig_dir, sprintf('AF_Multitarget_Worst_Zero_Doppler_Cut_%s.pdf', cv_tag));
-exportgraphics(fig, out_png, 'Resolution', 450);
-exportgraphics(fig, out_pdf, 'ContentType', 'image', 'Resolution', 450);
+tight_export_figure(fig, out_png, 'Resolution', 450);
+tight_export_figure(fig, out_pdf, 'ContentType', 'image', 'Resolution', 450);
 fprintf('Saved interpft multi-target worst-case zero-Doppler AF cut: %s\n', out_png);
 fprintf('Saved interpft multi-target worst-case zero-Doppler AF cut: %s\n', out_pdf);
 end

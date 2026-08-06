@@ -293,8 +293,8 @@ sim_png = fullfile(sim_dir, [stem '.png']);
 sim_fig = fullfile(sim_dir, [stem '.fig']);
 paper_pdf = fullfile(paper_fig_dir, [paper_stem '.pdf']);
 savefig(fig, sim_fig);
-exportgraphics(fig, sim_png, 'Resolution', 300);
-exportgraphics(fig, paper_pdf, 'ContentType', 'image', 'Resolution', 300);
+tight_export_figure(fig, sim_png, 'Resolution', 300);
+tight_export_figure(fig, paper_pdf, 'ContentType', 'image', 'Resolution', 300);
 end
 
 function print_raw_policy_summary(result_path)

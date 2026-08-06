@@ -9,8 +9,7 @@ end
 clearvars -except force_rerun_right; close all; clc;
 
 sim_dir = fileparts(mfilename('fullpath'));
-root_dir = fileparts(sim_dir);
-fig_dir = fullfile(root_dir, 'figures');
+fig_dir = fullfile(sim_dir, 'figures');
 data_dir = fullfile(sim_dir, 'results');
 if exist(fig_dir, 'dir') ~= 7, mkdir(fig_dir); end
 if exist(data_dir, 'dir') ~= 7, mkdir(data_dir); end
@@ -21,9 +20,9 @@ right_cases = load_or_build_right_cases(data_dir, force_rerun_right);
 
 panels = struct([]);
 panels(1).cases = left_cases;
-panels(1).title = '(a) $N_T=4$, $N=16$, $\mathrm{CV}_{\max}=0.5$';
+panels(1).title = '(a) N_T=4, N=16, CV_{max}=0.5';
 panels(2).cases = right_cases;
-panels(2).title = '(b) $N_T=8$, $N=16$, $\mathrm{CV}_{\max}=0.1$';
+panels(2).title = '(b) N_T=8, N=16, CV_{max}=0.1';
 
 plot_1x2(panels, fig_dir);
 end
@@ -164,19 +163,34 @@ ESL_dB = 10 * log10(ESL / ESL(1, 1));
 end
 
 function plot_1x2(panels, fig_dir)
+cfg = plot_config();
+plot_style = struct( ...
+    'figure_position', [100 100 1040 560], ...
+    'left_axes_position', [0.100 0.300 0.385 0.520], ...
+    'right_axes_position', [0.535 0.300 0.385 0.520], ...
+    'legend_position', [0.736 0.658 0.172 0.150], ...
+    'axes_font', cfg.axes_font, ...
+    'label_font', cfg.label_font, ...
+    'panel_caption_font', cfg.panel_caption_font, ...
+    'axes_line_width', cfg.axes_line_width);
 N = size(panels(1).cases(1).ESL_dB, 1);
 num_fine = 32 * N;
 tau_fine = linspace(-N/2, N/2, num_fine + 1);
+marker_idx = unique(round(linspace(1, numel(tau_fine), 11)));
 colors = paper_palette(1:3);
-line_styles = {'-', '--', '-.'};
 
-fig = figure('Color', 'w', 'Position', [120 120 760 320]);
-tl = tiledlayout(fig, 1, 2, 'TileSpacing', 'compact', 'Padding', 'compact');
-line_handles = gobjects(3, 1);
+fig = figure('Color', 'w', 'Position', plot_style.figure_position);
+set(fig, 'PaperPositionMode', 'auto');
+line_handles = gobjects(numel(panels), 3);
 ax_list = gobjects(numel(panels), 1);
 
 for p = 1:numel(panels)
-    ax = nexttile(tl, p);
+    if p == 1
+        axes_position = plot_style.left_axes_position;
+    else
+        axes_position = plot_style.right_axes_position;
+    end
+    ax = axes(fig, 'Position', axes_position);
     ax_list(p) = ax;
     hold(ax, 'on');
     y_min_seen = Inf;
@@ -187,47 +201,100 @@ for p = 1:numel(panels)
         [tau_samples, cut_samples_dB] = center_zero_delay_sample_grid(zero_doppler_cut_dB);
         smooth_cut_dB = interpft_centered_zero_delay(zero_doppler_cut_dB, num_fine);
         y_min_seen = min([y_min_seen; smooth_cut_dB(:); cut_samples_dB(:)]);
-        h = plot(ax, tau_fine, smooth_cut_dB, ...
-            'LineWidth', 1.7, ...
-            'LineStyle', line_styles{1 + mod(i - 1, numel(line_styles))}, ...
+        h = plot(ax, tau_fine, smooth_cut_dB, '-d', ...
+            'LineWidth', 2.2, ...
+            'MarkerIndices', marker_idx, ...
+            'MarkerSize', 9.4, ...
+            'MarkerFaceColor', colors(i, :), ...
+            'MarkerEdgeColor', colors(i, :), ...
             'Color', colors(i, :), ...
             'DisplayName', legend_label(c));
-        if p == 1
-            line_handles(i) = h;
-        end
-        plot(ax, tau_samples, cut_samples_dB, 'o', ...
-            'MarkerSize', 3.1, ...
-            'MarkerFaceColor', colors(i, :), ...
-            'MarkerEdgeColor', 'w', ...
-            'LineWidth', 0.5, ...
-            'HandleVisibility', 'off');
+        line_handles(p, i) = h;
     end
 
     grid(ax, 'on'); box(ax, 'on');
-    title(ax, panels(p).title, 'Interpreter', 'latex', 'FontSize', 20);
-    xlabel(ax, 'Delay index \tau', 'FontSize', 19);
-    xlim(ax, [-N/2 N/2]);
+    xlabel(ax, 'Delay index \tau', 'FontSize', plot_style.label_font);
+    xlim(ax, [-N/2 - 0.3, N/2 + 0.3]);
     ylim(ax, [floor(y_min_seen) - 0.5, 1]);
     xticks(ax, -N/2:4:N/2);
-    set(ax, 'FontSize', 15, 'LineWidth', 0.8, 'Layer', 'top');
+    set(ax, 'FontSize', plot_style.axes_font, ...
+        'LineWidth', plot_style.axes_line_width, ...
+        'Layer', 'top', ...
+        'LabelFontSizeMultiplier', 1);
     if p == 1
-        ylabel(ax, 'ESL (dB)', 'FontSize', 19);
+        ylabel(ax, 'ESL (dB)', 'FontSize', plot_style.label_font);
     else
         yticklabels(ax, []);
     end
 end
 
-lgd = legend(ax_list(1), line_handles, {'Proposed', 'CRB', 'MI'}, ...
-    'Location', 'northwest', 'Orientation', 'vertical');
-lgd.FontSize = 16.5;
-lgd.Box = 'off';
+set(ax_list(1).XLabel, 'Units', 'normalized', 'Position', [0.5 -0.125 0]);
+set(ax_list(1).YLabel, 'Units', 'normalized', 'Position', [-0.105 0.5 0]);
+set(ax_list(2).XLabel, 'Units', 'normalized', 'Position', [0.5 -0.125 0]);
+
+drawnow;
+plot_config(fig);
+set(ax_list(1).XLabel, 'Units', 'normalized', 'Position', [0.5 -0.125 0]);
+set(ax_list(1).YLabel, 'Units', 'normalized', 'Position', [-0.105 0.5 0]);
+set(ax_list(2).XLabel, 'Units', 'normalized', 'Position', [0.5 -0.125 0]);
+draw_multitarget_legend(fig, plot_style.legend_position, colors, plot_style, cfg);
+for p = 1:numel(panels)
+    add_panel_caption(fig, ax_list(p), panels(p).title, ...
+        'YOffset', 0.235, 'Height', 0.055, ...
+        'FontSize', plot_style.panel_caption_font, ...
+        'Interpreter', 'tex', ...
+        'WidthScale', 1.20);
+end
 
 out_png = fullfile(fig_dir, 'AF_Multitarget_Worst_Zero_Doppler_Cut_1x2.png');
 out_pdf = fullfile(fig_dir, 'AF_Multitarget_Worst_Zero_Doppler_Cut_1x2.pdf');
-exportgraphics(fig, out_png, 'Resolution', 450);
-exportgraphics(fig, out_pdf, 'ContentType', 'image', 'Resolution', 450);
+tight_export_figure(fig, out_pdf, 'ContentType', 'image', ...
+    'Resolution', cfg.export_resolution, 'TightPad', 0);
+tight_export_figure(fig, out_png, ...
+    'Resolution', cfg.export_resolution, 'TightPad', 0);
 fprintf('Saved 1x2 zero-Doppler AF cut: %s\n', out_png);
 fprintf('Saved 1x2 zero-Doppler AF cut: %s\n', out_pdf);
+end
+
+function draw_multitarget_legend(fig, position, colors, style, cfg)
+ax_leg = axes(fig, 'Position', position, ...
+    'XLim', [0 1], 'YLim', [0 1], ...
+    'Visible', 'off', ...
+    'Color', 'none');
+hold(ax_leg, 'on');
+rectangle(ax_leg, 'Position', [0.020 0.020 0.960 0.960], ...
+    'FaceColor', 'w', ...
+    'EdgeColor', [0.15 0.15 0.15], ...
+    'LineWidth', style.axes_line_width);
+
+legend_font = max(cfg.legend_font - 5, 1);
+y_pos = [0.755 0.500 0.245];
+labels = {'Proposed', 'CRB', 'MI'};
+for idx = 1:numel(labels)
+    plot(ax_leg, [0.085 0.270], [y_pos(idx) y_pos(idx)], '-', ...
+        'Color', colors(idx, :), ...
+        'LineWidth', 1.8, ...
+        'Clipping', 'off');
+    x_center = 0.1775;
+    dx = 0.020;
+    dy = 0.047;
+    patch(ax_leg, x_center + [0 dx 0 -dx], ...
+        y_pos(idx) + [dy 0 -dy 0], ...
+        colors(idx, :), ...
+        'EdgeColor', colors(idx, :), ...
+        'LineWidth', 1.2, ...
+        'Clipping', 'off');
+    text(ax_leg, 0.335, y_pos(idx), labels{idx}, ...
+        'Interpreter', 'tex', ...
+        'FontName', cfg.font_name, ...
+        'FontSize', legend_font, ...
+        'HorizontalAlignment', 'left', ...
+        'VerticalAlignment', 'middle');
+end
+try
+    uistack(ax_leg, 'top');
+catch
+end
 end
 
 function [tau_samples, cut_centered_dB] = center_zero_delay_sample_grid(cut_dB)

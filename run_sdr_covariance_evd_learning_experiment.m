@@ -465,9 +465,9 @@ end
 function safe_export(fig, filename, filetype)
 try
     if strcmpi(filetype, 'pdf')
-        exportgraphics(fig, filename, 'ContentType', 'vector');
+        tight_export_figure(fig, filename, 'ContentType', 'vector');
     else
-        exportgraphics(fig, filename, 'Resolution', 300);
+        tight_export_figure(fig, filename, 'Resolution', 300);
     end
 catch
     if strcmpi(filetype, 'pdf')

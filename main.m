@@ -299,8 +299,8 @@ set(gca, 'FontSize', 12);
 
 saveas(fig, fullfile(out_dir, 'pareto_curve.png'));
 saveas(fig, fullfile(out_dir, 'pareto_curve.fig'));
-exportgraphics(fig, fullfile(paper_fig_dir, 'Pareto_Frontier_Result.pdf'), 'ContentType', 'vector');
-exportgraphics(fig, fullfile(paper_fig_dir, 'Pareto_Frontier_Result.png'), 'Resolution', 300);
+tight_export_figure(fig, fullfile(paper_fig_dir, 'Pareto_Frontier_Result.pdf'), 'ContentType', 'vector');
+tight_export_figure(fig, fullfile(paper_fig_dir, 'Pareto_Frontier_Result.png'), 'Resolution', 300);
 
 % --- ISLR Pareto curve ---
 fig_islr = figure('Position', [120 120 850 620], 'Color', 'w');
@@ -350,8 +350,8 @@ set(gca, 'FontSize', 12);
 
 saveas(fig_islr, fullfile(out_dir, 'pareto_curve_islr.png'));
 saveas(fig_islr, fullfile(out_dir, 'pareto_curve_islr.fig'));
-exportgraphics(fig_islr, fullfile(paper_fig_dir, 'ISLR_Pareto_Frontier_Result.pdf'), 'ContentType', 'vector');
-exportgraphics(fig_islr, fullfile(paper_fig_dir, 'ISLR_Pareto_Frontier_Result.png'), 'Resolution', 300);
+tight_export_figure(fig_islr, fullfile(paper_fig_dir, 'ISLR_Pareto_Frontier_Result.pdf'), 'ContentType', 'vector');
+tight_export_figure(fig_islr, fullfile(paper_fig_dir, 'ISLR_Pareto_Frontier_Result.png'), 'Resolution', 300);
 
 % --- runtime comparison ---
 fig_time = figure('Position', [140 140 820 560], 'Color', 'w');
@@ -371,8 +371,8 @@ title(['Runtime comparison  ' title_str], 'FontSize', 13);
 legend('Location', 'best', 'FontSize', 11);
 saveas(fig_time, fullfile(out_dir, 'comparison_time.png'));
 saveas(fig_time, fullfile(out_dir, 'comparison_time.fig'));
-exportgraphics(fig_time, fullfile(paper_fig_dir, 'comparison_time.pdf'), 'ContentType', 'vector');
-exportgraphics(fig_time, fullfile(paper_fig_dir, 'comparison_time.png'), 'Resolution', 300);
+tight_export_figure(fig_time, fullfile(paper_fig_dir, 'comparison_time.pdf'), 'ContentType', 'vector');
+tight_export_figure(fig_time, fullfile(paper_fig_dir, 'comparison_time.png'), 'Resolution', 300);
 
 save(fullfile(out_dir, 'results.mat'), ...
      'sumrate_grid', 'pslr_lin_grid', 'islr_lin_grid', ...

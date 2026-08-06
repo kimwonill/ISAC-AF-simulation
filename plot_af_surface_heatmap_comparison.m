@@ -19,8 +19,7 @@ end
 clearvars -except force_rerun CV_max_target reuse_surrogate_cv; close all; clc;
 
 sim_dir = fileparts(mfilename('fullpath'));
-root_dir = fileparts(sim_dir);
-fig_dir = fullfile(root_dir, 'figures');
+fig_dir = fullfile(sim_dir, 'figures');
 data_dir = fullfile(sim_dir, 'results');
 fig2_path = fullfile(data_dir, 'fig2_af_simulation_example.mat');
 if exist(fig_dir, 'dir') ~= 7, mkdir(fig_dir); end
@@ -225,45 +224,101 @@ ESL = max(real(ESL), realmin);
 ESL_dB = 10 * log10(ESL / max(ESL(:)));
 end
 
-function plot_comparison(cases, S, fig_dir, CV_max_target, cv_tag)
+function plot_comparison(cases, ~, fig_dir, CV_max_target, cv_tag)
+cfg = plot_config();
 z_floor = -28;
 num_cases = numel(cases);
 N = size(cases(1).ESL_dB, 1);
-[TAU, NU] = meshgrid(0:N-1, 0:N-1);
-palette = paper_palette();
-edge_color = 0.35 * palette(1, :);
 
-fig = figure('Color', 'w', 'Position', [80 80 760 330]);
-tl = tiledlayout(fig, 1, num_cases, 'TileSpacing', 'compact', 'Padding', 'compact');
+fig = figure('Color', 'w', 'Position', [80 80 1180 1060]);
+axes_positions = [
+    0.330 0.575 0.345 0.340
+    0.085 0.220 0.345 0.340
+    0.515 0.220 0.345 0.340
+];
+ax_list = gobjects(num_cases, 1);
+[TAU, NU] = meshgrid(0:N-1, 0:N-1);
+edge_color = [0.25 0.25 0.25];
 
 for i = 1:num_cases
-    ax = nexttile(tl, i);
-    Z = max(cases(i).ESL_dB, z_floor).';
-    Z = rot90(Z, 2);
+    ax = axes(fig, 'Position', axes_positions(i, :));
+    ax_list(i) = ax;
     hold(ax, 'on');
+    Z = max(cases(i).ESL_dB, z_floor).';
     surf(ax, TAU, NU, z_floor * ones(size(Z)), Z, ...
-        'FaceColor', 'texturemap', 'EdgeColor', 'none', ...
-        'FaceAlpha', 0.72, 'HandleVisibility', 'off');
+        'FaceColor', 'texturemap', ...
+        'EdgeColor', 'none', ...
+        'FaceAlpha', 0.70, ...
+        'HandleVisibility', 'off');
     surf(ax, TAU, NU, Z, Z, ...
-        'FaceColor', 'interp', 'EdgeColor', edge_color, ...
-        'LineWidth', 0.18, 'FaceAlpha', 0.94, ...
+        'FaceColor', 'interp', ...
+        'EdgeColor', edge_color, ...
+        'LineWidth', 0.18, ...
+        'FaceAlpha', 0.96, ...
         'HandleVisibility', 'off');
     clim(ax, [z_floor 0]);
-    style_panel(ax, N, z_floor);
-    title(ax, panel_title(cases(i)), 'FontSize', 14, 'FontWeight', 'bold');
+    style_3d_panel(ax, N, z_floor, cfg);
+    if i == num_cases
+        ylabel(ax, '');
+    end
     if i == num_cases
         cb = colorbar(ax);
-        cb.Label.String = 'AF (dB)';
-        cb.FontSize = 10.5;
+        cb.Label.String = '';
+        cb.Title.String = '';
+        cb.FontSize = cfg.axes_font - 7;
+        cb.Position = [0.915 0.235 0.018 0.620];
+        try
+            cb.AxisLocation = 'out';
+            cb.TickDirection = 'out';
+        catch
+        end
     end
 end
 
 colormap(fig, turbo(256));
+drawnow;
+plot_config(fig);
+for i = 1:num_cases
+    set(ax_list(i), 'FontSize', cfg.axes_font - 6, ...
+        'FontWeight', 'bold', ...
+        'LabelFontSizeMultiplier', 1);
+    align_3d_axis_labels(ax_list(i), cfg, i == num_cases);
+end
+set(cb, 'FontWeight', 'bold');
+ax_cb_label = axes(fig, 'Position', [0.955 0.235 0.020 0.620], ...
+    'Visible', 'off', 'XLim', [0 1], 'YLim', [0 1]);
+text(ax_cb_label, 0.5, 0.5, 'AF (dB)', ...
+    'Units', 'normalized', ...
+    'Interpreter', 'tex', ...
+    'FontName', cfg.font_name, ...
+    'FontSize', cfg.label_font - 6, ...
+    'FontWeight', 'bold', ...
+    'Rotation', 90, ...
+    'HorizontalAlignment', 'center', ...
+    'VerticalAlignment', 'middle', ...
+    'Clipping', 'off');
+caption_offsets = [0.045 0.045 0.045];
+for i = 1:num_cases
+    caption_handle = add_panel_caption(fig, ax_list(i), panel_title(cases(i)), ...
+        'YOffset', caption_offsets(i), 'Height', 0.050, ...
+        'FontSize', cfg.panel_caption_font - 3, 'Interpreter', 'tex');
+    set(caption_handle, 'FontWeight', 'bold');
+end
 
 out_png = fullfile(fig_dir, sprintf('AF_3D_Surface_Heatmap_Comparison_%s.png', cv_tag));
 out_pdf = fullfile(fig_dir, sprintf('AF_3D_Surface_Heatmap_Comparison_%s.pdf', cv_tag));
-exportgraphics(fig, out_png, 'Resolution', 450);
-exportgraphics(fig, out_pdf, 'ContentType', 'image', 'Resolution', 450);
+% The first export applies the shared tight-layout transform. Pull the
+% transformed objects inward by a visually negligible amount so 3-D tick
+% labels and border strokes are not clipped at the canvas boundary.
+tight_export_figure(fig, out_png, 'Resolution', 450);
+inset_top_level_positions(fig, 0.008);
+tight_export_figure(fig, out_png, 'Resolution', 450, 'TightLayout', false);
+tight_export_figure(fig, out_pdf, 'ContentType', 'image', 'Resolution', 450, ...
+    'TightLayout', false);
+if abs(CV_max_target - 0.5) < 1e-12
+    copyfile(out_png, fullfile(fig_dir, 'AF_3D_Surface_Heatmap_Comparison.png'), 'f');
+    copyfile(out_pdf, fullfile(fig_dir, 'AF_3D_Surface_Heatmap_Comparison.pdf'), 'f');
+end
 fprintf('Saved AF comparison figure: %s\n', out_png);
 fprintf('Saved AF comparison figure: %s\n', out_pdf);
 end
@@ -272,18 +327,44 @@ function tag = cv_filename_tag(CV_max_target)
 tag = sprintf('CV%02d', round(10 * CV_max_target));
 end
 
-function style_panel(ax, N, z_floor)
+function style_3d_panel(ax, N, z_floor, cfg)
 grid(ax, 'on'); box(ax, 'on');
-xlabel(ax, '\tau', 'FontSize', 12);
-ylabel(ax, '\nu', 'FontSize', 12);
+xlabel(ax, 'Delay index \tau', 'FontSize', cfg.label_font - 8);
+ylabel(ax, 'Doppler \nu', 'FontSize', cfg.label_font - 8);
 zlabel(ax, '');
-xlim(ax, [0 N-1]); ylim(ax, [0 N-1]); zlim(ax, [z_floor 1]);
+xlim(ax, [0 N-1]); ylim(ax, [0 N-1]);
+zlim(ax, [z_floor 1]);
 xticks(ax, 0:5:N-1); yticks(ax, 0:5:N-1);
-set(ax, 'FontSize', 10.5, 'Layer', 'top');
-pbaspect(ax, [1 1 0.62]);
-view(ax, [-44 30]);
+zticks(ax, -20:10:0);
+set(ax, 'FontSize', cfg.axes_font - 6, ...
+    'Layer', 'top', ...
+    'XDir', 'reverse', ...
+    'YDir', 'reverse');
+pbaspect(ax, [1 1 0.58]);
+view(ax, [-42 29]);
 camlight(ax, 'headlight');
 lighting(ax, 'gouraud');
+end
+
+function align_3d_axis_labels(ax, cfg, hide_ylabel)
+xl = get(ax, 'XLabel');
+yl = get(ax, 'YLabel');
+set(xl, ...
+    'FontSize', cfg.label_font - 8, ...
+    'FontWeight', 'bold', ...
+    'Rotation', 22, ...
+    'HorizontalAlignment', 'center', ...
+    'VerticalAlignment', 'middle');
+if hide_ylabel
+    set(yl, 'String', '');
+else
+    set(yl, ...
+        'FontSize', cfg.label_font - 8, ...
+        'FontWeight', 'bold', ...
+        'Rotation', -33, ...
+        'HorizontalAlignment', 'center', ...
+        'VerticalAlignment', 'middle');
+end
 end
 
 function str = panel_title(c)
@@ -296,14 +377,49 @@ else
 end
 end
 
-function value = plotted_target_pslr_dB(ESL_dB)
-zero_doppler_cut = ESL_dB(:, 1);
-value = zero_doppler_cut(1) - max(zero_doppler_cut(2:end));
+function inset_top_level_positions(fig, pad)
+scale = 1 - 2 * pad;
+objects = {};
+
+axes_list = findall(fig, 'Type', 'axes');
+for i = 1:numel(axes_list)
+    objects{end + 1} = axes_list(i); %#ok<AGROW>
+end
+colorbar_list = findall(fig, 'Type', 'colorbar');
+for i = 1:numel(colorbar_list)
+    objects{end + 1} = colorbar_list(i); %#ok<AGROW>
+end
+caption_list = findall(fig, 'Type', 'textboxshape');
+for i = 1:numel(caption_list)
+    objects{end + 1} = caption_list(i); %#ok<AGROW>
 end
 
-function value = plotted_target_islr_dB(ESL_dB)
-ESL = 10.^(ESL_dB / 10);
-mainlobe = ESL(1, 1);
-islr = (sum(ESL(:)) - mainlobe) / mainlobe;
-value = 10 * log10(max(islr, realmin));
+positions = cell(size(objects));
+old_units = cell(size(objects));
+valid = false(size(objects));
+for i = 1:numel(objects)
+    try
+        old_units{i} = get(objects{i}, 'Units');
+        set(objects{i}, 'Units', 'normalized');
+        positions{i} = get(objects{i}, 'Position');
+        set(objects{i}, 'Units', old_units{i});
+        valid(i) = numel(positions{i}) >= 4;
+    catch
+    end
+end
+
+for i = 1:numel(objects)
+    if ~valid(i)
+        continue;
+    end
+    try
+        pos = positions{i};
+        pos(1:2) = pad + scale * pos(1:2);
+        pos(3:4) = scale * pos(3:4);
+        set(objects{i}, 'Units', 'normalized', 'Position', pos);
+        set(objects{i}, 'Units', old_units{i});
+    catch
+    end
+end
+drawnow;
 end

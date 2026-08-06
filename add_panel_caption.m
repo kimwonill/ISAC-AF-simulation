@@ -1,0 +1,43 @@
+function h = add_panel_caption(fig, ax, caption, varargin)
+% ADD_PANEL_CAPTION  Place a subfigure caption below an axes.
+
+cfg = plot_config();
+p = get(ax, 'Position');
+opts = parse_options(varargin{:});
+
+y = max(0.006, p(2) - opts.YOffset);
+width = p(3) * opts.WidthScale;
+x = p(1) - 0.5 * (width - p(3));
+h = annotation(fig, 'textbox', [x, y, width, opts.Height], ...
+    'String', caption, ...
+    'Interpreter', opts.Interpreter, ...
+    'HorizontalAlignment', 'center', ...
+    'VerticalAlignment', 'middle', ...
+    'EdgeColor', 'none', ...
+    'FitBoxToText', 'off', ...
+    'FontName', cfg.font_name, ...
+    'FontSize', opts.FontSize);
+end
+
+function opts = parse_options(varargin)
+cfg = plot_config();
+opts = struct( ...
+    'YOffset', 0.120, ...
+    'Height', 0.050, ...
+    'WidthScale', 1.0, ...
+    'FontSize', cfg.panel_caption_font, ...
+    'Interpreter', 'tex');
+
+if mod(numel(varargin), 2) ~= 0
+    error('add_panel_caption:InvalidInput', 'Options must be name-value pairs.');
+end
+
+for i = 1:2:numel(varargin)
+    name = varargin{i};
+    value = varargin{i + 1};
+    if ~isfield(opts, name)
+        error('add_panel_caption:InvalidOption', 'Unknown option: %s', name);
+    end
+    opts.(name) = value;
+end
+end

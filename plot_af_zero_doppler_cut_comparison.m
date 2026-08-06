@@ -72,8 +72,8 @@ lgd.Box = 'off';
 
 out_png = fullfile(fig_dir, sprintf('AF_Zero_Doppler_Cut_Comparison_%s.png', cv_tag));
 out_pdf = fullfile(fig_dir, sprintf('AF_Zero_Doppler_Cut_Comparison_%s.pdf', cv_tag));
-exportgraphics(fig, out_png, 'Resolution', 450);
-exportgraphics(fig, out_pdf, 'ContentType', 'vector');
+tight_export_figure(fig, out_png, 'Resolution', 450);
+tight_export_figure(fig, out_pdf, 'ContentType', 'vector');
 fprintf('Saved zero-Doppler AF cut: %s\n', out_png);
 fprintf('Saved zero-Doppler AF cut: %s\n', out_pdf);
 end

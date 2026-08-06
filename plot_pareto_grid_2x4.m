@@ -8,7 +8,7 @@ if nargin < 1
 end
 
 out_dir = fileparts(mfilename('fullpath'));
-paper_fig_dir = fullfile(out_dir, '..', 'figures');
+paper_fig_dir = fullfile(out_dir, 'figures');
 cache_dir = fullfile(out_dir, 'results', 'pareto_grid_2x4');
 if exist(paper_fig_dir, 'dir') ~= 7, mkdir(paper_fig_dir); end
 if exist(cache_dir, 'dir') ~= 7, mkdir(cache_dir); end
@@ -23,35 +23,68 @@ for i = 1:numel(configs)
     case_data{i} = load_or_run_case(configs(i), cache_dir, num_mc_override);
 end
 
-fig = figure('Position', [80 80 1650 760], 'Color', 'w');
-tl = tiledlayout(fig, 2, 4, 'TileSpacing', 'compact', 'Padding', 'compact');
+cfg = plot_config();
+base_width = 2000;
+base_height = 1250;
+fig_width = 1905;
+fig_height = 1205;
+x_crop_scale = base_width / fig_width;
+y_crop_scale = base_height / fig_height;
+fig = figure('Position', [80 80 fig_width fig_height], 'Color', 'w');
+axes_x = [0.055 0.291 0.527 0.763] * x_crop_scale;
+axes_width = 0.187 * x_crop_scale;
+axes_height = 0.350 * y_crop_scale;
+top_y = 0.445 * y_crop_scale;
+bottom_y = 0.080 * y_crop_scale;
 
-legend_handles = [];
-legend_labels = {};
-legend_ax = [];
+panel_axes = gobjects(2, numel(configs));
 for i = 1:numel(configs)
-    ax = nexttile(tl, i);
-    [h, labels] = plot_case_panel(ax, case_data{i}, 'pslr', configs(i).label);
-    if i == 1
-        legend_handles = h;
-        legend_labels = labels;
-        legend_ax = ax;
+    ax = axes(fig, 'Units', 'normalized', ...
+        'Position', [axes_x(i) top_y axes_width axes_height]);
+    panel_axes(1, i) = ax;
+    plot_case_panel(ax, case_data{i}, 'pslr', configs(i).label);
+    if i > 1
+        ylabel(ax, '');
     end
 
-    ax = nexttile(tl, i + 4);
+    ax = axes(fig, 'Units', 'normalized', ...
+        'Position', [axes_x(i) bottom_y axes_width axes_height]);
+    panel_axes(2, i) = ax;
     plot_case_panel(ax, case_data{i}, 'islr', '');
+    if i > 1
+        ylabel(ax, '');
+    end
 end
 
-xlabel(tl, 'Sum-rate (bps/Hz)', 'FontSize', 19);
-ylabel(tl, 'AF metric (dB)', 'FontSize', 19);
-lgd = legend(legend_ax, legend_handles, legend_labels, ...
-    'Orientation', 'horizontal', 'NumColumns', 4, 'FontSize', 16.5, ...
-    'Location', 'southoutside');
-try
-    lgd.Layout.Tile = 'south';
-catch
-    lgd.Location = 'southoutside';
+plot_config(fig);
+for i = 1:numel(panel_axes)
+    pbaspect(panel_axes(i), [1 1 1]);
 end
+for row_idx = 1:2
+    y_label_x = -0.120;
+    if row_idx == 2
+        y_label_x = -0.135;
+    end
+    set(panel_axes(row_idx, 1).YLabel, ...
+        'Units', 'normalized', ...
+        'Position', [y_label_x 0.500 0], ...
+        'FontSize', cfg.label_font + 2, ...
+        'FontWeight', 'bold');
+end
+
+annotation(fig, 'textbox', [0 0.001 * y_crop_scale 1 0.055 * y_crop_scale], ...
+    'String', 'Sum-rate (bps/Hz)', ...
+    'Interpreter', 'tex', ...
+    'HorizontalAlignment', 'center', ...
+    'VerticalAlignment', 'middle', ...
+    'EdgeColor', 'none', ...
+    'FitBoxToText', 'off', ...
+    'FontName', cfg.font_name, ...
+    'FontSize', cfg.label_font + 2, ...
+    'FontWeight', 'bold');
+draw_pareto_grid_legend(fig, ...
+    [0.140 * x_crop_scale 0.855 * y_crop_scale ...
+     0.720 * x_crop_scale 0.105 * y_crop_scale], cfg);
 
 safe_export(fig, fullfile(paper_fig_dir, 'Pareto_Frontier_Grid_2x4.pdf'), 'pdf');
 safe_export(fig, fullfile(paper_fig_dir, 'Pareto_Frontier_Grid_2x4.png'), 'png');
@@ -273,6 +306,7 @@ end
 function [handles, labels] = plot_case_panel(ax, S, metric, title_text)
 axes(ax);
 hold(ax, 'on'); grid(ax, 'on'); box(ax, 'on');
+cfg = plot_config();
 
 S = ensure_exact_islr_fields(S);
 sumrate_avg = mean(S.sumrate_grid, 2, 'omitnan');
@@ -288,10 +322,8 @@ if strcmpi(metric, 'pslr')
     y_equiv = 10*log10(mean(S.direct_equiv_pslr_lin_grid, 2, 'omitnan'));
     y_crb = 10*log10(mean(S.crb_pslr_lin_grid, 2, 'omitnan'));
     y_mi = 10*log10(mean(S.mi_pslr_lin_grid, 2, 'omitnan'));
-    y_comm = 10*log10(mean(S.comm_pslr_lin_grid, 'omitnan'));
     y_bound = 10*log10(1 + S.params.N/(S.params.kappa - 1));
     y_label = 'PSLR (dB)';
-    bound_label = 'Global bound';
     y_floor = [];
 else
     direct_sumrate_avg = mean(S.direct_islr_exact_sumrate_grid, 2, 'omitnan');
@@ -300,11 +332,9 @@ else
     y_equiv = 10*log10(mean(S.direct_equiv_islr_lin_grid, 2, 'omitnan'));
     y_crb = 10*log10(mean(S.crb_islr_lin_grid, 2, 'omitnan'));
     y_mi = 10*log10(mean(S.mi_islr_lin_grid, 2, 'omitnan'));
-    y_comm = 10*log10(mean(S.comm_islr_lin_grid, 'omitnan'));
     y_bound = 10*log10((S.params.N - 1)*(S.params.N + 2*S.params.kappa - 2) / ...
                        (2*(S.params.N + S.params.kappa - 1)));
     y_label = 'ISLR (dB)';
-    bound_label = 'Global bound';
     y_floor = [];
 end
 
@@ -317,57 +347,99 @@ valid_mi = isfinite(mi_sumrate_avg) & isfinite(y_mi);
 palette = paper_palette();
 c_prop = palette(1, :);
 c_direct = palette(2, :);
-c_crb = palette(3, :);
+c_crb = palette(7, :);
 c_mi = palette(4, :);
-c_comm = palette(5, :);
-c_neutral = palette(5, :);
+c_neutral = palette(8, :);
+c_comm = [0.20 0.62 0.22];
+c_sensing = palette(9, :);
 
-h1 = plot(ax, sumrate_avg(valid_prop), y_prop(valid_prop), '-o', ...
+h1 = plot(ax, sumrate_avg(valid_prop), y_prop(valid_prop), '--o', ...
     'Color', c_prop, 'MarkerFaceColor', c_prop, ...
-    'LineWidth', 1.4, 'MarkerSize', 4.8, 'DisplayName', 'Proposed CV');
+    'LineWidth', 1.4, 'MarkerSize', cfg.marker_size + 3, ...
+    'DisplayName', 'Proposed CV');
 h2 = plot(ax, direct_sumrate_avg(valid_direct), y_direct(valid_direct), '--d', ...
     'Color', c_direct, 'MarkerFaceColor', c_direct, ...
-    'LineWidth', 1.2, 'MarkerSize', 4.6, 'DisplayName', 'Direct SCA');
-h3 = plot(ax, direct_equiv_sumrate_avg(valid_equiv), y_equiv(valid_equiv), 'o', ...
-    'LineStyle', 'none', 'Color', c_neutral, 'MarkerFaceColor', 'none', ...
-    'LineWidth', 1.2, 'MarkerSize', 8.5, 'DisplayName', 'ISLR-active');
-h4 = plot(ax, crb_sumrate_avg(valid_crb), y_crb(valid_crb), '-.^', ...
+    'LineWidth', 1.2, 'MarkerSize', cfg.marker_size + 3, ...
+    'DisplayName', 'Direct SCA');
+h3 = plot(ax, direct_equiv_sumrate_avg(valid_equiv), y_equiv(valid_equiv), '--o', ...
+    'Color', c_neutral, 'MarkerFaceColor', c_neutral, ...
+    'LineWidth', 1.2, 'MarkerSize', cfg.marker_size + 4, ...
+    'DisplayName', 'ISLR-active');
+h4 = plot(ax, crb_sumrate_avg(valid_crb), y_crb(valid_crb), '--^', ...
     'Color', c_crb, 'MarkerFaceColor', c_crb, ...
-    'LineWidth', 1.1, 'MarkerSize', 4.8, 'DisplayName', 'CRB-inspired');
-h5 = plot(ax, mi_sumrate_avg(valid_mi), y_mi(valid_mi), ':v', ...
+    'LineWidth', 1.1, 'MarkerSize', cfg.marker_size + 3, ...
+    'DisplayName', 'CRB-inspired');
+h5 = plot(ax, mi_sumrate_avg(valid_mi), y_mi(valid_mi), '--v', ...
     'Color', c_mi, 'MarkerFaceColor', c_mi, ...
-    'LineWidth', 1.3, 'MarkerSize', 4.8, 'DisplayName', 'MI-inspired');
-h6 = plot(ax, comm_sumrate, y_comm, 'p', 'Color', c_neutral, 'MarkerFaceColor', c_comm, ...
-    'LineWidth', 1.3, 'MarkerSize', 10.0, 'DisplayName', 'Communication-only');
-h7 = xline(ax, comm_sumrate, '-.', 'Color', c_neutral, 'LineWidth', 0.9, ...
-    'DisplayName', 'Comm. rate');
-h8 = yline(ax, y_bound, '--', 'Color', c_neutral, 'LineWidth', 1.0, ...
-    'DisplayName', bound_label);
+    'LineWidth', 1.3, 'MarkerSize', cfg.marker_size + 3, ...
+    'DisplayName', 'MI-inspired');
+h6 = xline(ax, comm_sumrate, '--', 'Color', c_comm, 'LineWidth', 1.4, ...
+    'DisplayName', 'Communication-only');
+h7 = yline(ax, y_bound, '--', 'Color', c_sensing, 'LineWidth', 1.4, ...
+    'DisplayName', 'sensing-only');
+
+pareto_x = [sumrate_avg(valid_prop); direct_sumrate_avg(valid_direct)];
+pareto_y = [y_prop(valid_prop); y_direct(valid_direct)];
+h_comm_star = gobjects(0);
+h_sensing_star = gobjects(0);
+if ~isempty(pareto_x)
+    [~, comm_star_idx] = min(abs(pareto_x - comm_sumrate));
+    [~, sensing_star_idx] = min(abs(pareto_y - y_bound));
+    h_comm_star = plot(ax, pareto_x(comm_star_idx), pareto_y(comm_star_idx), 'p', ...
+        'LineStyle', 'none', ...
+        'Color', c_comm, ...
+        'MarkerFaceColor', c_comm, ...
+        'MarkerSize', cfg.marker_size + 15, ...
+        'LineWidth', 2.0, ...
+        'HandleVisibility', 'off');
+    h_sensing_star = plot(ax, pareto_x(sensing_star_idx), pareto_y(sensing_star_idx), 'p', ...
+        'LineStyle', 'none', ...
+        'Color', c_sensing, ...
+        'MarkerFaceColor', c_sensing, ...
+        'MarkerSize', cfg.marker_size + 15, ...
+        'LineWidth', 2.0, ...
+        'HandleVisibility', 'off');
+end
 
 x_focus = [sumrate_avg(valid_prop); direct_sumrate_avg(valid_direct); ...
            direct_equiv_sumrate_avg(valid_equiv); comm_sumrate];
 y_focus = [y_prop(valid_prop); y_direct(valid_direct); ...
-           y_equiv(valid_equiv); y_comm; y_bound];
+           y_equiv(valid_equiv); y_bound];
 [xl, yl] = corner_limits(x_focus, y_focus, metric);
 if ~isempty(y_floor), yl(1) = y_floor; end
 xlim(ax, xl); ylim(ax, yl);
+if strcmpi(metric, 'islr')
+    y_tick_min = ceil(10 * yl(1) - 1e-9) / 10;
+    y_tick_max = floor(10 * yl(2) + 1e-9) / 10;
+    yticks(ax, y_tick_min:0.1:y_tick_max);
+    ytickformat(ax, '%.1f');
+end
 add_enclosed_region_shade(ax, metric, ...
     {sumrate_avg(valid_prop), direct_sumrate_avg(valid_direct)}, ...
     {y_prop(valid_prop), y_direct(valid_direct)}, ...
     comm_sumrate, y_bound);
+try
+    % Keep the verified Proposed-CV red curve above overlapping gray/blue
+    % points, then restore the two Pareto-boundary stars to the top.
+    uistack(h2, 'top');
+    uistack(h1, 'top');
+    if isgraphics(h_comm_star), uistack(h_comm_star, 'top'); end
+    if isgraphics(h_sensing_star), uistack(h_sensing_star, 'top'); end
+catch
+end
 
-ylabel(ax, y_label, 'FontSize', 17);
-set(ax, 'FontSize', 15, 'Layer', 'top');
+ylabel(ax, y_label, 'FontSize', cfg.label_font - 2);
+set(ax, 'FontSize', cfg.axes_font, 'Layer', 'top');
 try
     ax.TitleFontSizeMultiplier = 1;
 catch
 end
 if ~isempty(title_text)
     title_handle = title(ax, title_text, 'Interpreter', 'latex', ...
-        'FontSize', 20, 'FontWeight', 'bold');
-    title_handle.FontSize = 20;
+        'FontSize', cfg.title_font, 'FontWeight', 'bold');
+    title_handle.FontSize = cfg.title_font;
 end
-handles = [h1 h2 h3 h4 h5 h6 h7 h8];
+handles = [h1 h2 h3 h4 h5 h6 h7];
 labels = get(handles, 'DisplayName');
 end
 
@@ -409,6 +481,96 @@ region = patch(ax, poly_x, poly_y, shade_color, ...
     'HandleVisibility', 'off');
 try
     uistack(region, 'bottom');
+catch
+end
+end
+
+function draw_pareto_grid_legend(fig, position, cfg)
+palette = paper_palette();
+c_prop = palette(1, :);
+c_direct = palette(2, :);
+c_crb = palette(7, :);
+c_mi = palette(4, :);
+c_neutral = palette(8, :);
+c_comm = [0.20 0.62 0.22];
+c_sensing = palette(9, :);
+
+ax_leg = axes(fig, 'Position', position, ...
+    'XLim', [0 1], 'YLim', [0 1], ...
+    'Visible', 'off', ...
+    'Color', 'none');
+hold(ax_leg, 'on');
+rectangle(ax_leg, 'Position', [0.015 0.015 0.970 0.970], ...
+    'FaceColor', 'w', ...
+    'EdgeColor', [0.15 0.15 0.15], ...
+    'LineWidth', cfg.axes_line_width);
+
+legend_font = max(cfg.legend_font + 2, 1);
+legend_marker_size = max(1.85 * cfg.marker_size, 17);
+legend_star_size = max(3.00 * cfg.marker_size, 27);
+legend_line_width = max(cfg.line_width, 2.2);
+labels = {'Proposed CV', 'Direct SCA', 'ISLR-active', ...
+          'CRB-inspired', 'MI-inspired', ...
+          'sensing-only', 'Communication-only'};
+line_styles = repmat({'--'}, 1, numel(labels));
+markers = {'o', 'd', 'o', '^', 'v', 'p', 'p'};
+colors = [c_prop; c_direct; c_neutral; c_crb; c_mi; c_sensing; c_comm];
+num_columns = 4;
+row_y = [0.640 0.360];
+content_left = 0.014;
+content_width = 0.972;
+column_width = content_width / num_columns;
+column_indices = [0 1 2 3 0 1 2];
+row_indices = [1 1 1 1 2 2 2];
+
+for idx = 1:numel(labels)
+    row_idx = row_indices(idx);
+    column_idx = column_indices(idx);
+    cell_left = content_left + column_idx * column_width;
+    y = row_y(row_idx);
+    x_line = cell_left + [0.006 0.046];
+    x_marker = mean(x_line);
+    x_text = cell_left + 0.055;
+    style = line_styles{idx};
+    marker = markers{idx};
+    marker_size = legend_marker_size;
+    if idx >= 6
+        marker_size = legend_star_size;
+    end
+    if strcmp(marker, 'none')
+        plot(ax_leg, x_line, [y y], style, ...
+            'Color', colors(idx, :), ...
+            'LineWidth', legend_line_width, ...
+            'Clipping', 'off');
+    elseif strcmp(style, 'none')
+        scatter(ax_leg, x_marker, y, marker_size^2, ...
+            'Marker', marker, ...
+            'MarkerEdgeColor', colors(idx, :), ...
+            'MarkerFaceColor', colors(idx, :), ...
+            'LineWidth', 1.5, ...
+            'Clipping', 'off');
+    else
+        plot(ax_leg, x_line, [y y], style, ...
+            'Color', colors(idx, :), ...
+            'LineWidth', legend_line_width, ...
+            'Clipping', 'off');
+        scatter(ax_leg, x_marker, y, marker_size^2, ...
+            'Marker', marker, ...
+            'MarkerEdgeColor', colors(idx, :), ...
+            'MarkerFaceColor', colors(idx, :), ...
+            'LineWidth', 1.5, ...
+            'Clipping', 'off');
+    end
+    text(ax_leg, x_text, y, labels{idx}, ...
+        'Interpreter', 'tex', ...
+        'FontName', cfg.font_name, ...
+        'FontSize', legend_font, ...
+        'FontWeight', 'bold', ...
+        'HorizontalAlignment', 'left', ...
+        'VerticalAlignment', 'middle');
+end
+try
+    uistack(ax_leg, 'top');
 catch
 end
 end
@@ -516,9 +678,11 @@ function safe_export(fig, filename, filetype)
 try
     if strcmpi(filetype, 'pdf')
         % Rasterize the PDF to avoid missing-font glyph boxes in LaTeX/Poppler.
-        exportgraphics(fig, filename, 'ContentType', 'image', 'Resolution', 450);
+        tight_export_figure(fig, filename, 'ContentType', 'image', ...
+            'Resolution', 450, 'TightLayout', false);
     else
-        exportgraphics(fig, filename, 'Resolution', 300);
+        tight_export_figure(fig, filename, 'Resolution', 300, ...
+            'TightLayout', false);
     end
 catch
     if strcmpi(filetype, 'pdf')

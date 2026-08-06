@@ -827,8 +827,8 @@ paper_png_path = fullfile(paper_fig_dir, [paper_stem '.png']);
 saveas(fig, png_path);
 saveas(fig, fig_path);
 try
-    exportgraphics(fig, pdf_path, 'ContentType', 'image', 'Resolution', 300);
-    exportgraphics(fig, paper_png_path, 'Resolution', 300);
+    tight_export_figure(fig, pdf_path, 'ContentType', 'image', 'Resolution', 300);
+    tight_export_figure(fig, paper_png_path, 'Resolution', 300);
 catch
     set(fig, 'PaperPositionMode', 'auto');
     print(fig, pdf_path, '-dpdf', '-image', '-r300');

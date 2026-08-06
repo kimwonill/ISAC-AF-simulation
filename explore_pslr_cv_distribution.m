@@ -335,7 +335,7 @@ xlim([min(CV_list)-0.03, max(CV_list)+0.03]);
 png_path = fullfile(out_dir, 'pslr_cv_distribution.png');
 fig_path = fullfile(out_dir, 'pslr_cv_distribution.fig');
 pdf_path = fullfile(out_dir, 'pslr_cv_distribution.pdf');
-exportgraphics(fig, png_path, 'Resolution', 300);
-exportgraphics(fig, pdf_path, 'ContentType', 'vector');
+tight_export_figure(fig, png_path, 'Resolution', 300);
+tight_export_figure(fig, pdf_path, 'ContentType', 'vector');
 saveas(fig, fig_path);
 end

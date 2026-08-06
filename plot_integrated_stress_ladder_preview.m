@@ -185,15 +185,15 @@ function safe_export(fig, filename, filetype)
 try
     if strcmpi(filetype, 'pdf')
         tmp_png = [tempname(fileparts(filename)), '.png'];
-        exportgraphics(fig, tmp_png, 'Resolution', 300);
+        tight_export_figure(fig, tmp_png, 'Resolution', 300);
         if ~png_to_pdf(tmp_png, filename)
-            exportgraphics(fig, filename, 'ContentType', 'image', 'Resolution', 450);
+            tight_export_figure(fig, filename, 'ContentType', 'image', 'Resolution', 450);
         end
         if exist(tmp_png, 'file') == 2
             delete(tmp_png);
         end
     else
-        exportgraphics(fig, filename, 'Resolution', 300);
+        tight_export_figure(fig, filename, 'Resolution', 300);
     end
 catch
     if strcmpi(filetype, 'pdf')

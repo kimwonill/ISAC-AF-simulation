@@ -440,9 +440,9 @@ end
 function safe_export(fig, filename, filetype)
 try
     if strcmpi(filetype, 'pdf')
-        exportgraphics(fig, filename, 'ContentType', 'image', 'Resolution', 600);
+        tight_export_figure(fig, filename, 'ContentType', 'image', 'Resolution', 600);
     else
-        exportgraphics(fig, filename, 'Resolution', 600);
+        tight_export_figure(fig, filename, 'Resolution', 600);
     end
 catch
     parent_fig = ancestor(fig, 'figure');

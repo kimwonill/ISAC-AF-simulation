@@ -87,8 +87,8 @@ title(tl, sprintf('Optimized AF 3-D Visualization Candidates (CV_{max}=%.1f)', S
 
 out_png = fullfile(fig_dir, 'AF_3D_Visualization_Candidates.png');
 out_pdf = fullfile(fig_dir, 'AF_3D_Visualization_Candidates.pdf');
-exportgraphics(fig, out_png, 'Resolution', 300);
-exportgraphics(fig, out_pdf, 'ContentType', 'image', 'Resolution', 300);
+tight_export_figure(fig, out_png, 'Resolution', 300);
+tight_export_figure(fig, out_pdf, 'ContentType', 'image', 'Resolution', 300);
 
 write_individual_figures(TAU, NU, Z_plot, fig_dir, c_blue, c_red, c_gold, c_purple, c_gray, c_black);
 
@@ -118,7 +118,7 @@ scatter3(ax, 0, 0, Z_plot(1, 1), 90, c_red, 'filled', ...
     'MarkerEdgeColor', c_black, 'HandleVisibility', 'off');
 style_3d_axes(ax, 'Shaded surface', z_floor);
 view(ax, [-42 30]); camlight(ax, 'headlight'); lighting(ax, 'gouraud');
-exportgraphics(f1, fullfile(fig_dir, 'AF_3D_Surface.png'), 'Resolution', 300);
+tight_export_figure(f1, fullfile(fig_dir, 'AF_3D_Surface.png'), 'Resolution', 300);
 
 f2 = figure('Color', 'w', 'Position', [100 100 760 620]);
 ax = axes(f2);
@@ -127,7 +127,7 @@ hold(ax, 'on');
 contour3(ax, TAU, NU, Z_plot, z_floor:4:0, 'Color', c_red, 'LineWidth', 1.0);
 style_3d_axes(ax, 'Mesh with 3-D contours', z_floor);
 view(ax, [-38 34]);
-exportgraphics(f2, fullfile(fig_dir, 'AF_3D_Mesh_Contour.png'), 'Resolution', 300);
+tight_export_figure(f2, fullfile(fig_dir, 'AF_3D_Mesh_Contour.png'), 'Resolution', 300);
 
 f3 = figure('Color', 'w', 'Position', [100 100 760 620]);
 ax = axes(f3);
@@ -136,7 +136,7 @@ wf = [h_wf; findobj(ax, 'Type', 'Surface')];
 set(wf, 'EdgeColor', c_purple, 'FaceColor', 'none', 'LineWidth', 1.1);
 style_3d_axes(ax, 'Waterfall slices', z_floor);
 view(ax, [-33 32]);
-exportgraphics(f3, fullfile(fig_dir, 'AF_3D_Waterfall.png'), 'Resolution', 300);
+tight_export_figure(f3, fullfile(fig_dir, 'AF_3D_Waterfall.png'), 'Resolution', 300);
 
 f4 = figure('Color', 'w', 'Position', [100 100 760 620]);
 ax = axes(f4);
@@ -155,5 +155,5 @@ scatter3(ax, 0, 0, Z_plot(1, 1), 95, c_red, 'filled', ...
     'MarkerEdgeColor', c_black);
 style_3d_axes(ax, 'Sidelobe spike map', z_floor);
 view(ax, [-40 28]);
-exportgraphics(f4, fullfile(fig_dir, 'AF_3D_Sidelobe_Spikes.png'), 'Resolution', 300);
+tight_export_figure(f4, fullfile(fig_dir, 'AF_3D_Sidelobe_Spikes.png'), 'Resolution', 300);
 end

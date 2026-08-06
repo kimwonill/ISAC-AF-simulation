@@ -62,8 +62,8 @@ lighting(ax, 'gouraud');
 
 out_png = fullfile(fig_dir, 'AF_3D_Surface_Heatmap_Corner.png');
 out_pdf = fullfile(fig_dir, 'AF_3D_Surface_Heatmap_Corner.pdf');
-exportgraphics(fig, out_png, 'Resolution', 450);
-exportgraphics(fig, out_pdf, 'ContentType', 'image', 'Resolution', 450);
+tight_export_figure(fig, out_png, 'Resolution', 450);
+tight_export_figure(fig, out_pdf, 'ContentType', 'image', 'Resolution', 450);
 fprintf('Saved corner-mainlobe AF surface: %s\n', out_png);
 fprintf('Saved corner-mainlobe AF surface: %s\n', out_pdf);
 end

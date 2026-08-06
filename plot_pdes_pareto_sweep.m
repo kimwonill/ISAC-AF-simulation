@@ -8,7 +8,7 @@
 % Outputs:
 %   pdes_pareto_sweep_results.mat
 %   pdes_pareto_sweep.png/.fig
-%   ../figures/pdes_pareto_sweep.pdf/.png
+%   figures/pdes_pareto_sweep.pdf/.png
 
 clear; close all; clc;
 
@@ -34,7 +34,12 @@ num_pdes = numel(pdes_values);
 num_cv = numel(CV_max_list);
 num_mc = params.num_mc;
 out_dir = fileparts(mfilename('fullpath'));
-results_path = fullfile(out_dir, 'pdes_pareto_sweep_results.mat');
+results_dir = fullfile(out_dir, 'results');
+if exist(results_dir, 'dir') ~= 7
+    mkdir(results_dir);
+end
+results_path = fullfile(results_dir, 'pdes_pareto_sweep_results.mat');
+legacy_results_path = fullfile(out_dir, 'pdes_pareto_sweep_results.mat');
 
 sumrate_grid = nan(num_pdes, num_cv, num_mc);
 pslr_lin_grid = nan(num_pdes, num_cv, num_mc);
@@ -59,6 +64,10 @@ total_iters = num_pdes * num_cv * num_mc;
 iter_count = 0;
 t_global = tic;
 use_cached_results = false;
+
+if exist(results_path, 'file') ~= 2 && exist(legacy_results_path, 'file') == 2
+    copyfile(legacy_results_path, results_path, 'f');
+end
 
 if exist(results_path, 'file') == 2
     cached = load(results_path);
@@ -146,39 +155,27 @@ islr_avg_lin = mean(islr_lin_grid, 3, 'omitnan');
 islr_avg_dB = 10*log10(islr_avg_lin);
 runtime_avg = mean(runtime_grid, 3, 'omitnan');
 
-paper_fig_dir = fullfile(out_dir, '..', 'figures');
+paper_fig_dir = fullfile(out_dir, 'figures');
 if exist(paper_fig_dir, 'dir') ~= 7
     mkdir(paper_fig_dir);
 end
 
-export_resolution = 1200;
+cfg = plot_config();
+export_resolution = cfg.export_resolution;
 plot_style = struct( ...
-    'figure_position', [100 100 760 520], ...
-    'axes_position', [0.12 0.15 0.855 0.74], ...
-    'axes_font', 15, ...
-    'label_font', 19, ...
-    'title_font', 20, ...
-    'legend_font', 16.5);
+    'figure_position', [100 100 1040 560], ...
+    'axes_position', [0.100 0.205 0.850 0.655], ...
+    'legend_position', [0.285 0.215 0.460 0.140], ...
+    'axes_font', cfg.axes_font, ...
+    'label_font', cfg.label_font, ...
+    'title_font', cfg.panel_caption_font, ...
+    'legend_font', max(cfg.legend_font - 5, 1));
 
 fig = figure('Position', plot_style.figure_position, 'Color', 'w');
 set(fig, 'PaperPositionMode', 'auto');
 hold on; grid on; box on;
 
 colors = muted_pdes_colors(num_pdes);
-markers = {'o', 's', '^', 'd', 'v', '>'};
-handles = gobjects(num_pdes, 1);
-[~, loose_cv_idx] = max(CV_max_list);
-
-for p = 1:num_pdes
-    ref_x = sumrate_avg(p, loose_cv_idx);
-    ref_y = pslr_avg_dB(p, loose_cv_idx);
-    if isfinite(ref_x) && isfinite(ref_y)
-        xline(ref_x, '--', 'LineWidth', 1.2, ...
-              'Color', colors(p, :), 'HandleVisibility', 'off');
-        yline(ref_y, '--', 'LineWidth', 1.2, ...
-              'Color', colors(p, :), 'HandleVisibility', 'off');
-    end
-end
 
 for p = 1:num_pdes
     valid = ~isnan(sumrate_avg(p, :)) & ~isnan(pslr_avg_dB(p, :));
@@ -186,21 +183,26 @@ for p = 1:num_pdes
         continue;
     end
 
-    handles(p) = plot(sumrate_avg(p, valid), pslr_avg_dB(p, valid), ...
-        ['-' markers{1 + mod(p-1, numel(markers))}], ...
-        'LineWidth', 2.0, 'MarkerSize', 7.0, ...
+    plot(sumrate_avg(p, valid), pslr_avg_dB(p, valid), ...
+        '-d', ...
+        'LineWidth', 2.2, 'MarkerSize', 9.4, ...
         'MarkerFaceColor', colors(p, :), ...
+        'MarkerEdgeColor', colors(p, :), ...
         'Color', colors(p, :), ...
         'DisplayName', pdes_legend_label(pdes_multipliers(p)));
 end
 
 ax = gca;
 set(ax, 'FontSize', plot_style.axes_font, 'LabelFontSizeMultiplier', 1, ...
+        'LineWidth', cfg.axes_line_width, 'Layer', 'top', ...
         'Units', 'normalized', 'Position', plot_style.axes_position);
 xlabel(ax, 'Sum-rate (bps/Hz)', 'FontSize', plot_style.label_font);
-ylabel(ax, 'Worst-case PSLR (dB)', 'FontSize', plot_style.label_font);
+ylabel(ax, 'PSLR (dB)', 'FontSize', plot_style.label_font);
 title_handle = title(ax, 'PSLR Pareto vs. P_{des}', ...
-                     'Interpreter', 'tex', 'FontSize', plot_style.title_font);
+                     'Interpreter', 'tex', 'FontSize', plot_style.title_font, ...
+                     'FontWeight', 'normal');
+set(ax.XLabel, 'Units', 'normalized', 'Position', [0.5 -0.125 0]);
+set(ax.YLabel, 'Units', 'normalized', 'Position', [-0.040 0.5 0]);
 
 all_x = sumrate_avg(~isnan(sumrate_avg));
 all_y = pslr_avg_dB(~isnan(pslr_avg_dB));
@@ -212,37 +214,52 @@ if ~isempty(all_x) && ~isempty(all_y)
     end
     yl = ylim;
     ylim([min(all_y) - 0.30*y_span, yl(2)]);
-    xl = xlim;
-    xticks(ceil(xl(1)):3:floor(xl(2)));
+    xlim([147.7 166.8]);
+    xticks(148:3:166);
     xtickangle(0);
 end
 
-valid_handles = handles(isgraphics(handles));
-legend(valid_handles, 'Location', 'south', 'NumColumns', 2, ...
-       'FontSize', plot_style.legend_font, 'Interpreter', 'tex');
 set(ax.XLabel, 'FontSize', plot_style.label_font);
 set(ax.YLabel, 'FontSize', plot_style.label_font);
 set(title_handle, 'FontSize', plot_style.title_font);
 set(ax, 'LooseInset', max(get(ax, 'TightInset'), [0.015 0.015 0.015 0.015]));
+plot_config(fig);
+set(ax, 'FontSize', plot_style.axes_font, ...
+        'LabelFontSizeMultiplier', 1, ...
+        'LineWidth', cfg.axes_line_width, ...
+        'Layer', 'top', ...
+        'Units', 'normalized', ...
+        'Position', plot_style.axes_position);
+set(ax.XLabel, 'FontSize', plot_style.label_font, ...
+    'Units', 'normalized', 'Position', [0.5 -0.125 0]);
+set(ax.YLabel, 'FontSize', plot_style.label_font, ...
+    'Units', 'normalized', 'Position', [-0.040 0.5 0]);
+set(title_handle, 'FontSize', plot_style.title_font, 'FontWeight', 'normal');
+legend_labels = arrayfun(@pdes_legend_label, pdes_multipliers, ...
+    'UniformOutput', false);
+draw_pdes_legend(fig, plot_style.legend_position, legend_labels, ...
+    colors, repmat({'-'}, 1, num_pdes), cfg, 0.020, 2);
 
-exportgraphics(fig, fullfile(out_dir, 'pdes_pareto_sweep.png'), ...
-    'Resolution', export_resolution);
+tight_export_figure(fig, fullfile(out_dir, 'pdes_pareto_sweep.png'), ...
+    'Resolution', export_resolution, 'TightPad', 0);
 saveas(fig, fullfile(out_dir, 'pdes_pareto_sweep.fig'));
-exportgraphics(fig, fullfile(paper_fig_dir, 'pdes_pareto_sweep.pdf'), ...
-    'ContentType', 'image', 'Resolution', export_resolution);
-exportgraphics(fig, fullfile(paper_fig_dir, 'pdes_pareto_sweep.png'), ...
-    'Resolution', export_resolution);
+tight_export_figure(fig, fullfile(paper_fig_dir, 'pdes_pareto_sweep.pdf'), ...
+    'ContentType', 'image', 'Resolution', export_resolution, ...
+    'TightPad', 0);
+tight_export_figure(fig, fullfile(paper_fig_dir, 'pdes_pareto_sweep.png'), ...
+    'Resolution', export_resolution, 'TightPad', 0);
 
-save(fullfile(out_dir, 'pdes_pareto_sweep_results.mat'), ...
+save(results_path, ...
      'sumrate_grid', 'pslr_lin_grid', 'pslr_dB_grid', ...
      'islr_lin_grid', 'islr_dB_grid', 'status_grid', 'iter_grid', ...
      'runtime_grid', 'sumrate_avg', 'pslr_avg_lin', 'pslr_avg_dB', ...
      'islr_avg_lin', 'islr_avg_dB', 'runtime_avg', ...
      'CV_max_list', 'pdes_multipliers', 'pdes_values', 'params');
+copyfile(results_path, legacy_results_path, 'f');
 
 fprintf('------------------------------------------------------------\n');
 fprintf('  Saved: pdes_pareto_sweep.png/.fig, pdes_pareto_sweep_results.mat\n');
-fprintf('  Updated: ..\\figures\\pdes_pareto_sweep.pdf/.png\n');
+fprintf('  Updated: figures/pdes_pareto_sweep.pdf/.png\n');
 fprintf('  Total elapsed: %s\n', format_time(toc(t_global)));
 fprintf('============================================================\n');
 

@@ -12,7 +12,7 @@ function run_ml_learning_advantage_experiment()
 clear; close all; clc;
 
 sim_dir = fileparts(mfilename('fullpath'));
-paper_fig_dir = fullfile(sim_dir, '..', 'figures');
+paper_fig_dir = fullfile(sim_dir, 'figures');
 out_data_dir = fullfile(sim_dir, 'results');
 if exist(out_data_dir, 'dir') ~= 7
     mkdir(out_data_dir);
@@ -42,6 +42,14 @@ opts.penalty_qos = 60;
 opts.penalty_sensing = 80;
 opts.verbose = true;
 
+result_path = fullfile(out_data_dir, 'ml_learning_advantage_results.mat');
+if exist(result_path, 'file') == 2
+    fprintf('Loading cached ML learning advantage result: %s\n', result_path);
+    plot_learning_advantage(result_path, sim_dir, paper_fig_dir);
+    print_learning_summary(result_path);
+    return;
+end
+
 fprintf('============================================================\n');
 fprintf('  ML learning advantage experiment: CV vs Direct constraints\n');
 fprintf('============================================================\n');
@@ -69,7 +77,6 @@ model_sizes = [3, 5, 8];
 model_summary = model_size_sweep(train_set, val_set, model_sizes, params, model_opts);
 
 elapsed = toc(t_start);
-result_path = fullfile(out_data_dir, 'ml_learning_advantage_results.mat');
 save(result_path, 'params', 'CV_grid', 'num_train_mc', 'num_val_mc', 'opts', ...
     'policy_cv', 'policy_direct', 'trace_cv', 'trace_direct', ...
     'variance', 'model_sizes', 'model_summary', 'elapsed');
@@ -737,27 +744,42 @@ end
 
 function plot_learning_advantage(result_path, sim_dir, paper_fig_dir)
 M = load(result_path);
-fig = figure('Position', [80 80 1120 780], 'Color', 'w');
-tiledlayout(2, 2, 'TileSpacing', 'compact', 'Padding', 'compact');
+cfg = plot_config();
+fig = figure('Position', [80 80 1500 960], 'Color', 'w');
+axes_positions = [
+    0.105 0.615 0.375 0.275
+    0.600 0.615 0.375 0.275
+    0.105 0.155 0.375 0.275
+    0.600 0.155 0.375 0.275
+];
+ax_list = gobjects(4, 1);
+captions = {'(a) Sample efficiency', ...
+    '(b) Feasibility convergence', ...
+    '(c) Local reward sensitivity', ...
+    '(d) Model-size efficiency'};
 
-cv_color = [0.10 0.52 0.42];
-direct_color = [0.45 0.25 0.65];
+palette = paper_palette();
+cv_color = palette(3, :);
+direct_color = palette(4, :);
 
-nexttile;
+ax_list(1) = axes(fig, 'Position', axes_positions(1, :));
 hold on; grid on; box on;
-plot(M.trace_cv.policy_evals, M.trace_cv.val_weighted_sumrate, '-o', ...
+h_cv = plot(M.trace_cv.policy_evals, M.trace_cv.val_weighted_sumrate, '-o', ...
     'LineWidth', 2.0, 'MarkerFaceColor', cv_color, 'Color', cv_color, ...
     'DisplayName', 'CV reward');
-plot(M.trace_direct.policy_evals, M.trace_direct.val_weighted_sumrate, '--v', ...
+h_direct = plot(M.trace_direct.policy_evals, M.trace_direct.val_weighted_sumrate, '--v', ...
     'LineWidth', 2.0, 'MarkerFaceColor', direct_color, 'Color', direct_color, ...
     'DisplayName', 'Direct reward');
 xlabel('Policy reward evaluations');
 ylabel('Feasible weighted sum-rate');
-title('(a) Sample efficiency');
-legend('Location', 'southeast');
-set(gca, 'FontSize', 11);
+reward_trace = [M.trace_cv.val_weighted_sumrate(:); ...
+    M.trace_direct.val_weighted_sumrate(:)];
+reward_span = max(reward_trace) - min(reward_trace);
+ylim([min(reward_trace) - 0.05*reward_span, ...
+    max(reward_trace) + 0.08*reward_span]);
+set(gca, 'FontSize', cfg.axes_font - 2, 'LineWidth', cfg.axes_line_width);
 
-nexttile;
+ax_list(2) = axes(fig, 'Position', axes_positions(2, :));
 hold on; grid on; box on;
 plot(M.trace_cv.policy_evals, M.trace_cv.val_feasibility, '-o', ...
     'LineWidth', 2.0, 'MarkerFaceColor', cv_color, 'Color', cv_color, ...
@@ -765,15 +787,14 @@ plot(M.trace_cv.policy_evals, M.trace_cv.val_feasibility, '-o', ...
 plot(M.trace_direct.policy_evals, M.trace_direct.val_feasibility, '--v', ...
     'LineWidth', 2.0, 'MarkerFaceColor', direct_color, 'Color', direct_color, ...
     'DisplayName', 'Direct reward');
-yline(0.95, ':', '95%', 'LineWidth', 1.2, 'Color', [0.3 0.3 0.3]);
+yline(0.95, ':', '95%', 'LineWidth', 1.2, 'Color', [0.3 0.3 0.3], ...
+    'HandleVisibility', 'off');
 xlabel('Policy reward evaluations');
 ylabel('Validation feasibility');
 ylim([0 1.05]);
-title('(b) Feasibility convergence');
-legend('Location', 'southeast');
-set(gca, 'FontSize', 11);
+set(gca, 'FontSize', cfg.axes_font - 2, 'LineWidth', cfg.axes_line_width);
 
-nexttile;
+ax_list(3) = axes(fig, 'Position', axes_positions(3, :));
 hold on; grid on; box on;
 plot(M.variance.tightness, M.variance.cv_reward_cv, '-o', ...
     'LineWidth', 2.0, 'MarkerFaceColor', cv_color, 'Color', cv_color, ...
@@ -781,13 +802,15 @@ plot(M.variance.tightness, M.variance.cv_reward_cv, '-o', ...
 plot(M.variance.tightness, M.variance.direct_reward_cv, '--v', ...
     'LineWidth', 2.0, 'MarkerFaceColor', direct_color, 'Color', direct_color, ...
     'DisplayName', 'Direct reward');
-xlabel('Constraint tightness, \xi = 1 - CV_{max}');
+xlabel('Constraint tightness \xi');
 ylabel('Normalized reward std.');
-title('(c) Local reward sensitivity');
-legend('Location', 'northwest');
-set(gca, 'FontSize', 11);
+xlim([-0.02 1.02]);
+variance_max = max([M.variance.cv_reward_cv(:); ...
+    M.variance.direct_reward_cv(:)]);
+ylim([0 1.05*variance_max]);
+set(gca, 'FontSize', cfg.axes_font - 2, 'LineWidth', cfg.axes_line_width);
 
-nexttile;
+ax_list(4) = axes(fig, 'Position', axes_positions(4, :));
 hold on; grid on; box on;
 plot(M.model_sizes, M.model_summary.cv_weighted_sumrate, '-o', ...
     'LineWidth', 2.0, 'MarkerFaceColor', cv_color, 'Color', cv_color, ...
@@ -797,14 +820,52 @@ plot(M.model_sizes, M.model_summary.direct_weighted_sumrate, '--v', ...
     'DisplayName', 'Direct reward');
 xlabel('Trainable policy parameters');
 ylabel('Feasible weighted sum-rate');
-title('(d) Model-size efficiency');
-legend('Location', 'southeast');
-set(gca, 'FontSize', 11);
+model_values = [M.model_summary.cv_weighted_sumrate(:); ...
+    M.model_summary.direct_weighted_sumrate(:)];
+model_span = max(model_values) - min(model_values);
+xlim([min(M.model_sizes)-0.2, max(M.model_sizes)+0.2]);
+ylim([min(model_values) - 0.05*model_span, ...
+    max(model_values) + 0.08*model_span]);
+set(gca, 'FontSize', cfg.axes_font - 2, 'LineWidth', cfg.axes_line_width);
 
-sgtitle(sprintf('Learning Advantage of CV Reformulation  (K=%d, L=%d, N_T=%d, N=%d)', ...
-    M.params.K, M.params.L, M.params.NT, M.params.N), 'FontSize', 14);
+lgd = legend(ax_list(1), [h_cv, h_direct], {'CV reward', 'Direct reward'}, ...
+    'Location', 'none', 'Orientation', 'horizontal', 'NumColumns', 2);
+set(lgd, 'Units', 'normalized', ...
+    'Position', [0.355 0.930 0.290 0.055], ...
+    'FontSize', cfg.legend_font - 6, ...
+    'Box', 'on', 'Color', 'w', 'EdgeColor', [0.15 0.15 0.15]);
+try
+    lgd.ItemTokenSize = [18 8];
+catch
+end
+
+drawnow;
+plot_config(fig);
+for i = 1:numel(ax_list)
+    set(ax_list(i), 'FontSize', cfg.axes_font - 4, ...
+        'LineWidth', cfg.axes_line_width, ...
+        'LabelFontSizeMultiplier', 1);
+    set(ax_list(i).XLabel, 'FontSize', cfg.label_font - 7);
+    set(ax_list(i).YLabel, 'FontSize', cfg.label_font - 7, ...
+        'Units', 'normalized', 'Position', [-0.155 0.5 0]);
+end
+set(lgd, 'Units', 'normalized', ...
+    'Position', [0.355 0.930 0.290 0.055], ...
+    'FontSize', cfg.legend_font - 6, ...
+    'Box', 'on', 'Color', 'w', 'EdgeColor', [0.15 0.15 0.15]);
+caption_offsets = [0.145 0.145 0.145 0.145];
+for i = 1:numel(ax_list)
+    add_panel_caption(fig, ax_list(i), captions{i}, ...
+        'YOffset', caption_offsets(i), 'Height', 0.048, ...
+        'FontSize', cfg.panel_caption_font - 6, 'Interpreter', 'tex');
+end
 
 save_figure(fig, sim_dir, paper_fig_dir, 'ml_learning_advantage', 'ML_Learning_Advantage_Result');
+tight_export_figure(fig, fullfile(paper_fig_dir, 'ML_CV_Advantage_Integrated_Result.pdf'), ...
+    'ContentType', 'image', 'Resolution', 300, ...
+    'TightLayout', false, 'TightPad', 0);
+tight_export_figure(fig, fullfile(paper_fig_dir, 'ML_CV_Advantage_Integrated_Result.png'), ...
+    'Resolution', 300, 'TightLayout', false, 'TightPad', 0);
 end
 
 function save_figure(fig, sim_dir, paper_fig_dir, stem, paper_stem)
@@ -813,8 +874,10 @@ sim_png = fullfile(sim_dir, [stem '.png']);
 sim_fig = fullfile(sim_dir, [stem '.fig']);
 paper_pdf = fullfile(paper_fig_dir, [paper_stem '.pdf']);
 savefig(fig, sim_fig);
-exportgraphics(fig, sim_png, 'Resolution', 300);
-exportgraphics(fig, paper_pdf, 'ContentType', 'image', 'Resolution', 300);
+tight_export_figure(fig, sim_png, 'Resolution', 300, ...
+    'TightLayout', false, 'TightPad', 0);
+tight_export_figure(fig, paper_pdf, 'ContentType', 'image', 'Resolution', 300, ...
+    'TightLayout', false, 'TightPad', 0);
 end
 
 function print_learning_summary(result_path)

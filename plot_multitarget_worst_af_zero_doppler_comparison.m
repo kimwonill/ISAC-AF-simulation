@@ -12,8 +12,7 @@ end
 clearvars -except force_rerun CV_max; close all; clc;
 
 sim_dir = fileparts(mfilename('fullpath'));
-root_dir = fileparts(sim_dir);
-fig_dir = fullfile(root_dir, 'figures');
+fig_dir = fullfile(sim_dir, 'figures');
 data_dir = fullfile(sim_dir, 'results');
 fig2_path = fullfile(data_dir, 'fig2_af_simulation_example.mat');
 if exist(fig_dir, 'dir') ~= 7, mkdir(fig_dir); end
@@ -158,6 +157,7 @@ ESL_dB = 10 * log10(ESL / ESL(1, 1));
 end
 
 function plot_worst_zero_doppler_cut(cases, fig_dir, CV_max)
+cfg = plot_config();
 N = size(cases(1).ESL_dB, 1);
 interp_factor = 32;
 num_fine = interp_factor * N;
@@ -166,7 +166,7 @@ y_min_seen = Inf;
 colors = paper_palette(1:numel(cases));
 line_styles = {'-', '--', '-.'};
 
-fig = figure('Color', 'w', 'Position', [120 120 980 620]);
+fig = figure('Color', 'w', 'Position', [120 120 1240 680]);
 ax = axes(fig);
 hold(ax, 'on');
 
@@ -179,9 +179,9 @@ for i = 1:numel(cases)
         'LineWidth', 2.8, ...
         'LineStyle', line_styles{1 + mod(i - 1, numel(line_styles))}, ...
         'Color', colors(i, :), ...
-        'DisplayName', legend_label(cases(i)));
+        'DisplayName', cases(i).short);
     plot(ax, tau_samples, cut_samples_dB, 'o', ...
-        'MarkerSize', 4.8, ...
+        'MarkerSize', cfg.marker_size, ...
         'MarkerFaceColor', colors(i, :), ...
         'MarkerEdgeColor', 'w', ...
         'LineWidth', 0.7, ...
@@ -190,24 +190,34 @@ end
 
 grid(ax, 'on'); box(ax, 'on');
 xlabel(ax, 'Delay index \tau');
-ylabel(ax, 'Oversampled ESL at \nu=0 (dB)');
-title(ax, sprintf('Multi-Target Worst-Case Fractional-Delay AF Cut, CV_{max}=%.1f', CV_max), ...
-    'FontSize', 16, 'FontWeight', 'bold');
+ylabel(ax, 'ESL (dB)');
+title(ax, sprintf('Worst-Case AF Cut (CVmax = %.1f)', CV_max), ...
+    'FontWeight', 'bold', 'Interpreter', 'none');
 xlim(ax, [-N/2 N/2]);
 y_lower = floor(y_min_seen) - 0.5;
 ylim(ax, [y_lower 1]);
 xticks(ax, -N/2:2:N/2);
-set(ax, 'FontSize', 14, 'LineWidth', 1.1, 'Layer', 'top');
+lgd = legend(ax, 'Location', 'northeast', 'Orientation', 'vertical');
 
-lgd = legend(ax, 'Location', 'southoutside', 'Orientation', 'vertical');
-lgd.FontSize = 10.8;
-lgd.Box = 'off';
+plot_config(fig);
+set(ax, 'Position', [0.105 0.205 0.870 0.665], ...
+    'FontSize', cfg.axes_font, 'LineWidth', cfg.axes_line_width, ...
+    'Layer', 'top', 'LabelFontSizeMultiplier', 1);
+set(ax.XLabel, 'FontSize', cfg.label_font);
+set(ax.YLabel, 'FontSize', cfg.label_font);
+set(ax.Title, 'FontSize', cfg.title_font - 5);
+lgd.FontSize = cfg.legend_font - 4;
+lgd.Box = 'on';
+lgd.Color = 'w';
+lgd.EdgeColor = [0.2 0.2 0.2];
 
 cv_tag = cv_filename_tag(CV_max);
 out_png = fullfile(fig_dir, sprintf('AF_Multitarget_Worst_Fractional_Zero_Doppler_Cut_%s.png', cv_tag));
 out_pdf = fullfile(fig_dir, sprintf('AF_Multitarget_Worst_Fractional_Zero_Doppler_Cut_%s.pdf', cv_tag));
-exportgraphics(fig, out_png, 'Resolution', 450);
-exportgraphics(fig, out_pdf, 'ContentType', 'vector');
+tight_export_figure(fig, out_png, 'Resolution', 450, ...
+    'TightLayout', false, 'TightPad', 10);
+tight_export_figure(fig, out_pdf, 'ContentType', 'vector', ...
+    'TightLayout', false, 'TightPad', 10);
 fprintf('Saved multi-target worst-case zero-Doppler AF cut: %s\n', out_png);
 fprintf('Saved multi-target worst-case zero-Doppler AF cut: %s\n', out_pdf);
 end
@@ -228,16 +238,6 @@ V = exp(-1j * 2*pi * n * tau(:).' / N);
 mainlobe = N^2 * ((kappa - 1) * sum(P.^2) + sum(P)^2);
 ESL = N^2 * ((kappa - 1) * sum(P.^2) + abs(P.' * V).^2);
 ESL_dB = 10 * log10(max(real(ESL), realmin) / mainlobe);
-end
-
-function str = legend_label(c)
-if isnan(c.eta)
-    eta_str = '';
-else
-    eta_str = sprintf(', \\eta=%g', c.eta);
-end
-str = sprintf('%s%s, SR %.2f, worst \\theta %.0f^\\circ, PSLR %.2f dB', ...
-    c.name, eta_str, c.sumrate, c.worst_theta_deg, 10*log10(c.pslr));
 end
 
 function tag = cv_filename_tag(CV_max)

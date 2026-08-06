@@ -16,7 +16,7 @@ clearvars -except num_mc_override force_rerun; close all; clc;
 
 sim_dir = fileparts(mfilename('fullpath'));
 out_data_dir = fullfile(sim_dir, 'results');
-fig_dir = fullfile(sim_dir, '..', 'figures');
+fig_dir = fullfile(sim_dir, 'figures');
 if exist(out_data_dir, 'dir') ~= 7, mkdir(out_data_dir); end
 if exist(fig_dir, 'dir') ~= 7, mkdir(fig_dir); end
 addpath(genpath(sim_dir));
@@ -207,94 +207,250 @@ end
 function plot_cv_stress_axis_results(source_path)
 S = load(source_path);
 sim_dir = fileparts(mfilename('fullpath'));
-fig_dir = fullfile(sim_dir, '..', 'figures');
+fig_dir = fullfile(sim_dir, 'figures');
 if exist(fig_dir, 'dir') ~= 7, mkdir(fig_dir); end
 
+cfg = plot_config();
 CV = S.CV_grid(:);
 num_scenarios = numel(S.scenarios);
-[cv_feas, direct_feas, runtime_ratio, ipm_ratio] = summarize_grids(S);
+[cv_feas, direct_feas, ~, ~, ...
+    cv_time, direct_time, cv_ipm, direct_ipm] = summarize_grids(S);
 
 palette = paper_palette();
-blue = palette(1, :);
-red = palette(2, :);
-gold = palette(3, :);
-purple = palette(4, :);
+cv_color = palette(1, :);
+direct_color = palette(2, :);
+plot_style = struct( ...
+    'figure_position', [100 100 1320 1600], ...
+    'axes_x', [0.085 0.383 0.681], ...
+    'row_y', [0.700 0.385 0.070], ...
+    'axes_width', 0.304, ...
+    'axes_height', 0.245, ...
+    'legend_position', [0.795 0.710 0.180 0.062], ...
+    'axes_font', cfg.axes_font + 8, ...
+    'label_font', cfg.label_font + 9, ...
+    'title_font', cfg.title_font + 7, ...
+    'legend_font', cfg.legend_font + 2, ...
+    'line_width', 2.6, ...
+    'marker_size', 11.0, ...
+    'axes_line_width', cfg.axes_line_width + 0.5);
+row_limits = {[-5 105], [0 6], [0 100]};
+row_ticks = {[0 50 100], 0:2:6, 0:25:100};
+x_limits = [min(CV)-0.08, max(CV)+0.08];
 
-fig = figure('Position', [100 100 1480 520], 'Color', 'w');
-tl = tiledlayout(fig, 1, num_scenarios, 'TileSpacing', 'loose', 'Padding', 'loose');
-
-h_all = gobjects(1, 4);
+fig = figure('Position', plot_style.figure_position, 'Color', 'w');
+set(fig, 'PaperPositionMode', 'auto');
+ax_grid = gobjects(3, num_scenarios);
+title_handles = gobjects(1, num_scenarios);
 for s = 1:num_scenarios
-    ax = nexttile(tl, s);
-    hold(ax, 'on'); grid(ax, 'on'); box(ax, 'on');
-    set(ax, 'Layer', 'top', 'FontSize', 11);
+    ax_feas = axes(fig, 'Position', ...
+        [plot_style.axes_x(s), plot_style.row_y(1), ...
+         plot_style.axes_width, plot_style.axes_height]);
+    ax_grid(1, s) = ax_feas;
+    hold(ax_feas, 'on'); grid(ax_feas, 'on'); box(ax_feas, 'on');
+    set(ax_feas, 'Layer', 'top', 'FontSize', plot_style.axes_font, ...
+        'FontWeight', 'normal', ...
+        'LineWidth', plot_style.axes_line_width, ...
+        'LabelFontSizeMultiplier', 1);
 
-    yyaxis(ax, 'left');
-    h1 = plot(ax, CV, 100*cv_feas(s, :).', '-o', ...
-        'Color', blue, 'MarkerFaceColor', blue, 'LineWidth', 2.2, ...
-        'MarkerSize', 6.5, 'DisplayName', 'CV feasibility');
-    h2 = plot(ax, CV, 100*direct_feas(s, :).', '--d', ...
-        'Color', red, 'MarkerFaceColor', red, 'LineWidth', 2.2, ...
-        'MarkerSize', 6.5, 'DisplayName', 'Direct feasibility');
-    ylim(ax, [-5 105]);
-    ylabel(ax, 'Feasibility rate (%)');
-    ax.YColor = [0.10 0.10 0.10];
-
-    yyaxis(ax, 'right');
-    h3 = plot(ax, CV, runtime_ratio(s, :).', '-s', ...
-        'Color', gold, 'MarkerFaceColor', gold, 'LineWidth', 2.0, ...
-        'MarkerSize', 6.0, 'DisplayName', 'Runtime ratio');
-    h4 = plot(ax, CV, ipm_ratio(s, :).', '-^', ...
-        'Color', purple, 'MarkerFaceColor', purple, 'LineWidth', 2.0, ...
-        'MarkerSize', 6.0, 'DisplayName', 'Total IPM iteration ratio');
-    set([h1, h2, h3, h4], 'Clipping', 'off');
-    yline(ax, 1, ':', 'Color', [0.35 0.35 0.35], 'LineWidth', 1.0, ...
-        'HandleVisibility', 'off');
-    set(ax, 'YScale', 'log');
-    valid_ratio = [runtime_ratio(s, :), ipm_ratio(s, :)];
-    valid_ratio = valid_ratio(isfinite(valid_ratio) & valid_ratio > 0);
-    if isempty(valid_ratio)
-        ylim(ax, [0.5 10]);
-    else
-        ylim(ax, [0.45, max(30, 1.25*max(valid_ratio))]);
-    end
-    ylabel(ax, 'Direct/CV burden ratio (x, log)');
-    ax.YColor = [0.10 0.10 0.10];
-
-    xlim(ax, [min(CV)-0.02 max(CV)+0.02]);
-    xlabel(ax, '$\mathrm{CV}_{\max}$', 'Interpreter', 'latex');
+    plot(ax_feas, CV, 100*cv_feas(s, :).', '-d', ...
+        'Color', cv_color, 'MarkerFaceColor', cv_color, ...
+        'MarkerEdgeColor', cv_color, 'LineWidth', plot_style.line_width, ...
+        'MarkerSize', plot_style.marker_size, 'DisplayName', 'CV-SDP');
+    plot(ax_feas, CV, 100*direct_feas(s, :).', '-d', ...
+        'Color', direct_color, 'MarkerFaceColor', direct_color, ...
+        'MarkerEdgeColor', direct_color, 'LineWidth', plot_style.line_width, ...
+        'MarkerSize', plot_style.marker_size, 'DisplayName', 'Direct SCA');
+    xlim(ax_feas, x_limits);
+    ylim(ax_feas, row_limits{1});
+    yticks(ax_feas, row_ticks{1});
+    xticks(ax_feas, [0 0.5 1]);
+    set_row_xticklabels(ax_feas, s);
     if s == 1
-        yyaxis(ax, 'left');
-        ylabel(ax, 'Feasibility rate (%)');
+        ylabel(ax_feas, 'Feasibility rate (%)', ...
+            'FontSize', plot_style.label_font, 'FontWeight', 'normal');
     else
-        yyaxis(ax, 'left');
-        ylabel(ax, '');
-    end
-    yyaxis(ax, 'right');
-    if s ~= num_scenarios
-        ylabel(ax, '');
+        yticklabels(ax_feas, []);
     end
 
-    panel_title = sprintf('%s\n$L=%d$, $Q=%.2f$, $P_{\\rm des}=%.2fP_{\\max}/N$', ...
-        display_label(S.scenarios(s)), S.scenarios(s).L, S.scenarios(s).Q, S.scenarios(s).Pdes_scale);
-    title(ax, panel_title, 'Interpreter', 'latex', 'FontSize', 11, 'FontWeight', 'bold');
+    title_handles(s) = title(ax_feas, display_label(S.scenarios(s)), ...
+        'Interpreter', 'tex', ...
+        'FontSize', plot_style.title_font, ...
+        'FontWeight', 'normal');
 
+    ax_runtime = axes(fig, 'Position', ...
+        [plot_style.axes_x(s), plot_style.row_y(2), ...
+         plot_style.axes_width, plot_style.axes_height]);
+    ax_grid(2, s) = ax_runtime;
+    hold(ax_runtime, 'on'); grid(ax_runtime, 'on'); box(ax_runtime, 'on');
+    set(ax_runtime, 'Layer', 'top', 'FontSize', plot_style.axes_font, ...
+        'FontWeight', 'normal', ...
+        'LineWidth', plot_style.axes_line_width, ...
+        'YScale', 'linear', ...
+        'LabelFontSizeMultiplier', 1);
+
+    plot(ax_runtime, CV, cv_time(s, :).', '-d', ...
+        'Color', cv_color, 'MarkerFaceColor', cv_color, ...
+        'MarkerEdgeColor', cv_color, 'LineWidth', plot_style.line_width, ...
+        'MarkerSize', plot_style.marker_size, 'DisplayName', 'CV-SDP');
+    plot(ax_runtime, CV, direct_time(s, :).', '-d', ...
+        'Color', direct_color, 'MarkerFaceColor', direct_color, ...
+        'MarkerEdgeColor', direct_color, 'LineWidth', plot_style.line_width, ...
+        'MarkerSize', plot_style.marker_size, 'DisplayName', 'Direct SCA');
+    xlim(ax_runtime, x_limits);
+    ylim(ax_runtime, row_limits{2});
+    yticks(ax_runtime, row_ticks{2});
+    xticks(ax_runtime, [0 0.5 1]);
+    set_row_xticklabels(ax_runtime, s);
     if s == 1
-        h_all = [h1, h2, h3, h4];
+        ylabel(ax_runtime, 'Runtime (s)', ...
+            'FontSize', plot_style.label_font, 'FontWeight', 'normal');
+    else
+        yticklabels(ax_runtime, []);
+    end
+
+    ax_ipm = axes(fig, 'Position', ...
+        [plot_style.axes_x(s), plot_style.row_y(3), ...
+         plot_style.axes_width, plot_style.axes_height]);
+    ax_grid(3, s) = ax_ipm;
+    hold(ax_ipm, 'on'); grid(ax_ipm, 'on'); box(ax_ipm, 'on');
+    set(ax_ipm, 'Layer', 'top', 'FontSize', plot_style.axes_font, ...
+        'FontWeight', 'normal', ...
+        'LineWidth', plot_style.axes_line_width, ...
+        'YScale', 'linear', ...
+        'LabelFontSizeMultiplier', 1);
+
+    plot(ax_ipm, CV, cv_ipm(s, :).', '-d', ...
+        'Color', cv_color, 'MarkerFaceColor', cv_color, ...
+        'MarkerEdgeColor', cv_color, 'LineWidth', plot_style.line_width, ...
+        'MarkerSize', plot_style.marker_size, 'DisplayName', 'CV-SDP');
+    plot(ax_ipm, CV, direct_ipm(s, :).', '-d', ...
+        'Color', direct_color, 'MarkerFaceColor', direct_color, ...
+        'MarkerEdgeColor', direct_color, 'LineWidth', plot_style.line_width, ...
+        'MarkerSize', plot_style.marker_size, 'DisplayName', 'Direct SCA');
+    xlim(ax_ipm, x_limits);
+    ylim(ax_ipm, row_limits{3});
+    yticks(ax_ipm, row_ticks{3});
+    xticks(ax_ipm, [0 0.5 1]);
+    set_row_xticklabels(ax_ipm, s);
+    if s == 1
+        ylabel(ax_ipm, 'Total IPM iterations', ...
+            'FontSize', plot_style.label_font, 'FontWeight', 'normal');
+    else
+        yticklabels(ax_ipm, []);
     end
 end
 
-leg = legend(h_all, {'CV feasibility', 'Direct feasibility', ...
-    'Runtime ratio', 'Total IPM iteration ratio'}, ...
-    'Location', 'southoutside', 'Orientation', 'horizontal', 'NumColumns', 4);
-leg.Layout.Tile = 'south';
+plot_config(fig);
+for row_idx = 1:3
+    for s = 1:num_scenarios
+        ax = ax_grid(row_idx, s);
+        try
+            set(ax, 'PositionConstraint', 'innerposition');
+        catch
+        end
+        set(ax, 'Units', 'normalized', ...
+            'FontSize', plot_style.axes_font, ...
+            'FontWeight', 'normal', ...
+            'LineWidth', plot_style.axes_line_width, ...
+            'Position', [plot_style.axes_x(s), plot_style.row_y(row_idx), ...
+                         plot_style.axes_width, plot_style.axes_height]);
+    end
+end
+for s = 1:num_scenarios
+    set(title_handles(s), 'FontSize', plot_style.title_font, ...
+        'FontWeight', 'normal');
+end
+set(ax_grid(1, 1).YLabel, 'Units', 'normalized', ...
+    'Position', [-0.135 0.5 0], ...
+    'FontSize', plot_style.label_font, 'FontWeight', 'normal');
+set(ax_grid(2, 1).YLabel, 'Units', 'normalized', ...
+    'Position', [-0.135 0.5 0], ...
+    'FontSize', plot_style.label_font, 'FontWeight', 'normal');
+set(ax_grid(3, 1).YLabel, 'Units', 'normalized', ...
+    'Position', [-0.135 0.5 0], ...
+    'FontSize', plot_style.label_font, 'FontWeight', 'normal');
+draw_row_xlabels(fig, plot_style, cfg);
+draw_stress_legend(fig, plot_style.legend_position, ...
+    cv_color, direct_color, plot_style, cfg);
 
 out_png = fullfile(fig_dir, 'CV_Stress_Axis_Diagnostic.png');
 out_pdf = fullfile(fig_dir, 'CV_Stress_Axis_Diagnostic.pdf');
+out_onecol_png = fullfile(fig_dir, 'CV_Stress_Axis_Diagnostic_OneColumn_1x3.png');
+out_onecol_pdf = fullfile(fig_dir, 'CV_Stress_Axis_Diagnostic_OneColumn_1x3.pdf');
 safe_export(fig, out_png, 'png');
 safe_export(fig, out_pdf, 'pdf');
+safe_export(fig, out_onecol_png, 'png');
+safe_export(fig, out_onecol_pdf, 'pdf');
 fprintf('Saved CV stress-axis figure: %s\n', out_pdf);
 fprintf('Saved CV stress-axis figure: %s\n', out_png);
+fprintf('Saved CV stress-axis figure: %s\n', out_onecol_pdf);
+fprintf('Saved CV stress-axis figure: %s\n', out_onecol_png);
+end
+
+function set_row_xticklabels(ax, ~)
+% Keep the complete CV scale visible in every panel.
+xticklabels(ax, {'0', '0.5', '1.0'});
+end
+
+function draw_row_xlabels(fig, style, cfg)
+label_y = style.row_y - 0.062;
+label_width = style.axes_x(end) + style.axes_width - style.axes_x(1);
+for row_idx = 1:numel(style.row_y)
+    annotation(fig, 'textbox', ...
+        [style.axes_x(1), label_y(row_idx), label_width, 0.035], ...
+        'String', 'CV_{max}', ...
+        'Interpreter', 'tex', ...
+        'HorizontalAlignment', 'center', ...
+        'VerticalAlignment', 'middle', ...
+        'EdgeColor', 'none', ...
+        'FitBoxToText', 'off', ...
+        'FontName', cfg.font_name, ...
+        'FontSize', style.label_font, ...
+        'FontWeight', 'normal');
+end
+end
+
+function draw_stress_legend(fig, position, cv_color, direct_color, style, cfg)
+ax_leg = axes(fig, 'Position', position, ...
+    'XLim', [0 1], 'YLim', [0 1], ...
+    'Visible', 'off', ...
+    'Color', 'none');
+hold(ax_leg, 'on');
+rectangle(ax_leg, 'Position', [0.010 0.020 0.980 0.960], ...
+    'FaceColor', 'w', ...
+    'EdgeColor', [0.15 0.15 0.15], ...
+    'LineWidth', style.axes_line_width);
+
+legend_font = style.legend_font;
+y_pos = [0.700 0.300];
+labels = {'CV-SDP', 'Direct SCA'};
+colors = [cv_color; direct_color];
+for idx = 1:numel(labels)
+    plot(ax_leg, [0.045 0.235], [y_pos(idx) y_pos(idx)], '-', ...
+        'Color', colors(idx, :), ...
+        'LineWidth', 2.2, ...
+        'Clipping', 'off');
+    x_center = 0.140;
+    dx = 0.029;
+    dy = 0.082;
+    patch(ax_leg, x_center + [0 dx 0 -dx], ...
+        y_pos(idx) + [dy 0 -dy 0], ...
+        colors(idx, :), ...
+        'EdgeColor', colors(idx, :), ...
+        'LineWidth', 1.4, ...
+        'Clipping', 'off');
+    text(ax_leg, 0.280, y_pos(idx), labels{idx}, ...
+        'Interpreter', 'tex', ...
+        'FontName', cfg.font_name, ...
+        'FontSize', legend_font, ...
+        'FontWeight', 'normal', ...
+        'HorizontalAlignment', 'left', ...
+        'VerticalAlignment', 'middle');
+end
+try
+    uistack(ax_leg, 'top');
+catch
+end
 end
 
 function label = display_label(scenario)
@@ -310,13 +466,18 @@ switch string(scenario.id)
 end
 end
 
-function [cv_feas, direct_feas, runtime_ratio, ipm_ratio] = summarize_grids(S)
+function [cv_feas, direct_feas, runtime_ratio, ipm_ratio, ...
+    cv_time_mean, direct_time_mean, cv_ipm_mean, direct_ipm_mean] = summarize_grids(S)
 num_scenarios = numel(S.scenarios);
 num_cv = numel(S.CV_grid);
 cv_feas = nan(num_scenarios, num_cv);
 direct_feas = nan(num_scenarios, num_cv);
 runtime_ratio = nan(num_scenarios, num_cv);
 ipm_ratio = nan(num_scenarios, num_cv);
+cv_time_mean = nan(num_scenarios, num_cv);
+direct_time_mean = nan(num_scenarios, num_cv);
+cv_ipm_mean = nan(num_scenarios, num_cv);
+direct_ipm_mean = nan(num_scenarios, num_cv);
 
 for s = 1:num_scenarios
     for c = 1:num_cv
@@ -327,12 +488,35 @@ for s = 1:num_scenarios
 
         cv_t = squeeze(S.prop_time(s, c, :));
         direct_t = squeeze(S.direct_time(s, c, :));
-        runtime_ratio(s, c) = mean(direct_t(:), 'omitnan') / mean(cv_t(:), 'omitnan');
+        cv_time_mean(s, c) = mean(cv_t(:), 'omitnan');
+        direct_time_mean(s, c) = mean(direct_t(:), 'omitnan');
+        runtime_ratio(s, c) = direct_time_mean(s, c) / cv_time_mean(s, c);
 
         cv_ipm = squeeze(S.prop_cvx_solver_iters(s, c, :));
         direct_ipm = squeeze(S.direct_cvx_solver_iters(s, c, :));
-        ipm_ratio(s, c) = mean(direct_ipm(:), 'omitnan') / mean(cv_ipm(:), 'omitnan');
+        cv_ipm_mean(s, c) = mean(cv_ipm(:), 'omitnan');
+        direct_ipm_mean(s, c) = mean(direct_ipm(:), 'omitnan');
+        ipm_ratio(s, c) = direct_ipm_mean(s, c) / cv_ipm_mean(s, c);
     end
+end
+end
+
+function set_log_limits(ax, values, fallback_limits)
+valid = values(isfinite(values) & values > 0);
+if isempty(valid)
+    ylim(ax, fallback_limits);
+    return;
+end
+lower = 10^floor(log10(min(valid) * 0.8));
+upper = 10^ceil(log10(max(valid) * 1.25));
+if ~isfinite(lower) || ~isfinite(upper) || lower >= upper
+    lower = min(valid) * 0.8;
+    upper = max(valid) * 1.25;
+end
+if lower <= 0 || lower >= upper
+    ylim(ax, fallback_limits);
+else
+    ylim(ax, [lower upper]);
 end
 end
 
@@ -361,15 +545,18 @@ function safe_export(fig, filename, filetype)
 try
     if strcmpi(filetype, 'pdf')
         tmp_png = [tempname(fileparts(filename)), '.png'];
-        exportgraphics(fig, tmp_png, 'Resolution', 300);
+        tight_export_figure(fig, tmp_png, 'Resolution', 300, ...
+            'TightLayout', false, 'TightPad', 0);
         if ~png_to_pdf(tmp_png, filename)
-            exportgraphics(fig, filename, 'ContentType', 'image', 'Resolution', 450);
+            tight_export_figure(fig, filename, 'ContentType', 'image', ...
+                'Resolution', 450, 'TightLayout', false, 'TightPad', 0);
         end
         if exist(tmp_png, 'file') == 2
             delete(tmp_png);
         end
     else
-        exportgraphics(fig, filename, 'Resolution', 300);
+        tight_export_figure(fig, filename, 'Resolution', 300, ...
+            'TightLayout', false, 'TightPad', 0);
     end
 catch
     if strcmpi(filetype, 'pdf')
