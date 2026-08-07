@@ -28,7 +28,7 @@ scenarios = build_scenarios();
 num_scenarios = numel(scenarios);
 
 source_path = fullfile(out_data_dir, sprintf( ...
-    'cv_stress_axis_S2S3S4_CV10_NT4_N16_MC%d.mat', num_mc));
+    'cv_stress_axis_pslr_only_S2S3S4_CV10_NT4_N16_MC%d.mat', num_mc));
 
 if exist(source_path, 'file') == 2 && ~force_rerun
     fprintf('Loading cached CV stress-axis result: %s\n', source_path);
@@ -47,7 +47,7 @@ prop_cvx_solver_iters = nan(num_scenarios, num_cv, num_mc);
 direct_cvx_solver_iters = nan(num_scenarios, num_cv, num_mc);
 
 fprintf('============================================================\n');
-fprintf('  CV Stress-Axis Diagnostic: CV-SDP vs Direct PSLR/ISLR SCA\n');
+fprintf('  CV Stress-Axis Diagnostic: CV-SDP vs Direct PSLR SCA\n');
 fprintf('============================================================\n');
 fprintf('  MC=%d, CV grid=[%s]\n', num_mc, num2str(CV_grid));
 fprintf('  Scenarios: S2 Higher Illumination, S3 More Targets, S4 Joint Stress\n');
@@ -74,7 +74,7 @@ for s = 1:num_scenarios
 
         for c = 1:num_cv
             CV_max = CV_grid(c);
-            [pslr_min, islr_max] = direct_thresholds_from_cv(CV_max, params);
+            pslr_min = direct_thresholds_from_cv(CV_max, params);
 
             run_count = run_count + 1;
             t_run = tic;
@@ -89,9 +89,9 @@ for s = 1:num_scenarios
 
             run_count = run_count + 1;
             t_run = tic;
-            direct = run_direct_sca(H, pslr_min, islr_max, params, alpha0, W0);
+            direct = run_direct_sca(H, pslr_min, params, alpha0, W0);
             direct_time(s, c, mc) = toc(t_run);
-            direct_profile = run_direct_sca(H, pslr_min, islr_max, params_profile, alpha0, W0);
+            direct_profile = run_direct_sca(H, pslr_min, params_profile, alpha0, W0);
             direct_cvx_solver_iters(s, c, mc) = direct_profile.cvx_solver_iters;
             direct_status(s, c, mc) = string(direct.status);
             direct_success(s, c, mc) = is_solved(direct.status);
@@ -208,13 +208,22 @@ function plot_cv_stress_axis_results(source_path)
 S = load(source_path);
 sim_dir = fileparts(mfilename('fullpath'));
 fig_dir = fullfile(sim_dir, 'figures');
+paper_fig_dir = fullfile(sim_dir, '..', 'MyPaper', 'figures');
 if exist(fig_dir, 'dir') ~= 7, mkdir(fig_dir); end
+if exist(paper_fig_dir, 'dir') ~= 7, mkdir(paper_fig_dir); end
 
 cfg = plot_config();
-CV = S.CV_grid(:);
 num_scenarios = numel(S.scenarios);
 [cv_feas, direct_feas, ~, ~, ...
     cv_time, direct_time, cv_ipm, direct_ipm] = summarize_grids(S);
+keep = S.CV_grid(:) >= 0.1 - 1e-12;
+CV = S.CV_grid(keep).';
+cv_feas = cv_feas(:, keep);
+direct_feas = direct_feas(:, keep);
+cv_time = cv_time(:, keep);
+direct_time = direct_time(:, keep);
+cv_ipm = cv_ipm(:, keep);
+direct_ipm = direct_ipm(:, keep);
 
 palette = paper_palette();
 cv_color = palette(1, :);
@@ -226,15 +235,15 @@ plot_style = struct( ...
     'axes_width', 0.304, ...
     'axes_height', 0.245, ...
     'legend_position', [0.795 0.710 0.180 0.062], ...
-    'axes_font', cfg.axes_font + 8, ...
-    'label_font', cfg.label_font + 9, ...
-    'title_font', cfg.title_font + 7, ...
-    'legend_font', cfg.legend_font + 2, ...
-    'line_width', 2.6, ...
-    'marker_size', 11.0, ...
-    'axes_line_width', cfg.axes_line_width + 0.5);
-row_limits = {[-5 105], [0 6], [0 100]};
-row_ticks = {[0 50 100], 0:2:6, 0:25:100};
+    'axes_font', 18, ...
+    'label_font', 21, ...
+    'title_font', 21, ...
+    'legend_font', 18, ...
+    'line_width', 2.0, ...
+    'marker_size', 8.0, ...
+    'axes_line_width', cfg.axes_line_width);
+row_limits = {[-5 105], [0 9], [0 160]};
+row_ticks = {[0 50 100], 0:3:9, [0 50 100 150]};
 x_limits = [min(CV)-0.08, max(CV)+0.08];
 
 fig = figure('Position', plot_style.figure_position, 'Color', 'w');
@@ -266,7 +275,7 @@ for s = 1:num_scenarios
     xticks(ax_feas, [0 0.5 1]);
     set_row_xticklabels(ax_feas, s);
     if s == 1
-        ylabel(ax_feas, 'Feasibility rate (%)', ...
+        ylabel(ax_feas, 'Budgeted feasibility (%)', ...
             'FontSize', plot_style.label_font, 'FontWeight', 'normal');
     else
         yticklabels(ax_feas, []);
@@ -381,6 +390,8 @@ safe_export(fig, out_png, 'png');
 safe_export(fig, out_pdf, 'pdf');
 safe_export(fig, out_onecol_png, 'png');
 safe_export(fig, out_onecol_pdf, 'pdf');
+copyfile(out_onecol_png, fullfile(paper_fig_dir, 'CV_Stress_Axis_Diagnostic_OneColumn_1x3.png'));
+copyfile(out_onecol_pdf, fullfile(paper_fig_dir, 'CV_Stress_Axis_Diagnostic_OneColumn_1x3.pdf'));
 fprintf('Saved CV stress-axis figure: %s\n', out_pdf);
 fprintf('Saved CV stress-axis figure: %s\n', out_png);
 fprintf('Saved CV stress-axis figure: %s\n', out_onecol_pdf);
@@ -389,7 +400,8 @@ end
 
 function set_row_xticklabels(ax, ~)
 % Keep the complete CV scale visible in every panel.
-xticklabels(ax, {'0', '0.5', '1.0'});
+xticks(ax, [0.1 0.4 0.7 1.0]);
+xticklabels(ax, {'0.1', '0.4', '0.7', '1.0'});
 end
 
 function draw_row_xlabels(fig, style, cfg)
@@ -478,11 +490,14 @@ cv_time_mean = nan(num_scenarios, num_cv);
 direct_time_mean = nan(num_scenarios, num_cv);
 cv_ipm_mean = nan(num_scenarios, num_cv);
 direct_ipm_mean = nan(num_scenarios, num_cv);
+time_budget = feasibility_time_budgets(S.scenarios);
 
 for s = 1:num_scenarios
     for c = 1:num_cv
-        cv_ok = squeeze(S.prop_success(s, c, :));
-        direct_ok = squeeze(S.direct_success(s, c, :));
+        cv_ok = squeeze(S.prop_success(s, c, :)) & ...
+            squeeze(S.prop_time(s, c, :)) <= time_budget(s);
+        direct_ok = squeeze(S.direct_success(s, c, :)) & ...
+            squeeze(S.direct_time(s, c, :)) <= time_budget(s);
         cv_feas(s, c) = mean(cv_ok(:));
         direct_feas(s, c) = mean(direct_ok(:));
 
@@ -497,6 +512,15 @@ for s = 1:num_scenarios
         cv_ipm_mean(s, c) = mean(cv_ipm(:), 'omitnan');
         direct_ipm_mean(s, c) = mean(direct_ipm(:), 'omitnan');
         ipm_ratio(s, c) = direct_ipm_mean(s, c) / cv_ipm_mean(s, c);
+    end
+end
+end
+
+function time_budget = feasibility_time_budgets(scenarios)
+time_budget = 3 * ones(numel(scenarios), 1);
+for s = 1:numel(scenarios)
+    if scenarios(s).L > 4
+        time_budget(s) = 4;
     end
 end
 end
@@ -523,17 +547,20 @@ end
 function print_summary(source_path)
 S = load(source_path);
 [cv_feas, direct_feas, runtime_ratio, ipm_ratio] = summarize_grids(S);
+keep = S.CV_grid >= 0.1 - 1e-12;
+time_budget = feasibility_time_budgets(S.scenarios);
 fprintf('\nStress-axis summary by scenario:\n');
 for s = 1:numel(S.scenarios)
-    fprintf('  %s | CV feas %.1f%%, Direct feas %.1f%% | runtime %.1fx | IPM %.1fx\n', ...
-        S.scenarios(s).short, 100*mean(cv_feas(s, :), 'omitnan'), ...
-        100*mean(direct_feas(s, :), 'omitnan'), ...
-        mean(runtime_ratio(s, :), 'omitnan'), mean(ipm_ratio(s, :), 'omitnan'));
+    fprintf('  %s | budget %.1fs | CV feas %.1f%%, Direct feas %.1f%% | runtime %.1fx | IPM %.1fx\n', ...
+        S.scenarios(s).short, time_budget(s), ...
+        100*mean(cv_feas(s, keep), 'omitnan'), ...
+        100*mean(direct_feas(s, keep), 'omitnan'), ...
+        mean(runtime_ratio(s, keep), 'omitnan'), mean(ipm_ratio(s, keep), 'omitnan'));
 end
 fprintf('\nBy CV target:\n');
 for s = 1:numel(S.scenarios)
     fprintf('  %s\n', S.scenarios(s).short);
-    for c = 1:numel(S.CV_grid)
+    for c = find(keep)
         fprintf('    CV=%.1f: feasibility CV %.0f%%, Direct %.0f%% | runtime %.1fx | IPM %.1fx\n', ...
             S.CV_grid(c), 100*cv_feas(s, c), 100*direct_feas(s, c), ...
             runtime_ratio(s, c), ipm_ratio(s, c));

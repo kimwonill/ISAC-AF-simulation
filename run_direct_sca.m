@@ -1,18 +1,18 @@
-function result = run_direct_sca(H, pslr_min, islr_max, params, alpha0, W0)
-% RUN_DIRECT_SCA  Algorithm 2 baseline with direct PSLR/ISLR constraints.
+function result = run_direct_sca(H, pslr_min, params, alpha0, W0)
+% RUN_DIRECT_SCA  Algorithm 2 baseline with a direct PSLR constraint.
 %
 % Alternates between an inner SCA beamforming loop and the same allocation
 % update used by the proposed scheme.
 
 A = compute_steering(params);
 
-if nargin >= 5 && ~isempty(alpha0) && isequal(size(alpha0), [params.K, params.N])
+if nargin >= 4 && ~isempty(alpha0) && isequal(size(alpha0), [params.K, params.N])
     alpha = alpha0;
 else
     alpha = init_alpha(H, params);
 end
 
-if nargin >= 6 && ~isempty(W0)
+if nargin >= 5 && ~isempty(W0)
     W_ref = W0;
 else
     W_ref = init_covariance_flat(params);
@@ -35,7 +35,7 @@ for t = 1:outer_max
     P_ref = directional_power_grid(W_ref, A);
 
     for m = 1:inner_max
-        [W, sumrate, status, slvitr] = solve_direct_sca_sdp(H, alpha, A, pslr_min, islr_max, P_ref, params);
+        [W, sumrate, status, slvitr] = solve_direct_sca_sdp(H, alpha, A, pslr_min, P_ref, params);
         inner_used = inner_used + 1;
         cvx_solver_iters_history(inner_used) = slvitr;
         cvx_solver_iters = cvx_solver_iters + zero_if_nan(slvitr);

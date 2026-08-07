@@ -73,7 +73,7 @@ for s = 1:num_scenarios
 
         for c = 1:num_cv
             CV_max = CV_grid(c);
-            [pslr_min, islr_max] = direct_thresholds_from_cv(CV_max, params);
+            pslr_min = direct_thresholds_from_cv(CV_max, params);
 
             run_count = run_count + 1;
             t_run = tic;
@@ -89,7 +89,7 @@ for s = 1:num_scenarios
 
             run_count = run_count + 1;
             t_run = tic;
-            direct = run_direct_sca(H, pslr_min, islr_max, params, alpha0, W0);
+            direct = run_direct_sca(H, pslr_min, params, alpha0, W0);
             direct_time(s, c, mc) = toc(t_run);
             direct_status(s, c, mc) = string(direct.status);
             direct_success(s, c, mc) = is_solved(direct.status);

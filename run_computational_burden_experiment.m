@@ -108,7 +108,7 @@ for mc = 1:num_mc
 
     for c = 1:num_cv
         CV_max = CV_grid(c);
-        [pslr_min, islr_max] = direct_thresholds_from_cv(CV_max, params);
+        pslr_min = direct_thresholds_from_cv(CV_max, params);
         alpha0 = init_alpha(H, params);
         W0 = build_initial_covariance(H, alpha0, params, init_mode, CV_max);
 
@@ -127,9 +127,9 @@ for mc = 1:num_mc
 
         run_count = run_count + 1;
         t_iter = tic;
-        direct_result = run_direct_sca(H, pslr_min, islr_max, params, alpha0, W0);
+        direct_result = run_direct_sca(H, pslr_min, params, alpha0, W0);
         direct_time_grid(c, mc) = toc(t_iter);
-        direct_profile = run_direct_sca(H, pslr_min, islr_max, params_profile, alpha0, W0);
+        direct_profile = run_direct_sca(H, pslr_min, params_profile, alpha0, W0);
         direct_outer_iters_grid(c, mc) = direct_result.iters;
         direct_inner_iters_grid(c, mc) = direct_result.inner_iters;
         direct_cvx_solver_iters_grid(c, mc) = direct_profile.cvx_solver_iters;

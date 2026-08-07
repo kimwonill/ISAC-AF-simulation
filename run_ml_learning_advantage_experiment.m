@@ -1,34 +1,31 @@
 function run_ml_learning_advantage_experiment()
 % RUN_ML_LEARNING_ADVANTAGE_EXPERIMENT
 % Label-free experiment showing why the CV-reformulated constraint is easier
-% to learn than the direct PSLR/ISLR constraint.
+% to enforce than the direct PSLR constraint.
 %
-% The experiment compares:
-%   1) validation feasible sum-rate during CEM training,
-%   2) validation feasibility during CEM training,
-%   3) local reward sensitivity under random policy perturbations,
-%   4) performance versus the number of trainable policy parameters.
+% The experiment compares sensing-only feasibility and sum-rate under a
+% fixed training budget across a CV-threshold sweep.
 
 clear; close all; clc;
 
 sim_dir = fileparts(mfilename('fullpath'));
-paper_fig_dir = fullfile(sim_dir, 'figures');
+fig_dir = fullfile(sim_dir, 'figures');
+paper_fig_dir = fullfile(sim_dir, '..', 'MyPaper', 'figures');
 out_data_dir = fullfile(sim_dir, 'results');
 if exist(out_data_dir, 'dir') ~= 7
     mkdir(out_data_dir);
 end
-if exist(paper_fig_dir, 'dir') ~= 7
-    mkdir(paper_fig_dir);
-end
+if exist(fig_dir, 'dir') ~= 7, mkdir(fig_dir); end
+if exist(paper_fig_dir, 'dir') ~= 7, mkdir(paper_fig_dir); end
 addpath(genpath(sim_dir));
 
 params = setup_params();
 params.warm_start_cv = false;
 params.sdp_quiet = true;
 
-CV_grid = [0, 0.25, 0.5, 0.75, 1.0];
+CV_grid = 0:0.1:1.0;
 num_train_mc = 8;
-num_val_mc = 8;
+num_val_mc = 28;
 
 opts = struct();
 opts.population = 18;
@@ -42,10 +39,10 @@ opts.penalty_qos = 60;
 opts.penalty_sensing = 80;
 opts.verbose = true;
 
-result_path = fullfile(out_data_dir, 'ml_learning_advantage_results.mat');
+result_path = fullfile(out_data_dir, 'ml_learning_advantage_pslr_only_results.mat');
 if exist(result_path, 'file') == 2
     fprintf('Loading cached ML learning advantage result: %s\n', result_path);
-    plot_learning_advantage(result_path, sim_dir, paper_fig_dir);
+    plot_learning_advantage(result_path, fig_dir, paper_fig_dir);
     print_learning_summary(result_path);
     return;
 end
@@ -65,23 +62,14 @@ t_start = tic;
 [policy_cv, trace_cv] = cem_train_learning(train_set, val_set, 'cv', params, opts, 9101, 8);
 [policy_direct, trace_direct] = cem_train_learning(train_set, val_set, 'direct', params, opts, 9201, 8);
 
-probe_opts = opts;
-probe_opts.verbose = false;
-variance = reward_sensitivity_probe(val_set, CV_grid, params, probe_opts, 8, 50, opts.sigma0);
-
-model_opts = opts;
-model_opts.population = 12;
-model_opts.max_iter = 5;
-model_opts.verbose = false;
-model_sizes = [3, 5, 8];
-model_summary = model_size_sweep(train_set, val_set, model_sizes, params, model_opts);
+sweep = evaluate_sensing_sweep(val_set, CV_grid, policy_cv, policy_direct, params, opts);
 
 elapsed = toc(t_start);
 save(result_path, 'params', 'CV_grid', 'num_train_mc', 'num_val_mc', 'opts', ...
     'policy_cv', 'policy_direct', 'trace_cv', 'trace_direct', ...
-    'variance', 'model_sizes', 'model_summary', 'elapsed');
+    'sweep', 'elapsed');
 
-plot_learning_advantage(result_path, sim_dir, paper_fig_dir);
+plot_learning_advantage(result_path, fig_dir, paper_fig_dir);
 print_learning_summary(result_path);
 
 fprintf('------------------------------------------------------------\n');
@@ -211,8 +199,39 @@ function constraint = make_constraint(mode, CV_max, params)
 if strcmpi(mode, 'cv')
     constraint = struct('CV_max', CV_max, 'CV_hint', CV_max);
 else
-    [pslr_min, islr_max] = direct_thresholds_from_cv(CV_max, params);
-    constraint = struct('pslr_min', pslr_min, 'islr_max', islr_max, 'CV_hint', CV_max);
+    pslr_min = direct_thresholds_from_cv(CV_max, params);
+    constraint = struct('pslr_min', pslr_min, 'CV_hint', CV_max);
+end
+end
+
+function sweep = evaluate_sensing_sweep(val_set, CV_grid, policy_cv, policy_direct, params, opts)
+num_cv = numel(CV_grid);
+sweep.CV_grid = CV_grid(:);
+sweep.cv_sensing_feasibility = nan(num_cv, 1);
+sweep.direct_sensing_feasibility = nan(num_cv, 1);
+sweep.cv_sumrate = nan(num_cv, 1);
+sweep.direct_sumrate = nan(num_cv, 1);
+
+for c = 1:num_cv
+    subset = val_set(abs([val_set.CV_max] - CV_grid(c)) < 1e-12);
+    cv_ok = false(numel(subset), 1);
+    direct_ok = false(numel(subset), 1);
+    cv_rate = nan(numel(subset), 1);
+    direct_rate = nan(numel(subset), 1);
+    for i = 1:numel(subset)
+        cv_constraint = make_constraint('cv', CV_grid(c), params);
+        direct_constraint = make_constraint('direct', CV_grid(c), params);
+        cv_result = infer_once(subset(i).H, 'cv', cv_constraint, policy_cv, params, opts);
+        direct_result = infer_once(subset(i).H, 'direct', direct_constraint, policy_direct, params, opts);
+        cv_ok(i) = sensing_feasible(cv_result, 'cv', cv_constraint, opts.constraint_tol);
+        direct_ok(i) = sensing_feasible(direct_result, 'direct', direct_constraint, opts.constraint_tol);
+        cv_rate(i) = cv_result.sumrate;
+        direct_rate(i) = direct_result.sumrate;
+    end
+    sweep.cv_sensing_feasibility(c) = mean(double(cv_ok));
+    sweep.direct_sensing_feasibility(c) = mean(double(direct_ok));
+    sweep.cv_sumrate(c) = mean(cv_rate, 'omitnan');
+    sweep.direct_sumrate(c) = mean(direct_rate, 'omitnan');
 end
 end
 
@@ -304,55 +323,23 @@ end
 
 function result = infer_once(H, mode, constraint, policy, params, opts)
 A = compute_steering(params);
-C_iso = make_comm_covariance(H, params, policy.rho_iso);
-C_struct = make_comm_covariance(H, params, policy.rho_struct);
-C_coherent = make_comm_covariance(H, params, policy.rho_coherent);
-
-candidate_names = {'flat', 'struct-diag', 'struct-coherent', 'constant-coherent'};
-candidate_W = cell(4, 1);
-candidate_W{1} = flat_mix_candidate(C_iso, mode, constraint, A, params, opts);
-candidate_W{2} = structural_equalized_candidate(H, C_struct, mode, constraint, A, params, opts, 'diagonal');
-candidate_W{3} = structural_equalized_candidate(H, C_coherent, mode, constraint, A, params, opts, 'coherent');
-candidate_W{4} = constant_coherent_candidate(H, C_coherent, mode, constraint, A, params, opts);
-
-best_score = -Inf;
-best_ix = 1;
-best_metrics = [];
-best_feasible_score = -Inf;
-best_feasible_ix = [];
-best_feasible_metrics = [];
-for cand = 1:numel(candidate_W)
-    metrics_cand = evaluate_candidate(H, candidate_W{cand}, A, params);
-    score_cand = constrained_reward_from_metrics(metrics_cand, mode, constraint, params, opts);
-    feasible_cand = check_feasible(metrics_cand, mode, constraint, params, opts.constraint_tol);
-    if feasible_cand && score_cand > best_feasible_score
-        best_feasible_score = score_cand;
-        best_feasible_ix = cand;
-        best_feasible_metrics = metrics_cand;
-    end
-    if score_cand > best_score
-        best_score = score_cand;
-        best_ix = cand;
-        best_metrics = metrics_cand;
-    end
-end
-
-if ~isempty(best_feasible_ix)
-    W = candidate_W{best_feasible_ix};
-    metrics = best_feasible_metrics;
-    branch = candidate_names{best_feasible_ix};
+rho = 1.35 * sigmoid(policy.theta_full(1) + ...
+    policy.theta_full(5) * (constraint.CV_hint - 0.5));
+W_raw = make_comm_covariance(H, params, rho);
+if strcmpi(mode, 'cv')
+    W = apply_cv_safety_layer(W_raw, constraint.CV_max, A, params);
+    branch = 'CV safety layer';
 else
-    W = candidate_W{best_ix};
-    metrics = best_metrics;
-    branch = candidate_names{best_ix};
+    W = W_raw;
+    branch = 'Direct PSLR penalty';
 end
+metrics = evaluate_candidate(H, W, A, params);
 
 [feasible, status] = check_feasible(metrics, mode, constraint, params, opts.constraint_tol);
 result.W = W;
 result.alpha = metrics.alpha;
 result.sumrate = metrics.sumrate;
 result.pslr_per_target = metrics.pslr_per_target;
-result.islr_per_target = metrics.islr_per_target;
 result.cv_per_target = metrics.cv_per_target;
 result.mu_p_per_target = metrics.mu_p_per_target;
 result.user_rate = metrics.user_rate;
@@ -361,6 +348,24 @@ result.status = status;
 result.branch = branch;
 result.mode = mode;
 result.constraint = constraint;
+end
+
+function W_safe = apply_cv_safety_layer(W, CV_max, A, params)
+W_bar = mean(W, 3);
+rho = 1;
+for l = 1:params.L
+    Pn = compute_directional_power(W, A(:, l));
+    mu_p = mean(Pn);
+    sigma_p = sqrt(mean((Pn - mu_p).^2));
+    if sigma_p > 0
+        rho = min(rho, CV_max * mu_p / sigma_p);
+    end
+end
+rho = min(max(real(rho), 0), 1);
+W_safe = zeros(size(W));
+for n = 1:params.N
+    W_safe(:, :, n) = rho * W(:, :, n) + (1 - rho) * W_bar;
+end
 end
 
 function W = make_comm_covariance(H, params, rho)
@@ -634,12 +639,7 @@ for l = 1:params.L
         end
     else
         pslr = compute_pslr(Pn, params.kappa);
-        islr = compute_islr(Pn, params.kappa);
         if pslr < constraint.pslr_min * (1 - tol)
-            ok = false;
-            return;
-        end
-        if isfinite(constraint.islr_max) && islr > constraint.islr_max * (1 + tol)
             ok = false;
             return;
         end
@@ -662,13 +662,11 @@ metrics.alpha = alpha;
 metrics.sumrate = sum(alpha .* R, 'all');
 metrics.user_rate = sum(alpha .* R, 2);
 metrics.pslr_per_target = nan(params.L, 1);
-metrics.islr_per_target = nan(params.L, 1);
 metrics.cv_per_target = nan(params.L, 1);
 metrics.mu_p_per_target = nan(params.L, 1);
 for l = 1:params.L
     Pn = compute_directional_power(W, A(:, l));
     metrics.pslr_per_target(l) = compute_pslr(Pn, params.kappa);
-    metrics.islr_per_target(l) = compute_islr(Pn, params.kappa);
     metrics.mu_p_per_target(l) = mean(Pn);
     metrics.cv_per_target(l) = sqrt(mean((Pn - metrics.mu_p_per_target(l)).^2)) / ...
         max(metrics.mu_p_per_target(l), eps);
@@ -689,12 +687,7 @@ if strcmpi(mode, 'cv')
     penalty = penalty + opts.penalty_sensing * sum(cv_gap.^2);
 else
     pslr_gap = max(0, 10*log10(constraint.pslr_min) - 10*log10(metrics.pslr_per_target));
-    if isfinite(constraint.islr_max)
-        islr_gap = max(0, 10*log10(metrics.islr_per_target) - 10*log10(constraint.islr_max));
-    else
-        islr_gap = zeros(size(metrics.islr_per_target));
-    end
-    penalty = penalty + opts.penalty_sensing * (sum(pslr_gap.^2) + sum(islr_gap.^2));
+    penalty = penalty + opts.penalty_sensing * sum(pslr_gap.^2);
 end
 reward = metrics.sumrate - penalty;
 end
@@ -705,10 +698,7 @@ illum_ok = all(metrics.mu_p_per_target >= params.P_des - tol);
 if strcmpi(mode, 'cv')
     sensing_flag = all(metrics.cv_per_target <= constraint.CV_max + tol);
 else
-    pslr_ok = all(metrics.pslr_per_target >= constraint.pslr_min * (1 - tol));
-    islr_ok = ~isfinite(constraint.islr_max) || ...
-        all(metrics.islr_per_target <= constraint.islr_max * (1 + tol));
-    sensing_flag = pslr_ok && islr_ok;
+    sensing_flag = all(metrics.pslr_per_target >= constraint.pslr_min * (1 - tol));
 end
 feasible = qos_ok && illum_ok && sensing_flag;
 if feasible
@@ -729,12 +719,15 @@ if strcmpi(mode, 'cv')
     violation = violation + sum(max(0, metrics.cv_per_target - constraint.CV_max) ./ denom);
 else
     pslr_gap = max(0, 10*log10(constraint.pslr_min) - 10*log10(metrics.pslr_per_target)) / 10;
-    if isfinite(constraint.islr_max)
-        islr_gap = max(0, 10*log10(metrics.islr_per_target) - 10*log10(constraint.islr_max)) / 10;
-    else
-        islr_gap = zeros(size(metrics.islr_per_target));
-    end
-    violation = violation + sum(pslr_gap) + sum(islr_gap);
+    violation = violation + sum(pslr_gap);
+end
+end
+
+function feasible = sensing_feasible(metrics, mode, constraint, tol)
+if strcmpi(mode, 'cv')
+    feasible = all(metrics.cv_per_target <= constraint.CV_max + tol);
+else
+    feasible = all(metrics.pslr_per_target >= constraint.pslr_min * (1 - tol));
 end
 end
 
@@ -742,130 +735,61 @@ function y = sigmoid(x)
 y = 1 ./ (1 + exp(-x));
 end
 
-function plot_learning_advantage(result_path, sim_dir, paper_fig_dir)
+function plot_learning_advantage(result_path, fig_dir, paper_fig_dir)
 M = load(result_path);
 cfg = plot_config();
-fig = figure('Position', [80 80 1500 960], 'Color', 'w');
-axes_positions = [
-    0.105 0.615 0.375 0.275
-    0.600 0.615 0.375 0.275
-    0.105 0.155 0.375 0.275
-    0.600 0.155 0.375 0.275
-];
-ax_list = gobjects(4, 1);
-captions = {'(a) Sample efficiency', ...
-    '(b) Feasibility convergence', ...
-    '(c) Local reward sensitivity', ...
-    '(d) Model-size efficiency'};
-
+fig = figure('Position', [80 80 760 405], 'Color', 'w');
 palette = paper_palette();
-cv_color = palette(3, :);
-direct_color = palette(4, :);
+cv_color = palette(1, :);
+direct_color = palette(2, :);
+ax1 = axes(fig, 'Position', [0.125 0.225 0.320 0.485]);
+hold(ax1, 'on'); grid(ax1, 'on'); box(ax1, 'on');
+h_cv = plot(ax1, M.sweep.CV_grid, M.sweep.cv_sensing_feasibility, '-o', ...
+    'Color', cv_color, 'MarkerFaceColor', cv_color, 'LineWidth', 1.8, 'MarkerSize', 6);
+h_direct = plot(ax1, M.sweep.CV_grid, M.sweep.direct_sensing_feasibility, '--s', ...
+    'Color', direct_color, 'MarkerFaceColor', direct_color, 'LineWidth', 1.8, 'MarkerSize', 6);
+xlabel(ax1, 'CV_{max}', 'Interpreter', 'tex');
+ylabel(ax1, 'Feasibility');
+title(ax1, '(a) Constraint tightness', 'FontWeight', 'normal');
+xlim(ax1, [-0.04 1.04]); ylim(ax1, [-0.04 1.04]);
+xticks(ax1, [0.5 1.0]); yticks(ax1, [0 0.5 1]);
 
-ax_list(1) = axes(fig, 'Position', axes_positions(1, :));
-hold on; grid on; box on;
-h_cv = plot(M.trace_cv.policy_evals, M.trace_cv.val_weighted_sumrate, '-o', ...
-    'LineWidth', 2.0, 'MarkerFaceColor', cv_color, 'Color', cv_color, ...
-    'DisplayName', 'CV reward');
-h_direct = plot(M.trace_direct.policy_evals, M.trace_direct.val_weighted_sumrate, '--v', ...
-    'LineWidth', 2.0, 'MarkerFaceColor', direct_color, 'Color', direct_color, ...
-    'DisplayName', 'Direct reward');
-xlabel('Policy reward evaluations');
-ylabel('Feasible weighted sum-rate');
-reward_trace = [M.trace_cv.val_weighted_sumrate(:); ...
-    M.trace_direct.val_weighted_sumrate(:)];
-reward_span = max(reward_trace) - min(reward_trace);
-ylim([min(reward_trace) - 0.05*reward_span, ...
-    max(reward_trace) + 0.08*reward_span]);
-set(gca, 'FontSize', cfg.axes_font - 2, 'LineWidth', cfg.axes_line_width);
+ax2 = axes(fig, 'Position', [0.635 0.225 0.320 0.485]);
+hold(ax2, 'on'); grid(ax2, 'on'); box(ax2, 'on');
+plot(ax2, M.sweep.CV_grid, M.sweep.cv_sumrate, '-o', ...
+    'Color', cv_color, 'MarkerFaceColor', cv_color, 'LineWidth', 1.8, 'MarkerSize', 6);
+plot(ax2, M.sweep.CV_grid, M.sweep.direct_sumrate, '--s', ...
+    'Color', direct_color, 'MarkerFaceColor', direct_color, 'LineWidth', 1.8, 'MarkerSize', 6);
+xlabel(ax2, 'CV_{max}', 'Interpreter', 'tex');
+ylabel(ax2, 'Rate (bps/Hz)');
+title(ax2, '(b) Fixed training budget', 'FontWeight', 'normal');
+xlim(ax2, [-0.04 1.04]); xticks(ax2, [0.5 1.0]);
+ylim(ax2, [0 90]);
+yticks(ax2, [0 30 60 90]);
 
-ax_list(2) = axes(fig, 'Position', axes_positions(2, :));
-hold on; grid on; box on;
-plot(M.trace_cv.policy_evals, M.trace_cv.val_feasibility, '-o', ...
-    'LineWidth', 2.0, 'MarkerFaceColor', cv_color, 'Color', cv_color, ...
-    'DisplayName', 'CV reward');
-plot(M.trace_direct.policy_evals, M.trace_direct.val_feasibility, '--v', ...
-    'LineWidth', 2.0, 'MarkerFaceColor', direct_color, 'Color', direct_color, ...
-    'DisplayName', 'Direct reward');
-yline(0.95, ':', '95%', 'LineWidth', 1.2, 'Color', [0.3 0.3 0.3], ...
-    'HandleVisibility', 'off');
-xlabel('Policy reward evaluations');
-ylabel('Validation feasibility');
-ylim([0 1.05]);
-set(gca, 'FontSize', cfg.axes_font - 2, 'LineWidth', cfg.axes_line_width);
-
-ax_list(3) = axes(fig, 'Position', axes_positions(3, :));
-hold on; grid on; box on;
-plot(M.variance.tightness, M.variance.cv_reward_cv, '-o', ...
-    'LineWidth', 2.0, 'MarkerFaceColor', cv_color, 'Color', cv_color, ...
-    'DisplayName', 'CV reward');
-plot(M.variance.tightness, M.variance.direct_reward_cv, '--v', ...
-    'LineWidth', 2.0, 'MarkerFaceColor', direct_color, 'Color', direct_color, ...
-    'DisplayName', 'Direct reward');
-xlabel('Constraint tightness \xi');
-ylabel('Normalized reward std.');
-xlim([-0.02 1.02]);
-variance_max = max([M.variance.cv_reward_cv(:); ...
-    M.variance.direct_reward_cv(:)]);
-ylim([0 1.05*variance_max]);
-set(gca, 'FontSize', cfg.axes_font - 2, 'LineWidth', cfg.axes_line_width);
-
-ax_list(4) = axes(fig, 'Position', axes_positions(4, :));
-hold on; grid on; box on;
-plot(M.model_sizes, M.model_summary.cv_weighted_sumrate, '-o', ...
-    'LineWidth', 2.0, 'MarkerFaceColor', cv_color, 'Color', cv_color, ...
-    'DisplayName', 'CV reward');
-plot(M.model_sizes, M.model_summary.direct_weighted_sumrate, '--v', ...
-    'LineWidth', 2.0, 'MarkerFaceColor', direct_color, 'Color', direct_color, ...
-    'DisplayName', 'Direct reward');
-xlabel('Trainable policy parameters');
-ylabel('Feasible weighted sum-rate');
-model_values = [M.model_summary.cv_weighted_sumrate(:); ...
-    M.model_summary.direct_weighted_sumrate(:)];
-model_span = max(model_values) - min(model_values);
-xlim([min(M.model_sizes)-0.2, max(M.model_sizes)+0.2]);
-ylim([min(model_values) - 0.05*model_span, ...
-    max(model_values) + 0.08*model_span]);
-set(gca, 'FontSize', cfg.axes_font - 2, 'LineWidth', cfg.axes_line_width);
-
-lgd = legend(ax_list(1), [h_cv, h_direct], {'CV reward', 'Direct reward'}, ...
-    'Location', 'none', 'Orientation', 'horizontal', 'NumColumns', 2);
-set(lgd, 'Units', 'normalized', ...
-    'Position', [0.355 0.930 0.290 0.055], ...
-    'FontSize', cfg.legend_font - 6, ...
-    'Box', 'on', 'Color', 'w', 'EdgeColor', [0.15 0.15 0.15]);
+set([ax1 ax2], 'FontName', cfg.font_name, 'FontSize', 12, ...
+    'LineWidth', cfg.axes_line_width, 'LabelFontSizeMultiplier', 1);
+set([ax1.XLabel ax1.YLabel ax2.XLabel ax2.YLabel], 'FontSize', 14);
+set([ax1.Title ax2.Title], 'FontSize', 14);
+lgd = legend(ax1, [h_cv h_direct], {'CV-NN + safety', 'Direct-PSLR NN penalty'}, ...
+    'Orientation', 'horizontal', 'NumColumns', 2, 'Location', 'none');
+set(lgd, 'Units', 'normalized', 'Position', [0.205 0.855 0.590 0.085], ...
+    'FontName', cfg.font_name, 'FontSize', 12, 'Box', 'on', 'Color', 'w');
 try
     lgd.ItemTokenSize = [18 8];
 catch
 end
+setappdata(fig, 'PlotConfigAppliedV1', true);
 
-drawnow;
-plot_config(fig);
-for i = 1:numel(ax_list)
-    set(ax_list(i), 'FontSize', cfg.axes_font - 4, ...
-        'LineWidth', cfg.axes_line_width, ...
-        'LabelFontSizeMultiplier', 1);
-    set(ax_list(i).XLabel, 'FontSize', cfg.label_font - 7);
-    set(ax_list(i).YLabel, 'FontSize', cfg.label_font - 7, ...
-        'Units', 'normalized', 'Position', [-0.155 0.5 0]);
-end
-set(lgd, 'Units', 'normalized', ...
-    'Position', [0.355 0.930 0.290 0.055], ...
-    'FontSize', cfg.legend_font - 6, ...
-    'Box', 'on', 'Color', 'w', 'EdgeColor', [0.15 0.15 0.15]);
-caption_offsets = [0.145 0.145 0.145 0.145];
-for i = 1:numel(ax_list)
-    add_panel_caption(fig, ax_list(i), captions{i}, ...
-        'YOffset', caption_offsets(i), 'Height', 0.048, ...
-        'FontSize', cfg.panel_caption_font - 6, 'Interpreter', 'tex');
-end
-
-save_figure(fig, sim_dir, paper_fig_dir, 'ml_learning_advantage', 'ML_Learning_Advantage_Result');
-tight_export_figure(fig, fullfile(paper_fig_dir, 'ML_CV_Advantage_Integrated_Result.pdf'), ...
+sim_pdf = fullfile(fig_dir, 'ML_CV_Advantage_Integrated_Result.pdf');
+sim_png = fullfile(fig_dir, 'ML_CV_Advantage_Integrated_Result.png');
+tight_export_figure(fig, sim_pdf, ...
     'ContentType', 'image', 'Resolution', 300, ...
     'TightLayout', false, 'TightPad', 0);
-tight_export_figure(fig, fullfile(paper_fig_dir, 'ML_CV_Advantage_Integrated_Result.png'), ...
+tight_export_figure(fig, sim_png, ...
     'Resolution', 300, 'TightLayout', false, 'TightPad', 0);
+copyfile(sim_pdf, fullfile(paper_fig_dir, 'ML_CV_Advantage_Integrated_Result.pdf'));
+copyfile(sim_png, fullfile(paper_fig_dir, 'ML_CV_Advantage_Integrated_Result.png'));
 end
 
 function save_figure(fig, sim_dir, paper_fig_dir, stem, paper_stem)
@@ -882,26 +806,16 @@ end
 
 function print_learning_summary(result_path)
 M = load(result_path);
-cv_final_r = M.trace_cv.val_weighted_sumrate(end);
-direct_final_r = M.trace_direct.val_weighted_sumrate(end);
-cv_final_f = M.trace_cv.val_feasibility(end);
-direct_final_f = M.trace_direct.val_feasibility(end);
-cv_eval95 = first_eval_at_feasibility(M.trace_cv, 0.95);
-direct_eval95 = first_eval_at_feasibility(M.trace_direct, 0.95);
 fprintf('============================================================\n');
-fprintf('  Learning advantage summary\n');
+fprintf('  PSLR-only learning advantage summary\n');
 fprintf('============================================================\n');
-fprintf('Final validation weighted sum-rate: CV %.2f, Direct %.2f bps/Hz\n', ...
-    cv_final_r, direct_final_r);
-fprintf('Final validation feasibility:       CV %.2f, Direct %.2f\n', ...
-    cv_final_f, direct_final_f);
-fprintf('Policy evals to 95%% feasibility:   CV %s, Direct %s\n', ...
-    format_eval(cv_eval95), format_eval(direct_eval95));
-fprintf('Mean normalized reward std.:        CV %.4f, Direct %.4f\n', ...
-    mean(M.variance.cv_reward_cv, 'omitnan'), mean(M.variance.direct_reward_cv, 'omitnan'));
-fprintf('Smallest model result (D=%d):       CV %.2f, Direct %.2f bps/Hz\n', ...
-    M.model_sizes(1), M.model_summary.cv_weighted_sumrate(1), ...
-    M.model_summary.direct_weighted_sumrate(1));
+for c = 1:numel(M.sweep.CV_grid)
+    fprintf(['CV=%.1f | sensing feasibility CV %.1f%%, Direct %.1f%% | ' ...
+        'rate CV %.2f, Direct %.2f bps/Hz\n'], M.sweep.CV_grid(c), ...
+        100*M.sweep.cv_sensing_feasibility(c), ...
+        100*M.sweep.direct_sensing_feasibility(c), ...
+        M.sweep.cv_sumrate(c), M.sweep.direct_sumrate(c));
+end
 end
 
 function eval_count = first_eval_at_feasibility(trace, target)

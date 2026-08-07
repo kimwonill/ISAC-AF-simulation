@@ -4,7 +4,7 @@ function run_runtime_coldstart_experiment()
 %
 % Every scheme is initialized independently at each (channel, CV) point:
 %   - CV-SDP: run_proposed(H,CV,params) with init_alpha only.
-%   - Direct SCA: run_direct_sca(H,thresholds,params) with init_alpha and
+%   - Direct SCA: run_direct_sca(H,pslr_min,params) with init_alpha and
 %     flat covariance linearization only.
 %   - ML-CV / ML-Direct: CEM policy search from a generic policy prior;
 %     no previous operating point or previous learned policy is reused.
@@ -69,7 +69,7 @@ for mc = 1:num_mc
     for c = 1:num_cv
         CV_max = CV_grid(c);
         xi = 1 - CV_max;
-        [pslr_min, islr_max] = direct_thresholds_from_cv(CV_max, params);
+        pslr_min = direct_thresholds_from_cv(CV_max, params);
 
         run_count = run_count + 1;
         t_iter = tic;
@@ -83,7 +83,7 @@ for mc = 1:num_mc
 
         run_count = run_count + 1;
         t_iter = tic;
-        direct_result = run_direct_sca(H, pslr_min, islr_max, params);
+        direct_result = run_direct_sca(H, pslr_min, params);
         direct_time_grid(c, mc) = toc(t_iter);
         [direct_sumrate_grid(c, mc), direct_pslr_grid(c, mc), direct_status_grid(c, mc)] = ...
             summarize_result(direct_result);

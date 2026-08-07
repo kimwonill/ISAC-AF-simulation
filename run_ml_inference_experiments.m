@@ -186,7 +186,7 @@ for mc = 1:num_train_mc
         count = count + 1;
         t = tic;
         direct_constraint = struct('pslr_min', pslr_min, 'islr_max', islr_max, 'CV_hint', CV_max);
-        direct_result = run_direct_sca(H, pslr_min, islr_max, params);
+        direct_result = run_direct_sca(H, pslr_min, params);
         direct_status(c, mc) = string(direct_result.status);
         if isfinite(direct_result.sumrate)
             W_label = direct_result.W;

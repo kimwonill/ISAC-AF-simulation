@@ -1,4 +1,4 @@
-function [W_out, sumrate, status, solver_iters] = solve_direct_sca_sdp(H, alpha, A, pslr_min, islr_max, P_ref, params)
+function [W_out, sumrate, status, solver_iters] = solve_direct_sca_sdp(H, alpha, A, pslr_min, P_ref, params)
 % SOLVE_DIRECT_SCA_SDP  One convexified SCA beamforming subproblem.
 %
 % This implements Algorithm 2's inner step for fixed subcarrier allocation
@@ -6,7 +6,6 @@ function [W_out, sumrate, status, solver_iters] = solve_direct_sca_sdp(H, alpha,
 
 NT = params.NT; N = params.N; K = params.K; L = params.L;
 kappa = params.kappa;
-use_islr_constraint = isfinite(islr_max);
 solver_iters = NaN;
 
 user_n = zeros(1, N);
@@ -83,14 +82,6 @@ if params.sdp_quiet && ~collect_solver_log, cvx_begin sdp quiet; else, cvx_begin
             DP = t_sl(l) + (kappa - 1) * sum_square(p);
             pslr_min * DP - lin_NP <= 0;                                %#ok<VUNUS>
 
-            if use_islr_constraint
-                % ISLR SCA: N_I(p) - (ISLR_max+1) * D_I_lin(p;p0) <= 0
-                DI0 = (kappa - 1) * q0 + s0^2;
-                grad_DI = 2*s0*ones(N, 1) + 2*(kappa - 1)*p0;
-                lin_DI = DI0 + grad_DI.' * (p - p0);
-                NI = N * ((kappa - 0.5) * sum_square(p) + 0.5 * square_pos(sum(p)));
-                NI - (islr_max + 1) * lin_DI <= 0;                      %#ok<VUNUS>
-            end
         end
 
         for k = 1:K

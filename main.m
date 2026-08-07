@@ -175,7 +175,7 @@ for mc = 1:num_mc
                     direct_W0 = direct_W_warm;
                 end
 
-                direct_result = run_direct_sca(H, pslr_min, islr_max, params, direct_alpha0, direct_W0);
+                direct_result = run_direct_sca(H, pslr_min, params, direct_alpha0, direct_W0);
             else
                 direct_result.status = 'Skipped: proposed warm start failed';
                 direct_result.sumrate = NaN;
