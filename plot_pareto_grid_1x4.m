@@ -210,6 +210,14 @@ end
 if ~isfield(S, 'reference_completed_mc') || numel(S.reference_completed_mc) ~= num_mc
     S.reference_completed_mc = false(1, num_mc);
 end
+% Keep "attempted" separate from "all outputs finite".  Older interrupted
+% runs could mark an entirely blank realization as completed, which made the
+% resume path skip it forever.  A partially populated realization, however,
+% may represent a genuine solver failure and must not be retried silently.
+if ~isfield(S, 'reference_attempted_mc') || ...
+        numel(S.reference_attempted_mc) ~= num_mc
+    S.reference_attempted_mc = reference_has_any_result(S);
+end
 
 fprintf('Running PSLR reference curves: N_T=%d, N=%d, MC=%d\n', ...
     params.NT, params.N, num_mc);
@@ -217,7 +225,7 @@ if isempty(mc_indices)
     mc_indices = 1:num_mc;
 end
 for mc = mc_indices
-    if S.reference_completed_mc(mc)
+    if S.reference_attempted_mc(mc)
         continue;
     end
     rng(mc, 'twister');
@@ -245,7 +253,8 @@ for mc = mc_indices
 
     S = run_surrogate_curve(S, H, params, 'crb', mc);
     S = run_surrogate_curve(S, H, params, 'mi', mc);
-    S.reference_completed_mc(mc) = true;
+    S.reference_attempted_mc(mc) = true;
+    S.reference_completed_mc(mc) = reference_is_complete(S, mc);
     save(cache_path, '-struct', 'S', '-v7.3');
 end
 end
@@ -279,11 +288,18 @@ if ~isfield(S, 'direct_completed_mc') || ...
         numel(S.direct_completed_mc) ~= num_mc
     S.direct_completed_mc = false(1, num_mc);
 end
+if ~isfield(S, 'direct_attempted_with_reference_mc') || ...
+        numel(S.direct_attempted_with_reference_mc) ~= num_mc
+    S.direct_attempted_with_reference_mc = ...
+        S.direct_completed_mc & reference_has_any_result(S) & ...
+        any(isfinite(S.direct_sumrate_grid), 1);
+end
 if ~isfield(S, 'direct_pslr_only_version') || ...
         S.direct_pslr_only_version ~= 1
     S.direct_sumrate_grid(:) = NaN;
     S.direct_pslr_lin_grid(:) = NaN;
     S.direct_completed_mc(:) = false;
+    S.direct_attempted_with_reference_mc(:) = false;
     S.direct_pslr_only_version = 1;
 end
 
@@ -291,7 +307,7 @@ if isempty(mc_indices)
     mc_indices = 1:num_mc;
 end
 for mc = mc_indices
-    if S.direct_completed_mc(mc)
+    if S.direct_attempted_with_reference_mc(mc)
         continue;
     end
     rng(mc, 'twister');
@@ -320,8 +336,33 @@ for mc = mc_indices
             S.params.CV_max_list(c), S.direct_sumrate_grid(c, mc), ...
             10*log10(S.direct_pslr_lin_grid(c, mc)), result.status);
     end
-    S.direct_completed_mc(mc) = true;
+    S.direct_attempted_with_reference_mc(mc) = true;
+    S.direct_completed_mc(mc) = all(isfinite(S.direct_sumrate_grid(:, mc))) && ...
+        all(isfinite(S.direct_pslr_lin_grid(:, mc)));
     save(cache_path, '-struct', 'S', '-v7.3');
+end
+end
+
+function mask = reference_has_any_result(S)
+fields = {'sumrate_grid', 'pslr_lin_grid', 'comm_sumrate_grid', ...
+    'comm_pslr_lin_grid', 'crb_sumrate_grid', 'crb_pslr_lin_grid', ...
+    'mi_sumrate_grid', 'mi_pslr_lin_grid'};
+num_mc = size(S.sumrate_grid, 2);
+mask = false(1, num_mc);
+for i = 1:numel(fields)
+    if isfield(S, fields{i})
+        mask = mask | any(isfinite(S.(fields{i})), 1);
+    end
+end
+end
+
+function tf = reference_is_complete(S, mc)
+fields = {'sumrate_grid', 'pslr_lin_grid', 'comm_sumrate_grid', ...
+    'comm_pslr_lin_grid', 'crb_sumrate_grid', 'crb_pslr_lin_grid', ...
+    'mi_sumrate_grid', 'mi_pslr_lin_grid'};
+tf = true;
+for i = 1:numel(fields)
+    tf = tf && all(isfinite(S.(fields{i})(:, mc)));
 end
 end
 
