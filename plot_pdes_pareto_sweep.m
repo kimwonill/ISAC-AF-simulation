@@ -1,3 +1,4 @@
+function plot_pdes_pareto_sweep(num_mc_override, force_rerun)
 %% PLOT_PDES_PARETO_SWEEP  PSLR Pareto curves versus illumination floor
 %
 % Sweeps P_des = n P_max/N and CV_max, then plots the proposed method's
@@ -10,7 +11,14 @@
 %   pdes_pareto_sweep.png/.fig
 %   figures/pdes_pareto_sweep.pdf/.png
 
-clear; close all; clc;
+if nargin < 1 || isempty(num_mc_override)
+    num_mc_override = [];
+end
+if nargin < 2 || isempty(force_rerun)
+    force_rerun = false;
+end
+
+clearvars -except num_mc_override force_rerun; close all; clc;
 
 addpath(genpath(fileparts(mfilename('fullpath'))));
 if exist('cvx_begin', 'file') ~= 2
@@ -33,6 +41,10 @@ CV_max_list = params.CV_max_list;
 num_pdes = numel(pdes_values);
 num_cv = numel(CV_max_list);
 num_mc = params.num_mc;
+if ~isempty(num_mc_override)
+    num_mc = num_mc_override;
+    params.num_mc = num_mc;
+end
 out_dir = fileparts(mfilename('fullpath'));
 results_dir = fullfile(out_dir, 'results');
 if exist(results_dir, 'dir') ~= 7
@@ -69,7 +81,7 @@ if exist(results_path, 'file') ~= 2 && exist(legacy_results_path, 'file') == 2
     copyfile(legacy_results_path, results_path, 'f');
 end
 
-if exist(results_path, 'file') == 2
+if exist(results_path, 'file') == 2 && ~force_rerun
     cached = load(results_path);
     required_fields = {'sumrate_grid', 'pslr_lin_grid', 'pslr_dB_grid', ...
         'islr_lin_grid', 'islr_dB_grid', 'status_grid', 'iter_grid', ...
@@ -290,4 +302,6 @@ end
 
 function colors = muted_pdes_colors(num_colors)
 colors = paper_palette(1:num_colors);
+end
+
 end

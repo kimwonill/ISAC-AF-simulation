@@ -1,0 +1,36 @@
+Waiting for Figure 4 workers: 2202270 2202272 2202278 2202280
+Workers finished; exporting combined Figure 4.
+[Warning: OpenGL Startup options will be removed in a future release.] 
+[Warning: Function narginchk has the same name as a MATLAB built-in. We suggest
+you rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 96)] 
+Loaded PSLR-only cache: /home/wonill/work/ISAC-AF-simulation/results/pareto_grid_1x4_pslr/pareto_pslr_NT4_N16_MC100.mat
+Running PSLR reference curves: N_T=4, N=16, MC=100
+Direct PSLR-only: N_T=4, N=16, MC=28/100
+CVX Warning:
+   Models involving "log" or other functions in the log, exp, and entropy
+   family are solved using an experimental successive approximation method.
+   This method is slower and less reliable than the method CVX employs for
+   other models. Please see the section of the user's guide entitled
+       <a href="file:////home/wonill/matlab/cvx/doc/advanced.html#the-successive-approximation-method">The successive approximation method</a>
+   for more details about the approach, and for instructions on how to
+   suppress this warning message in the future.
+  CV 0.0: SR 81.53, PSLR 17.08 dB, Solved
+  CV 0.1: SR 83.07, PSLR 16.51 dB, Solved
+  CV 0.2: SR 84.10, PSLR 15.17 dB, Solved
+  CV 0.3: SR 84.74, PSLR 13.55 dB, Solved
+  CV 0.4: SR 85.04, PSLR 11.96 dB, Solved
+  CV 0.5: SR 85.16, PSLR 10.51 dB, Solved
+  CV 0.6: SR 85.20, PSLR 9.22 dB, Solved
+  CV 0.7: SR 85.21, PSLR 8.12 dB, Solved
+  CV 0.8: SR 85.21, PSLR 7.99 dB, Solved
+  CV 0.9: SR 85.21, PSLR 7.99 dB, Solved
+Direct PSLR-only: N_T=4, N=16, MC=29/100
+Direct PSLR-only: N_T=4, N=16, MC=30/100
+Direct PSLR-only: N_T=4, N=16, MC=31/100
+  CV 0.0: SR 80.38, PSLR 17.08 dB, Solved
+  CV 0.1: SR 81.63, PSLR 16.63 dB, Solved
+  CV 0.2: SR 82.64, PSLR 15.50 dB, Solved
+  CV 0.3: SR 83.38, PSLR 13.94 dB, Solved
+Terminated

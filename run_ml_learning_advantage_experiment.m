@@ -1,4 +1,4 @@
-function run_ml_learning_advantage_experiment()
+function run_ml_learning_advantage_experiment(num_train_mc_override, num_val_mc_override, force_rerun)
 % RUN_ML_LEARNING_ADVANTAGE_EXPERIMENT
 % Label-free experiment showing why the CV-reformulated constraint is easier
 % to enforce than the direct PSLR constraint.
@@ -6,7 +6,17 @@ function run_ml_learning_advantage_experiment()
 % The experiment compares sensing-only feasibility and sum-rate under a
 % fixed training budget across a CV-threshold sweep.
 
-clear; close all; clc;
+if nargin < 1 || isempty(num_train_mc_override)
+    num_train_mc_override = [];
+end
+if nargin < 2 || isempty(num_val_mc_override)
+    num_val_mc_override = [];
+end
+if nargin < 3 || isempty(force_rerun)
+    force_rerun = false;
+end
+
+clearvars -except num_train_mc_override num_val_mc_override force_rerun; close all; clc;
 
 sim_dir = fileparts(mfilename('fullpath'));
 fig_dir = fullfile(sim_dir, 'figures');
@@ -26,6 +36,12 @@ params.sdp_quiet = true;
 CV_grid = 0:0.1:1.0;
 num_train_mc = 8;
 num_val_mc = 28;
+if ~isempty(num_train_mc_override)
+    num_train_mc = num_train_mc_override;
+end
+if ~isempty(num_val_mc_override)
+    num_val_mc = num_val_mc_override;
+end
 
 opts = struct();
 opts.population = 18;
@@ -40,11 +56,17 @@ opts.penalty_sensing = 80;
 opts.verbose = true;
 
 result_path = fullfile(out_data_dir, 'ml_learning_advantage_pslr_only_results.mat');
-if exist(result_path, 'file') == 2
-    fprintf('Loading cached ML learning advantage result: %s\n', result_path);
-    plot_learning_advantage(result_path, fig_dir, paper_fig_dir);
-    print_learning_summary(result_path);
-    return;
+if exist(result_path, 'file') == 2 && ~force_rerun
+    cached = load(result_path, 'num_train_mc', 'num_val_mc');
+    if isfield(cached, 'num_train_mc') && isfield(cached, 'num_val_mc') && ...
+            cached.num_train_mc == num_train_mc && cached.num_val_mc == num_val_mc
+        fprintf('Loading cached ML learning advantage result: %s\n', result_path);
+        plot_learning_advantage(result_path, fig_dir, paper_fig_dir);
+        print_learning_summary(result_path);
+        return;
+    end
+    fprintf('Ignoring cache with MC train=%d, validation=%d; requested train=%d, validation=%d.\n', ...
+        cached.num_train_mc, cached.num_val_mc, num_train_mc, num_val_mc);
 end
 
 fprintf('============================================================\n');

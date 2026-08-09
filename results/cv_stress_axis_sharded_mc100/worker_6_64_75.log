@@ -1,0 +1,11 @@
+[Warning: OpenGL Startup options will be removed in a future release.] 
+[Warning: Function narginchk has the same name as a MATLAB built-in. We suggest
+you rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 96)] 
+{Reference to a cleared variable is_shard.
+
+Error in run_cv_stress_axis_experiment (line 36)
+if is_shard
+   ^^^^^^^^
+} 

@@ -1,4 +1,4 @@
-function run_cv_stress_axis_experiment(num_mc_override, force_rerun)
+function run_cv_stress_axis_experiment(num_mc_override, force_rerun, mc_indices)
 % RUN_CV_STRESS_AXIS_EXPERIMENT
 % Stress-axis diagnostic with CV on the vertical axis.
 %
@@ -11,8 +11,11 @@ end
 if nargin < 2 || isempty(force_rerun)
     force_rerun = false;
 end
-
-clearvars -except num_mc_override force_rerun; close all; clc;
+if nargin < 3 || isempty(mc_indices)
+    mc_indices = [];
+end
+is_shard = ~isempty(mc_indices);
+close all; clc;
 
 sim_dir = fileparts(mfilename('fullpath'));
 out_data_dir = fullfile(sim_dir, 'results');
@@ -26,12 +29,34 @@ num_cv = numel(CV_grid);
 num_mc = num_mc_override;
 scenarios = build_scenarios();
 num_scenarios = numel(scenarios);
+time_budget_seconds = feasibility_time_budgets(scenarios);
+budget_policy = ['Common per-scenario wall-clock budget for both methods; ' ...
+    '2 s for every scenario.'];
+
+if isempty(mc_indices)
+    mc_indices = 1:num_mc;
+else
+    mc_indices = unique(mc_indices(:).', 'stable');
+    if any(mc_indices < 1) || any(mc_indices > num_mc) || ...
+            any(mc_indices ~= floor(mc_indices)) || ...
+            any(diff(mc_indices) ~= 1)
+        error('mc_indices must be a consecutive integer range within 1:num_mc.');
+    end
+end
 
 source_path = fullfile(out_data_dir, sprintf( ...
     'cv_stress_axis_pslr_only_S2S3S4_CV10_NT4_N16_MC%d.mat', num_mc));
+if is_shard
+    source_path = fullfile(out_data_dir, sprintf( ...
+        'cv_stress_axis_pslr_only_S2S3S4_CV10_NT4_N16_MC%d_shard_%03d_%03d.mat', ...
+        num_mc, mc_indices(1), mc_indices(end)));
+end
 
 if exist(source_path, 'file') == 2 && ~force_rerun
-    fprintf('Loading cached CV stress-axis result: %s\n', source_path);
+    fprintf('Using cached CV stress-axis result: %s\n', source_path);
+    if is_shard
+        return;
+    end
     plot_cv_stress_axis_results(source_path);
     print_summary(source_path);
     return;
@@ -52,11 +77,12 @@ fprintf('============================================================\n');
 fprintf('  MC=%d, CV grid=[%s]\n', num_mc, num2str(CV_grid));
 fprintf('  Scenarios: S2 Higher Illumination, S3 More Targets, S4 Joint Stress\n');
 fprintf('  N_T is fixed at 4 for all scenarios.\n');
+fprintf('  Common method budgets by scenario: [%s] s\n', num2str(time_budget_seconds.'));
 fprintf('  Timed runs are quiet; solver-log replay is used for total IPM iterations.\n');
 fprintf('------------------------------------------------------------\n');
 
 t_global = tic;
-total_runs = num_scenarios * num_cv * num_mc * 2;
+total_runs = num_scenarios * num_cv * numel(mc_indices) * 2;
 run_count = 0;
 
 for s = 1:num_scenarios
@@ -66,7 +92,7 @@ for s = 1:num_scenarios
     fprintf('  N_T=%d, N=%d, L=%d, Q=%.2f, P_des=%.2f Pmax/N\n', ...
         params.NT, params.N, params.L, params.Q(1), params.P_des * params.N / params.P_max);
 
-    for mc = 1:num_mc
+    for mc = mc_indices
         rng(2000*s + mc, 'twister');
         H = generate_channel(params);
         alpha0 = init_alpha_qos_safe(H, params);
@@ -101,9 +127,15 @@ for s = 1:num_scenarios
     end
 
     save(source_path, 'CV_grid', 'num_mc', 'scenarios', ...
+        'time_budget_seconds', 'budget_policy', ...
         'prop_success', 'direct_success', 'prop_status', 'direct_status', ...
         'prop_time', 'direct_time', ...
         'prop_cvx_solver_iters', 'direct_cvx_solver_iters');
+end
+
+if is_shard
+    fprintf('Saved Figure 7 shard: %s\n', source_path);
+    return;
 end
 
 plot_cv_stress_axis_results(source_path);
@@ -162,6 +194,8 @@ params.warm_start_cv = false;
 params.stop_if_alpha_unchanged = true;
 params.sdp_quiet = ~collect_solver_log;
 params.collect_cvx_solver_log = collect_solver_log;
+params.cvx_solver = 'mosek';
+params.cvx_solver_threads = 1;
 params.max_iter = 5;
 params.direct_ao_max_iter = 5;
 params.direct_sca_max_iter = 5;
@@ -242,8 +276,13 @@ plot_style = struct( ...
     'line_width', 2.0, ...
     'marker_size', 8.0, ...
     'axes_line_width', cfg.axes_line_width);
-row_limits = {[-5 105], [0 9], [0 160]};
-row_ticks = {[0 50 100], 0:3:9, [0 50 100 150]};
+% Use one shared limit per row, padded only slightly above that row's
+% overall maximum so all three scenario panels remain directly comparable.
+runtime_upper = padded_row_upper([cv_time(:); direct_time(:)], 1);
+ipm_upper = padded_row_upper([cv_ipm(:); direct_ipm(:)], 1);
+row_limits = {[-5 105], [0 runtime_upper], [0 ipm_upper]};
+row_ticks = {[0 50 100], linspace(0, runtime_upper, 5), ...
+    linspace(0, ipm_upper, 6)};
 x_limits = [min(CV)-0.08, max(CV)+0.08];
 
 fig = figure('Position', plot_style.figure_position, 'Color', 'w');
@@ -490,7 +529,7 @@ cv_time_mean = nan(num_scenarios, num_cv);
 direct_time_mean = nan(num_scenarios, num_cv);
 cv_ipm_mean = nan(num_scenarios, num_cv);
 direct_ipm_mean = nan(num_scenarios, num_cv);
-time_budget = feasibility_time_budgets(S.scenarios);
+time_budget = result_time_budgets(S);
 
 for s = 1:num_scenarios
     for c = 1:num_cv
@@ -517,11 +556,35 @@ end
 end
 
 function time_budget = feasibility_time_budgets(scenarios)
-time_budget = 3 * ones(numel(scenarios), 1);
-for s = 1:numel(scenarios)
-    if scenarios(s).L > 4
-        time_budget(s) = 4;
-    end
+% Fixed latency budget, applied identically to CV-SDP and Direct SCA for
+% every scenario.
+time_budget = 2 * ones(numel(scenarios), 1);
+end
+
+function time_budget = result_time_budgets(S)
+if isfield(S, 'time_budget_seconds') && ...
+        numel(S.time_budget_seconds) == numel(S.scenarios)
+    time_budget = S.time_budget_seconds(:);
+else
+    time_budget = feasibility_time_budgets(S.scenarios);
+end
+end
+
+function upper = nice_axis_upper(values, quantum, minimum_upper)
+valid = values(isfinite(values) & values >= 0);
+if isempty(valid)
+    upper = minimum_upper;
+else
+    upper = max(minimum_upper, quantum * ceil(1.08 * max(valid) / quantum));
+end
+end
+
+function upper = padded_row_upper(values, fallback_upper)
+valid = values(isfinite(values) & values >= 0);
+if isempty(valid)
+    upper = fallback_upper;
+else
+    upper = 1.05 * max(valid);
 end
 end
 
@@ -548,7 +611,7 @@ function print_summary(source_path)
 S = load(source_path);
 [cv_feas, direct_feas, runtime_ratio, ipm_ratio] = summarize_grids(S);
 keep = S.CV_grid >= 0.1 - 1e-12;
-time_budget = feasibility_time_budgets(S.scenarios);
+time_budget = result_time_budgets(S);
 fprintf('\nStress-axis summary by scenario:\n');
 for s = 1:numel(S.scenarios)
     fprintf('  %s | budget %.1fs | CV feas %.1f%%, Direct feas %.1f%% | runtime %.1fx | IPM %.1fx\n', ...

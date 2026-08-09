@@ -1,4 +1,4 @@
-function plot_pareto_grid_1x4(num_mc_override)
+function plot_pareto_grid_1x4(num_mc_override, config_indices, mc_indices)
 % PLOT_PARETO_GRID_1X4  Build the PSLR-only 1-by-4 Pareto figure.
 %
 % The four panels use the same configurations and paper styling as the
@@ -8,6 +8,12 @@ function plot_pareto_grid_1x4(num_mc_override)
 
 if nargin < 1
     num_mc_override = [];
+end
+if nargin < 2 || isempty(config_indices)
+    config_indices = 1:4;
+end
+if nargin < 3 || isempty(mc_indices)
+    mc_indices = [];
 end
 
 sim_dir = fileparts(mfilename('fullpath'));
@@ -26,10 +32,21 @@ configs = struct( ...
     'label', {'$N_T=4,N=16$', '$N_T=4,N=32$', ...
               '$N_T=8,N=16$', '$N_T=8,N=32$'});
 
+config_indices = unique(config_indices(:).', 'stable');
+if any(config_indices < 1) || any(config_indices > numel(configs))
+    error('config_indices must contain values from 1 to %d.', numel(configs));
+end
+
 case_data = cell(numel(configs), 1);
-for i = 1:numel(configs)
+for i = config_indices
     case_data{i} = load_or_run_case(configs(i), cache_dir, ...
-        legacy_cache_dir, num_mc_override);
+        legacy_cache_dir, num_mc_override, mc_indices);
+end
+
+if numel(config_indices) < numel(configs)
+    fprintf('Completed configuration indices [%s]. No combined figure was exported.\n', ...
+        num2str(config_indices));
+    return;
 end
 
 cfg = plot_config();
@@ -108,7 +125,7 @@ fprintf('Saved PSLR-only 1x4 Pareto figure to:\n  %s\n  %s\n', ...
     sim_fig_dir, paper_fig_dir);
 end
 
-function S = load_or_run_case(cfg, cache_dir, legacy_cache_dir, num_mc_override)
+function S = load_or_run_case(cfg, cache_dir, legacy_cache_dir, num_mc_override, mc_indices)
 params = setup_params();
 params.NT = cfg.NT;
 params.N = cfg.N;
@@ -121,6 +138,11 @@ end
 cache_name = sprintf('pareto_pslr_NT%d_N%d_MC%d.mat', ...
     cfg.NT, cfg.N, params.num_mc);
 cache_path = fullfile(cache_dir, cache_name);
+if ~isempty(mc_indices)
+    cache_path = fullfile(cache_dir, sprintf( ...
+        'pareto_pslr_NT%d_N%d_MC%d_shard_%03d_%03d.mat', ...
+        cfg.NT, cfg.N, params.num_mc, mc_indices(1), mc_indices(end)));
+end
 legacy_path = fullfile(legacy_cache_dir, sprintf( ...
     'pareto_grid_NT%d_N%d_MC%d.mat', cfg.NT, cfg.N, params.num_mc));
 
@@ -133,12 +155,13 @@ else
         S = migrate_legacy_pslr(legacy, params);
         fprintf('Migrated PSLR data from: %s\n', legacy_path);
     else
-        S = run_reference_curves(params, cache_path);
+        S = [];
     end
-    save(cache_path, '-struct', 'S', '-v7.3');
 end
 
-S = ensure_direct_pslr_curve(S, cache_path);
+    S = run_reference_curves(params, cache_path, S, mc_indices);
+    save(cache_path, '-struct', 'S', '-v7.3');
+S = ensure_direct_pslr_curve(S, cache_path, mc_indices);
 end
 
 function S = migrate_legacy_pslr(legacy, params)
@@ -160,31 +183,43 @@ S.direct_completed_mc = false(1, params.num_mc);
 S.direct_pslr_only_version = 1;
 end
 
-function S = run_reference_curves(params, cache_path)
+function S = run_reference_curves(params, cache_path, S, mc_indices)
 [crb_eta_list, mi_eta_list] = surrogate_eta_lists(params);
 num_cv = numel(params.CV_max_list);
 num_mc = params.num_mc;
 
-S.params = params;
-S.CV_max_list = params.CV_max_list;
-S.sumrate_grid = nan(num_cv, num_mc);
-S.pslr_lin_grid = nan(num_cv, num_mc);
-S.comm_sumrate_grid = nan(1, num_mc);
-S.comm_pslr_lin_grid = nan(1, num_mc);
-S.crb_eta_list = crb_eta_list;
-S.crb_sumrate_grid = nan(numel(crb_eta_list), num_mc);
-S.crb_pslr_lin_grid = nan(numel(crb_eta_list), num_mc);
-S.mi_eta_list = mi_eta_list;
-S.mi_sumrate_grid = nan(numel(mi_eta_list), num_mc);
-S.mi_pslr_lin_grid = nan(numel(mi_eta_list), num_mc);
-S.direct_sumrate_grid = nan(num_cv, num_mc);
-S.direct_pslr_lin_grid = nan(num_cv, num_mc);
-S.direct_completed_mc = false(1, num_mc);
-S.direct_pslr_only_version = 1;
+if isempty(S)
+    S.params = params;
+    S.CV_max_list = params.CV_max_list;
+    S.sumrate_grid = nan(num_cv, num_mc);
+    S.pslr_lin_grid = nan(num_cv, num_mc);
+    S.comm_sumrate_grid = nan(1, num_mc);
+    S.comm_pslr_lin_grid = nan(1, num_mc);
+    S.crb_eta_list = crb_eta_list;
+    S.crb_sumrate_grid = nan(numel(crb_eta_list), num_mc);
+    S.crb_pslr_lin_grid = nan(numel(crb_eta_list), num_mc);
+    S.mi_eta_list = mi_eta_list;
+    S.mi_sumrate_grid = nan(numel(mi_eta_list), num_mc);
+    S.mi_pslr_lin_grid = nan(numel(mi_eta_list), num_mc);
+else
+    S.params = params;
+    if ~isfield(S, 'reference_completed_mc')
+        S.reference_completed_mc = all(isfinite(S.comm_sumrate_grid), 1);
+    end
+end
+if ~isfield(S, 'reference_completed_mc') || numel(S.reference_completed_mc) ~= num_mc
+    S.reference_completed_mc = false(1, num_mc);
+end
 
 fprintf('Running PSLR reference curves: N_T=%d, N=%d, MC=%d\n', ...
     params.NT, params.N, num_mc);
-for mc = 1:num_mc
+if isempty(mc_indices)
+    mc_indices = 1:num_mc;
+end
+for mc = mc_indices
+    if S.reference_completed_mc(mc)
+        continue;
+    end
     rng(mc, 'twister');
     H = generate_channel(params);
 
@@ -210,6 +245,7 @@ for mc = 1:num_mc
 
     S = run_surrogate_curve(S, H, params, 'crb', mc);
     S = run_surrogate_curve(S, H, params, 'mi', mc);
+    S.reference_completed_mc(mc) = true;
     save(cache_path, '-struct', 'S', '-v7.3');
 end
 end
@@ -231,7 +267,7 @@ for e = 1:numel(eta_list)
 end
 end
 
-function S = ensure_direct_pslr_curve(S, cache_path)
+function S = ensure_direct_pslr_curve(S, cache_path, mc_indices)
 num_mc = S.params.num_mc;
 num_cv = numel(S.params.CV_max_list);
 if ~isfield(S, 'direct_sumrate_grid') || ...
@@ -251,7 +287,10 @@ if ~isfield(S, 'direct_pslr_only_version') || ...
     S.direct_pslr_only_version = 1;
 end
 
-for mc = 1:num_mc
+if isempty(mc_indices)
+    mc_indices = 1:num_mc;
+end
+for mc = mc_indices
     if S.direct_completed_mc(mc)
         continue;
     end

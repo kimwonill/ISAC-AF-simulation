@@ -1,0 +1,51 @@
+[Warning: OpenGL Startup options will be removed in a future release.] 
+[Warning: Function narginchk has the same name as a MATLAB built-in. We suggest
+you rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 96)] 
+Merged 4 Figure 7 shards into /home/wonill/work/ISAC-AF-simulation/results/cv_stress_axis_pslr_only_S2S3S4_CV10_NT4_N16_MC100.mat
+Using cached CV stress-axis result: /home/wonill/work/ISAC-AF-simulation/results/cv_stress_axis_pslr_only_S2S3S4_CV10_NT4_N16_MC100.mat
+Saved CV stress-axis figure: /home/wonill/work/ISAC-AF-simulation/figures/CV_Stress_Axis_Diagnostic.pdf
+Saved CV stress-axis figure: /home/wonill/work/ISAC-AF-simulation/figures/CV_Stress_Axis_Diagnostic.png
+Saved CV stress-axis figure: /home/wonill/work/ISAC-AF-simulation/figures/CV_Stress_Axis_Diagnostic_OneColumn_1x3.pdf
+Saved CV stress-axis figure: /home/wonill/work/ISAC-AF-simulation/figures/CV_Stress_Axis_Diagnostic_OneColumn_1x3.png
+
+Stress-axis summary by scenario:
+  S2-Illum | budget 3.0s | CV feas 100.0%, Direct feas 98.6% | runtime 6.9x | IPM 1.4x
+  S3-Tgts | budget 4.0s | CV feas 100.0%, Direct feas 95.1% | runtime 8.2x | IPM 1.4x
+  S4-Joint | budget 3.0s | CV feas 100.0%, Direct feas 99.5% | runtime 6.9x | IPM 1.4x
+
+By CV target:
+  S2-Illum
+    CV=0.1: feasibility CV 100%, Direct 96% | runtime 8.6x | IPM 1.8x
+    CV=0.2: feasibility CV 100%, Direct 97% | runtime 8.7x | IPM 1.7x
+    CV=0.3: feasibility CV 100%, Direct 96% | runtime 8.9x | IPM 1.8x
+    CV=0.4: feasibility CV 100%, Direct 99% | runtime 7.3x | IPM 1.5x
+    CV=0.5: feasibility CV 100%, Direct 100% | runtime 6.1x | IPM 1.3x
+    CV=0.6: feasibility CV 100%, Direct 100% | runtime 5.8x | IPM 1.1x
+    CV=0.7: feasibility CV 100%, Direct 100% | runtime 5.8x | IPM 1.2x
+    CV=0.8: feasibility CV 100%, Direct 99% | runtime 5.9x | IPM 1.2x
+    CV=0.9: feasibility CV 100%, Direct 100% | runtime 6.0x | IPM 1.2x
+    CV=1.0: feasibility CV 100%, Direct 99% | runtime 6.1x | IPM 1.4x
+  S3-Tgts
+    CV=0.1: feasibility CV 100%, Direct 56% | runtime 13.2x | IPM 2.3x
+    CV=0.2: feasibility CV 100%, Direct 96% | runtime 10.3x | IPM 1.7x
+    CV=0.3: feasibility CV 100%, Direct 100% | runtime 9.7x | IPM 1.8x
+    CV=0.4: feasibility CV 100%, Direct 100% | runtime 8.6x | IPM 1.5x
+    CV=0.5: feasibility CV 100%, Direct 100% | runtime 6.8x | IPM 1.2x
+    CV=0.6: feasibility CV 100%, Direct 100% | runtime 6.7x | IPM 1.2x
+    CV=0.7: feasibility CV 100%, Direct 100% | runtime 6.7x | IPM 1.1x
+    CV=0.8: feasibility CV 100%, Direct 99% | runtime 6.8x | IPM 1.2x
+    CV=0.9: feasibility CV 100%, Direct 100% | runtime 6.7x | IPM 1.2x
+    CV=1.0: feasibility CV 100%, Direct 100% | runtime 6.7x | IPM 1.2x
+  S4-Joint
+    CV=0.1: feasibility CV 100%, Direct 98% | runtime 8.6x | IPM 1.8x
+    CV=0.2: feasibility CV 100%, Direct 98% | runtime 8.7x | IPM 1.8x
+    CV=0.3: feasibility CV 100%, Direct 100% | runtime 8.5x | IPM 1.7x
+    CV=0.4: feasibility CV 100%, Direct 99% | runtime 6.9x | IPM 1.4x
+    CV=0.5: feasibility CV 100%, Direct 100% | runtime 6.0x | IPM 1.2x
+    CV=0.6: feasibility CV 100%, Direct 100% | runtime 5.9x | IPM 1.2x
+    CV=0.7: feasibility CV 100%, Direct 100% | runtime 6.0x | IPM 1.2x
+    CV=0.8: feasibility CV 100%, Direct 100% | runtime 6.0x | IPM 1.3x
+    CV=0.9: feasibility CV 100%, Direct 100% | runtime 6.0x | IPM 1.3x
+    CV=1.0: feasibility CV 100%, Direct 100% | runtime 6.0x | IPM 1.3x

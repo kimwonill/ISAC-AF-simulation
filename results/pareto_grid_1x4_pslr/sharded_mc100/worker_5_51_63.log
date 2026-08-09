@@ -1,0 +1,158 @@
+[Warning: OpenGL Startup options will be removed in a future release.] 
+[Warning: Function narginchk has the same name as a MATLAB built-in. We suggest
+you rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 96)] 
+Running PSLR reference curves: N_T=8, N=32, MC=100
+CVX Warning:
+   Models involving "log" or other functions in the log, exp, and entropy
+   family are solved using an experimental successive approximation method.
+   This method is slower and less reliable than the method CVX employs for
+   other models. Please see the section of the user's guide entitled
+       <a href="file:////home/wonill/matlab/cvx/doc/advanced.html#the-successive-approximation-method">The successive approximation method</a>
+   for more details about the approach, and for instructions on how to
+   suppress this warning message in the future.
+Direct PSLR-only: N_T=8, N=32, MC=51/100
+  CV 0.0: SR 161.16, PSLR 20.04 dB, Solved
+  CV 0.1: SR 162.79, PSLR 19.52 dB, Solved
+  CV 0.2: SR 163.99, PSLR 18.22 dB, Solved
+  CV 0.3: SR 164.91, PSLR 16.66 dB, Solved
+  CV 0.4: SR 165.54, PSLR 15.14 dB, Solved
+  CV 0.5: SR 165.90, PSLR 13.79 dB, Solved
+  CV 0.6: SR 166.12, PSLR 12.62 dB, Solved
+  CV 0.7: SR 166.24, PSLR 11.59 dB, Solved
+  CV 0.8: SR 166.31, PSLR 10.54 dB, Solved
+  CV 0.9: SR 166.34, PSLR 9.61 dB, Solved
+Direct PSLR-only: N_T=8, N=32, MC=52/100
+  CV 0.0: SR 162.55, PSLR 20.04 dB, Solved
+  CV 0.1: SR 164.33, PSLR 19.29 dB, Solved
+  CV 0.2: SR 165.52, PSLR 17.60 dB, Solved
+  CV 0.3: SR 166.23, PSLR 15.76 dB, Solved
+  CV 0.4: SR 166.58, PSLR 14.07 dB, Solved
+  CV 0.5: SR 166.75, PSLR 12.56 dB, Solved
+  CV 0.6: SR 166.84, PSLR 11.20 dB, Solved
+  CV 0.7: SR 166.89, PSLR 9.99 dB, Solved
+  CV 0.8: SR 166.92, PSLR 8.94 dB, Solved
+  CV 0.9: SR 166.93, PSLR 8.07 dB, Solved
+Direct PSLR-only: N_T=8, N=32, MC=53/100
+  CV 0.0: SR 160.30, PSLR 20.04 dB, Solved
+  CV 0.1: SR 161.96, PSLR 19.41 dB, Solved
+  CV 0.2: SR 163.01, PSLR 18.05 dB, Solved
+  CV 0.3: SR 163.76, PSLR 16.50 dB, Solved
+  CV 0.4: SR 164.26, PSLR 14.96 dB, Solved
+  CV 0.5: SR 164.58, PSLR 13.22 dB, Solved
+  CV 0.6: SR 164.71, PSLR 11.65 dB, Solved
+  CV 0.7: SR 164.76, PSLR 10.33 dB, Solved
+  CV 0.8: SR 164.77, PSLR 9.28 dB, Solved
+  CV 0.9: SR 164.77, PSLR 8.71 dB, Solved
+Direct PSLR-only: N_T=8, N=32, MC=54/100
+  CV 0.0: SR 162.92, PSLR 20.04 dB, Solved
+  CV 0.1: SR 164.48, PSLR 19.50 dB, Solved
+  CV 0.2: SR 165.63, PSLR 18.19 dB, Solved
+  CV 0.3: SR 166.51, PSLR 16.64 dB, Solved
+  CV 0.4: SR 167.12, PSLR 15.12 dB, Solved
+  CV 0.5: SR 167.47, PSLR 13.74 dB, Solved
+  CV 0.6: SR 167.63, PSLR 12.52 dB, Solved
+  CV 0.7: SR 167.71, PSLR 11.44 dB, Solved
+  CV 0.8: SR 167.75, PSLR 10.32 dB, Solved
+  CV 0.9: SR 167.75, PSLR 9.64 dB, Solved
+Direct PSLR-only: N_T=8, N=32, MC=55/100
+  CV 0.0: SR 158.54, PSLR 20.04 dB, Solved
+  CV 0.1: SR 160.32, PSLR 19.42 dB, Solved
+  CV 0.2: SR 161.68, PSLR 17.92 dB, Solved
+  CV 0.3: SR 162.68, PSLR 16.16 dB, Solved
+  CV 0.4: SR 163.28, PSLR 14.45 dB, Solved
+  CV 0.5: SR 163.60, PSLR 12.87 dB, Solved
+  CV 0.6: SR 163.76, PSLR 11.46 dB, Solved
+  CV 0.7: SR 163.83, PSLR 10.22 dB, Solved
+  CV 0.8: SR 163.85, PSLR 9.17 dB, Solved
+  CV 0.9: SR 163.85, PSLR 8.91 dB, Solved
+Direct PSLR-only: N_T=8, N=32, MC=56/100
+  CV 0.0: SR 161.50, PSLR 20.04 dB, Solved
+  CV 0.1: SR 163.37, PSLR 19.23 dB, Solved
+  CV 0.2: SR 164.69, PSLR 17.38 dB, Solved
+  CV 0.3: SR 165.49, PSLR 15.32 dB, Solved
+  CV 0.4: SR 165.83, PSLR 13.38 dB, Solved
+  CV 0.5: SR 165.95, PSLR 11.58 dB, Solved
+  CV 0.6: SR 165.99, PSLR 10.02 dB, Solved
+  CV 0.7: SR 166.00, PSLR 8.95 dB, Solved
+  CV 0.8: SR 166.00, PSLR 8.95 dB, Solved
+  CV 0.9: SR 166.00, PSLR 8.95 dB, Solved
+Direct PSLR-only: N_T=8, N=32, MC=57/100
+  CV 0.0: SR 160.61, PSLR 20.04 dB, Solved
+  CV 0.1: SR 162.50, PSLR 19.45 dB, Solved
+  CV 0.2: SR 163.85, PSLR 18.05 dB, Solved
+  CV 0.3: SR 164.87, PSLR 16.36 dB, Solved
+  CV 0.4: SR 165.53, PSLR 14.72 dB, Solved
+  CV 0.5: SR 165.88, PSLR 13.27 dB, Solved
+  CV 0.6: SR 166.05, PSLR 12.06 dB, Solved
+  CV 0.7: SR 166.15, PSLR 10.79 dB, Solved
+  CV 0.8: SR 166.22, PSLR 9.51 dB, Solved
+  CV 0.9: SR 166.25, PSLR 8.41 dB, Solved
+Direct PSLR-only: N_T=8, N=32, MC=58/100
+  CV 0.0: SR 163.69, PSLR 20.04 dB, Solved
+  CV 0.1: SR 165.32, PSLR 19.45 dB, Solved
+  CV 0.2: SR 166.53, PSLR 18.03 dB, Solved
+  CV 0.3: SR 167.41, PSLR 16.37 dB, Solved
+  CV 0.4: SR 167.91, PSLR 14.82 dB, Solved
+  CV 0.5: SR 168.12, PSLR 13.59 dB, Solved
+  CV 0.6: SR 168.22, PSLR 12.52 dB, Solved
+  CV 0.7: SR 168.27, PSLR 11.10 dB, Solved
+  CV 0.8: SR 168.29, PSLR 9.80 dB, Solved
+  CV 0.9: SR 168.30, PSLR 8.62 dB, Solved
+Direct PSLR-only: N_T=8, N=32, MC=59/100
+  CV 0.0: SR 160.43, PSLR 20.04 dB, Solved
+  CV 0.1: SR 161.98, PSLR 19.50 dB, Solved
+  CV 0.2: SR 163.12, PSLR 18.17 dB, Solved
+  CV 0.3: SR 163.92, PSLR 16.58 dB, Solved
+  CV 0.4: SR 164.40, PSLR 15.10 dB, Solved
+  CV 0.5: SR 164.66, PSLR 13.90 dB, Solved
+  CV 0.6: SR 164.86, PSLR 12.24 dB, Solved
+  CV 0.7: SR 164.94, PSLR 10.75 dB, Solved
+  CV 0.8: SR 164.94, PSLR 10.67 dB, Solved
+  CV 0.9: SR 164.95, PSLR 10.20 dB, Solved
+Direct PSLR-only: N_T=8, N=32, MC=60/100
+  CV 0.0: SR 162.07, PSLR 20.04 dB, Solved
+  CV 0.1: SR 163.84, PSLR 19.43 dB, Solved
+  CV 0.2: SR 164.89, PSLR 17.98 dB, Solved
+  CV 0.3: SR 165.67, PSLR 16.29 dB, Solved
+  CV 0.4: SR 166.21, PSLR 14.62 dB, Solved
+  CV 0.5: SR 166.60, PSLR 13.01 dB, Solved
+  CV 0.6: SR 166.83, PSLR 11.54 dB, Solved
+  CV 0.7: SR 166.92, PSLR 10.30 dB, Solved
+  CV 0.8: SR 166.94, PSLR 9.30 dB, Solved
+  CV 0.9: SR 166.94, PSLR 8.62 dB, Solved
+Direct PSLR-only: N_T=8, N=32, MC=61/100
+  CV 0.0: SR 161.14, PSLR 20.04 dB, Solved
+  CV 0.1: SR 162.64, PSLR 19.55 dB, Solved
+  CV 0.2: SR 163.71, PSLR 18.35 dB, Solved
+  CV 0.3: SR 164.48, PSLR 16.90 dB, Solved
+  CV 0.4: SR 164.98, PSLR 15.49 dB, Solved
+  CV 0.5: SR 165.27, PSLR 14.23 dB, Solved
+  CV 0.6: SR 165.41, PSLR 13.12 dB, Solved
+  CV 0.7: SR 165.46, PSLR 12.16 dB, Solved
+  CV 0.8: SR 165.47, PSLR 11.45 dB, Solved
+  CV 0.9: SR 165.47, PSLR 10.99 dB, Solved
+Direct PSLR-only: N_T=8, N=32, MC=62/100
+  CV 0.0: SR 162.57, PSLR 20.04 dB, Solved
+  CV 0.1: SR 164.25, PSLR 19.40 dB, Solved
+  CV 0.2: SR 165.53, PSLR 17.92 dB, Solved
+  CV 0.3: SR 166.41, PSLR 16.25 dB, Solved
+  CV 0.4: SR 166.88, PSLR 14.65 dB, Solved
+  CV 0.5: SR 167.13, PSLR 13.17 dB, Solved
+  CV 0.6: SR 167.25, PSLR 11.79 dB, Solved
+  CV 0.7: SR 167.30, PSLR 10.49 dB, Solved
+  CV 0.8: SR 167.33, PSLR 9.29 dB, Solved
+  CV 0.9: SR 167.33, PSLR 8.45 dB, Solved
+Direct PSLR-only: N_T=8, N=32, MC=63/100
+  CV 0.0: SR 162.79, PSLR 20.04 dB, Solved
+  CV 0.1: SR 164.41, PSLR 19.41 dB, Solved
+  CV 0.2: SR 165.61, PSLR 17.91 dB, Solved
+  CV 0.3: SR 166.40, PSLR 16.20 dB, Solved
+  CV 0.4: SR 166.85, PSLR 14.43 dB, Solved
+  CV 0.5: SR 167.07, PSLR 12.76 dB, Solved
+  CV 0.6: SR 167.15, PSLR 11.38 dB, Solved
+  CV 0.7: SR 167.18, PSLR 10.24 dB, Solved
+  CV 0.8: SR 167.19, PSLR 9.31 dB, Solved
+  CV 0.9: SR 167.19, PSLR 8.97 dB, Solved
+Completed configuration indices [4]. No combined figure was exported.

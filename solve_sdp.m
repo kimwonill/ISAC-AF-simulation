@@ -36,6 +36,7 @@ collect_solver_log = isfield(params, 'collect_cvx_solver_log') && params.collect
 cvx_log_text = '';
 
 cvx_clear   % discard any stale CVX scope from a prior interrupted solve
+configure_solver(params);
 if params.sdp_quiet && ~collect_solver_log, cvx_begin sdp quiet; else, cvx_begin sdp; end %#ok<NOSEMI>
     variable W(NT, NT, N) hermitian semidefinite
 
@@ -107,6 +108,17 @@ else
     sumrate = NaN;
 end
 
+end
+
+function configure_solver(params)
+if isfield(params, 'cvx_solver') && ~isempty(params.cvx_solver)
+    cvx_solver(params.cvx_solver);
+end
+if isfield(params, 'cvx_solver_threads') && ...
+        isfinite(params.cvx_solver_threads) && params.cvx_solver_threads > 0
+    cvx_solver_settings('MSK_IPAR_NUM_THREADS', ...
+        round(params.cvx_solver_threads));
+end
 end
 
 function value = sum_finite(value)

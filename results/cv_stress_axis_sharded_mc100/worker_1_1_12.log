@@ -1,0 +1,105 @@
+[Warning: OpenGL Startup options will be removed in a future release.] 
+[Warning: Function narginchk has the same name as a MATLAB built-in. We suggest
+you rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 96)] 
+============================================================
+  CV Stress-Axis Diagnostic: CV-SDP vs Direct PSLR SCA
+============================================================
+  MC=100, CV grid=[0         0.1         0.2         0.3         0.4         0.5         0.6         0.7         0.8         0.9           1]
+  Scenarios: S2 Higher Illumination, S3 More Targets, S4 Joint Stress
+  N_T is fixed at 4 for all scenarios.
+  Common method budgets by scenario: [3  4  3] s
+  Timed runs are quiet; solver-log replay is used for total IPM iterations.
+------------------------------------------------------------
+Scenario 1/3: S2 Higher Illumination
+  N_T=4, N=16, L=4, Q=1.00, P_des=1.10 Pmax/N
+TBB Warning: The number of workers is currently limited to 0. The request for 31 workers is ignored. Further requests for more workers will be silently ignored until the limit changes.
+
+CVX Warning:
+   Models involving "log" or other functions in the log, exp, and entropy
+   family are solved using an experimental successive approximation method.
+   This method is slower and less reliable than the method CVX employs for
+   other models. Please see the section of the user's guide entitled
+       <a href="file:////home/wonill/matlab/cvx/doc/advanced.html#the-successive-approximation-method">The successive approximation method</a>
+   for more details about the approach, and for instructions on how to
+   suppress this warning message in the future.
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[  0.1%   1/792] CV-SDP S2-Illum MC 1/100 CV=0.0 | time=  1.47s | IPM=   25 | Solved | ETA 25.6min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[  0.3%   2/792] Direct S2-Illum MC 1/100 CV=0.0 | time=  1.19s | IPM=   18 | Infeasible | ETA 26.3min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[  0.4%   3/792] CV-SDP S2-Illum MC 1/100 CV=0.1 | time=  0.32s | IPM=   16 | Solved | ETA 20.3min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[  0.5%   4/792] Direct S2-Illum MC 1/100 CV=0.1 | time=  2.62s | IPM=   36 | Solved | ETA 32.1min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[  0.6%   5/792] CV-SDP S2-Illum MC 1/100 CV=0.2 | time=  0.27s | IPM=   17 | Solved | ETA 27.0min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[  0.8%   6/792] Direct S2-Illum MC 1/100 CV=0.2 | time=  2.34s | IPM=   39 | Solved | ETA 32.6min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[  0.9%   7/792] CV-SDP S2-Illum MC 1/100 CV=0.3 | time=  0.27s | IPM=   21 | Solved | ETA 28.9min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[  1.0%   8/792] Direct S2-Illum MC 1/100 CV=0.3 | time=  2.46s | IPM=   39 | Solved | ETA 33.1min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[  1.1%   9/792] CV-SDP S2-Illum MC 1/100 CV=0.4 | time=  0.23s | IPM=   18 | Solved | ETA 30.0min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[  1.3%  10/792] Direct S2-Illum MC 1/100 CV=0.4 | time=  2.17s | IPM=   39 | Solved | ETA 32.7min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[  1.4%  11/792] CV-SDP S2-Illum MC 1/100 CV=0.5 | time=  0.24s | IPM=   17 | Solved | ETA 30.3min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[  1.5%  12/792] Direct S2-Illum MC 1/100 CV=0.5 | time=  2.19s | IPM=   37 | Solved | ETA 32.5min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[  1.6%  13/792] CV-SDP S2-Illum MC 1/100 CV=0.6 | time=  0.25s | IPM=   17 | Solved | ETA 30.4min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[  1.8%  14/792] Direct S2-Illum MC 1/100 CV=0.6 | time=  1.47s | IPM=   26 | Solved | ETA 31.0min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[  1.9%  15/792] CV-SDP S2-Illum MC 1/100 CV=0.7 | time=  0.25s | IPM=   19 | Solved | ETA 29.3min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[  2.0%  16/792] Direct S2-Illum MC 1/100 CV=0.7 | time=  1.48s | IPM=   26 | Solved | ETA 29.8min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[  2.1%  17/792] CV-SDP S2-Illum MC 1/100 CV=0.8 | time=  0.26s | IPM=   22 | Solved | ETA 28.4min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------

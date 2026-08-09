@@ -1,0 +1,58 @@
+[Warning: OpenGL Startup options will be removed in a future release.] 
+[Warning: Function narginchk has the same name as a MATLAB built-in. We suggest
+you rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 96)] 
+============================================================
+  CV Stress-Axis Diagnostic: CV-SDP vs Direct PSLR SCA
+============================================================
+  MC=16, CV grid=[0         0.1         0.2         0.3         0.4         0.5         0.6         0.7         0.8         0.9           1]
+  Scenarios: S2 Higher Illumination, S3 More Targets, S4 Joint Stress
+  N_T is fixed at 4 for all scenarios.
+  Timed runs are quiet; solver-log replay is used for total IPM iterations.
+------------------------------------------------------------
+Scenario 1/3: S2 Higher Illumination
+  N_T=4, N=16, L=4, Q=1.00, P_des=1.10 Pmax/N
+CVX Warning:
+   Models involving "log" or other functions in the log, exp, and entropy
+   family are solved using an experimental successive approximation method.
+   This method is slower and less reliable than the method CVX employs for
+   other models. Please see the section of the user's guide entitled
+       <a href="file:////home/wonill/matlab/cvx/doc/advanced.html#the-successive-approximation-method">The successive approximation method</a>
+   for more details about the approach, and for instructions on how to
+   suppress this warning message in the future.
+[  0.1%   1/1056] CV-SDP S2-Illum MC 9/16 CV=0.0 | time=  3.07s | IPM=  188 | Solved | ETA 1.4h
+[  0.2%   2/1056] Direct S2-Illum MC 9/16 CV=0.0 | time=  1.68s | IPM=   35 | Infeasible | ETA 1.2h
+[  0.3%   3/1056] CV-SDP S2-Illum MC 9/16 CV=0.1 | time=  0.97s | IPM=   87 | Solved | ETA 58.4min
+[  0.4%   4/1056] Direct S2-Illum MC 9/16 CV=0.1 | time=  9.07s | IPM=  324 | Solved | ETA 2.1h
+[  0.5%   5/1056] CV-SDP S2-Illum MC 9/16 CV=0.2 | time=  0.91s | IPM=   87 | Solved | ETA 1.8h
+[  0.6%   6/1056] Direct S2-Illum MC 9/16 CV=0.2 | time=  9.82s | IPM=  366 | Solved | ETA 2.4h
+[  0.7%   7/1056] CV-SDP S2-Illum MC 9/16 CV=0.3 | time=  0.89s | IPM=   88 | Solved | ETA 2.2h
+[  0.8%   8/1056] Direct S2-Illum MC 9/16 CV=0.3 | time= 17.02s | IPM=  631 | Solved | ETA 3.1h
+[  0.9%   9/1056] CV-SDP S2-Illum MC 9/16 CV=0.4 | time=  1.04s | IPM=  106 | Solved | ETA 2.8h
+[  0.9%  10/1056] Direct S2-Illum MC 9/16 CV=0.4 | time=  6.49s | IPM=  239 | Solved | ETA 2.9h
+[  1.0%  11/1056] CV-SDP S2-Illum MC 9/16 CV=0.5 | time=  1.06s | IPM=  109 | Solved | ETA 2.7h
+[  1.1%  12/1056] Direct S2-Illum MC 9/16 CV=0.5 | time=  6.24s | IPM=  226 | Solved | ETA 2.8h
+[  1.2%  13/1056] CV-SDP S2-Illum MC 9/16 CV=0.6 | time=  1.11s | IPM=  119 | Solved | ETA 2.6h
+[  1.3%  14/1056] Direct S2-Illum MC 9/16 CV=0.6 | time=  6.32s | IPM=  231 | Solved | ETA 2.7h
+[  1.4%  15/1056] CV-SDP S2-Illum MC 9/16 CV=0.7 | time=  1.07s | IPM=  110 | Solved | ETA 2.5h
+[  1.5%  16/1056] Direct S2-Illum MC 9/16 CV=0.7 | time=  6.18s | IPM=  225 | Solved | ETA 2.6h
+[  1.6%  17/1056] CV-SDP S2-Illum MC 9/16 CV=0.8 | time=  1.11s | IPM=  119 | Solved | ETA 2.5h
+[  1.7%  18/1056] Direct S2-Illum MC 9/16 CV=0.8 | time=  6.00s | IPM=  216 | Solved | ETA 2.5h
+[  1.8%  19/1056] CV-SDP S2-Illum MC 9/16 CV=0.9 | time=  1.09s | IPM=  111 | Solved | ETA 2.4h
+[  1.9%  20/1056] Direct S2-Illum MC 9/16 CV=0.9 | time=  5.80s | IPM=  205 | Solved | ETA 2.5h
+[  2.0%  21/1056] CV-SDP S2-Illum MC 9/16 CV=1.0 | time=  1.08s | IPM=  112 | Solved | ETA 2.4h
+[  2.1%  22/1056] Direct S2-Illum MC 9/16 CV=1.0 | time=  5.68s | IPM=  196 | Solved | ETA 2.4h
+[  2.2%  23/1056] CV-SDP S2-Illum MC 10/16 CV=0.0 | time=  1.83s | IPM=  235 | Solved | ETA 2.4h
+[  2.3%  24/1056] Direct S2-Illum MC 10/16 CV=0.0 | time=  1.93s | IPM=   55 | Infeasible | ETA 2.3h
+[  2.4%  25/1056] CV-SDP S2-Illum MC 10/16 CV=0.1 | time=  1.14s | IPM=  125 | Solved | ETA 2.2h
+[  2.5%  26/1056] Direct S2-Illum MC 10/16 CV=0.1 | time=  9.02s | IPM=  323 | Solved | ETA 2.4h
+[  2.6%  27/1056] CV-SDP S2-Illum MC 10/16 CV=0.2 | time=  1.09s | IPM=  115 | Solved | ETA 2.3h
+[  2.7%  28/1056] Direct S2-Illum MC 10/16 CV=0.2 | time=  9.28s | IPM=  342 | Solved | ETA 2.4h
+[  2.7%  29/1056] CV-SDP S2-Illum MC 10/16 CV=0.3 | time=  1.10s | IPM=  120 | Solved | ETA 2.3h
+[  2.8%  30/1056] Direct S2-Illum MC 10/16 CV=0.3 | time= 11.38s | IPM=  450 | Solved | ETA 2.5h
+[  2.9%  31/1056] CV-SDP S2-Illum MC 10/16 CV=0.4 | time=  1.08s | IPM=  115 | Solved | ETA 2.4h
+[  3.0%  32/1056] Direct S2-Illum MC 10/16 CV=0.4 | time= 10.72s | IPM=  413 | Solved | ETA 2.5h
+[  3.1%  33/1056] CV-SDP S2-Illum MC 10/16 CV=0.5 | time=  1.06s | IPM=  112 | Solved | ETA 2.5h
+[  3.2%  34/1056] Direct S2-Illum MC 10/16 CV=0.5 | time= 11.46s | IPM=  445 | Solved | ETA 2.6h
+[  3.3%  35/1056] CV-SDP S2-Illum MC 10/16 CV=0.6 | time=  1.11s | IPM=  123 | Solved | ETA 2.5h
