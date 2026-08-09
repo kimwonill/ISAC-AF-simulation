@@ -11,11 +11,33 @@ cfg.axes_font = 28;
 cfg.label_font = 32;
 cfg.title_font = 33;
 cfg.legend_font = 30;
+cfg.pdes_legend_font = max(cfg.legend_font - 9, 1);
 cfg.panel_caption_font = 31;
 cfg.axes_line_width = 1.1;
-cfg.line_width = 2.0;
-cfg.marker_size = 9.0;
+cfg.line_width = 2.2;
+cfg.secondary_line_width = 1.4;
+cfg.marker_size = 9.4;
+cfg.compact_marker_size = 6.0;
+cfg.simulation_marker_size = 5.0;
+cfg.simulation_scatter_size = 22;
+cfg.marker_edge_width = 0.8;
+cfg.boundary_marker_size = 18;
 cfg.scatter_size = cfg.marker_size^2;
+cfg.band_face_alpha = 0.16;
+cfg.region_face_alpha = 0.10;
+cfg.grid_color = [0.78 0.78 0.78];
+cfg.grid_alpha = 0.45;
+cfg.grid_line_style = ':';
+cfg.minor_grid_color = [0.86 0.86 0.86];
+cfg.minor_grid_alpha = 0.22;
+cfg.legend_background_color = [1 1 1];
+cfg.legend_edge_color = [0.15 0.15 0.15];
+cfg.legend_face_alpha = 0.94;
+cfg.axis_padding_fraction = 0.05;
+cfg.axis_minimum_span = 1e-6;
+cfg.full_width_font_scale = 0.65;
+cfg.tall_panel_font_scale = 18 / cfg.axes_font;
+cfg.compact_panel_font_scale = 12 / cfg.axes_font;
 cfg.tight_layout = true;
 cfg.tile_spacing = 'compact';
 cfg.tile_padding = 'tight';
@@ -89,6 +111,11 @@ for i = 1:numel(axes_list)
         set(axes_list(i), 'LineWidth', cfg.axes_line_width, ...
             'Layer', 'top', ...
             'FontSize', cfg.axes_font, ...
+            'GridColor', cfg.grid_color, ...
+            'GridAlpha', cfg.grid_alpha, ...
+            'GridLineStyle', cfg.grid_line_style, ...
+            'MinorGridColor', cfg.minor_grid_color, ...
+            'MinorGridAlpha', cfg.minor_grid_alpha, ...
             'LabelFontSizeMultiplier', 1);
         set(get(axes_list(i), 'XLabel'), 'FontSize', cfg.label_font);
         set(get(axes_list(i), 'YLabel'), 'FontSize', cfg.label_font);
@@ -101,35 +128,14 @@ for i = 1:numel(axes_list)
     end
 end
 
-marker_objects = findall(target, '-property', 'MarkerSize');
-for i = 1:numel(marker_objects)
-    try
-        if isprop(marker_objects(i), 'Marker') && ...
-                strcmpi(get(marker_objects(i), 'Marker'), 'none')
-            continue;
-        end
-        current_size = get(marker_objects(i), 'MarkerSize');
-        if isscalar(current_size) && current_size < cfg.marker_size
-            set(marker_objects(i), 'MarkerSize', cfg.marker_size);
-        end
-    catch
-    end
-end
-
-scatter_list = findall(target, 'Type', 'scatter');
-for i = 1:numel(scatter_list)
-    try
-        current_size = get(scatter_list(i), 'SizeData');
-        set(scatter_list(i), 'SizeData', max(current_size, cfg.scatter_size));
-    catch
-    end
-end
-
 legend_list = findall(target, 'Type', 'legend');
 for i = 1:numel(legend_list)
     try
         set(legend_list(i), 'FontName', cfg.font_name, ...
-            'FontSize', cfg.legend_font);
+            'FontSize', cfg.legend_font, ...
+            'Color', cfg.legend_background_color, ...
+            'EdgeColor', cfg.legend_edge_color, ...
+            'Box', 'on');
     catch
     end
 end

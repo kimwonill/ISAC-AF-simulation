@@ -1,19 +1,14 @@
-function islr = compute_islr(P, kappa)
-% COMPUTE_ISLR  Expected ISLR (linear, not dB) from a directional power
-% profile P = [P_0; ...; P_{N-1}].
+function islr = compute_islr(P, ~)
+% COMPUTE_ISLR  Expected ISLR of the full periodic N-by-N AF.
 %
-% Formula (paper Eq. line 296):
-%   ISLR = N[(kappa-1/2) sum P_n^2 + 1/2 (sum P_n)^2]
-%        / [(kappa-1)   sum P_n^2 +       (sum P_n)^2]   - 1
+% With the corrected circular correlation in the total-AF-energy
+% derivation and a unitary DFT matrix, the expected sidelobe-to-mainlobe
+% ratio is independent of both the directional-power profile and the
+% symbol fourth moment:
 %
-% Lower ISLR is better (less total sidelobe energy relative to the mainlobe).
+%   ISLR = N - 1.
 
-N        = length(P);
-sq       = sum(P.^2);
-sumsq    = sum(P)^2;
-
-numer    = N * ((kappa - 0.5) * sq + 0.5 * sumsq);
-denom    = (kappa - 1) * sq + sumsq;
-islr     = numer / denom - 1;
+N = length(P);
+islr = N - 1;
 
 end

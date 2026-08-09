@@ -760,6 +760,11 @@ end
 function plot_learning_advantage(result_path, fig_dir, paper_fig_dir)
 M = load(result_path);
 cfg = plot_config();
+font_scale = cfg.compact_panel_font_scale;
+axes_font = round(font_scale * cfg.axes_font);
+label_font = round(font_scale * cfg.label_font);
+title_font = round(font_scale * cfg.title_font);
+legend_font = round(font_scale * cfg.legend_font);
 fig = figure('Position', [80 80 760 405], 'Color', 'w');
 palette = paper_palette();
 cv_color = palette(1, :);
@@ -767,41 +772,52 @@ direct_color = palette(2, :);
 ax1 = axes(fig, 'Position', [0.125 0.225 0.320 0.485]);
 hold(ax1, 'on'); grid(ax1, 'on'); box(ax1, 'on');
 h_cv = plot(ax1, M.sweep.CV_grid, M.sweep.cv_sensing_feasibility, '-o', ...
-    'Color', cv_color, 'MarkerFaceColor', cv_color, 'LineWidth', 1.8, 'MarkerSize', 6);
+    'Color', cv_color, 'MarkerFaceColor', cv_color, ...
+    'LineWidth', cfg.secondary_line_width, 'MarkerSize', cfg.compact_marker_size);
 h_direct = plot(ax1, M.sweep.CV_grid, M.sweep.direct_sensing_feasibility, '--s', ...
-    'Color', direct_color, 'MarkerFaceColor', direct_color, 'LineWidth', 1.8, 'MarkerSize', 6);
+    'Color', direct_color, 'MarkerFaceColor', direct_color, ...
+    'LineWidth', cfg.secondary_line_width, 'MarkerSize', cfg.compact_marker_size);
 xlabel(ax1, 'CV_{max}', 'Interpreter', 'tex');
 ylabel(ax1, 'Feasibility');
 title(ax1, '(a) Constraint tightness', 'FontWeight', 'normal');
-xlim(ax1, [-0.04 1.04]); ylim(ax1, [-0.04 1.04]);
+xlim(ax1, valid_axis_limits(M.sweep.CV_grid, cfg, 'Clip', [0 1]));
+ylim(ax1, [0 1]);
 xticks(ax1, [0.5 1.0]); yticks(ax1, [0 0.5 1]);
 
 ax2 = axes(fig, 'Position', [0.635 0.225 0.320 0.485]);
 hold(ax2, 'on'); grid(ax2, 'on'); box(ax2, 'on');
 plot(ax2, M.sweep.CV_grid, M.sweep.cv_sumrate, '-o', ...
-    'Color', cv_color, 'MarkerFaceColor', cv_color, 'LineWidth', 1.8, 'MarkerSize', 6);
+    'Color', cv_color, 'MarkerFaceColor', cv_color, ...
+    'LineWidth', cfg.secondary_line_width, 'MarkerSize', cfg.compact_marker_size);
 plot(ax2, M.sweep.CV_grid, M.sweep.direct_sumrate, '--s', ...
-    'Color', direct_color, 'MarkerFaceColor', direct_color, 'LineWidth', 1.8, 'MarkerSize', 6);
+    'Color', direct_color, 'MarkerFaceColor', direct_color, ...
+    'LineWidth', cfg.secondary_line_width, 'MarkerSize', cfg.compact_marker_size);
 xlabel(ax2, 'CV_{max}', 'Interpreter', 'tex');
 ylabel(ax2, 'Rate (bps/Hz)');
 title(ax2, '(b) Fixed training budget', 'FontWeight', 'normal');
-xlim(ax2, [-0.04 1.04]); xticks(ax2, [0.5 1.0]);
-ylim(ax2, [0 90]);
-yticks(ax2, [0 30 60 90]);
+xlim(ax2, valid_axis_limits(M.sweep.CV_grid, cfg, 'Clip', [0 1]));
+xticks(ax2, [0.5 1.0]);
+rate_values = [M.sweep.cv_sumrate(:); M.sweep.direct_sumrate(:)];
+ylim(ax2, valid_axis_limits(rate_values, cfg, 'Clip', [0 Inf]));
 
-set([ax1 ax2], 'FontName', cfg.font_name, 'FontSize', 12, ...
+set([ax1 ax2], 'FontName', cfg.font_name, 'FontSize', axes_font, ...
     'LineWidth', cfg.axes_line_width, 'LabelFontSizeMultiplier', 1);
-set([ax1.XLabel ax1.YLabel ax2.XLabel ax2.YLabel], 'FontSize', 14);
-set([ax1.Title ax2.Title], 'FontSize', 14);
+set([ax1.XLabel ax1.YLabel ax2.XLabel ax2.YLabel], 'FontSize', label_font);
+set([ax1.Title ax2.Title], 'FontSize', title_font);
 lgd = legend(ax1, [h_cv h_direct], {'CV-NN + safety', 'Direct-PSLR NN penalty'}, ...
     'Orientation', 'horizontal', 'NumColumns', 2, 'Location', 'none');
 set(lgd, 'Units', 'normalized', 'Position', [0.205 0.855 0.590 0.085], ...
-    'FontName', cfg.font_name, 'FontSize', 12, 'Box', 'on', 'Color', 'w');
+    'FontName', cfg.font_name, 'FontSize', legend_font, 'Box', 'on', ...
+    'Color', cfg.legend_background_color, 'EdgeColor', cfg.legend_edge_color);
 try
     lgd.ItemTokenSize = [18 8];
 catch
 end
-setappdata(fig, 'PlotConfigAppliedV1', true);
+plot_config(fig);
+set([ax1 ax2], 'FontSize', axes_font);
+set([ax1.XLabel ax1.YLabel ax2.XLabel ax2.YLabel], 'FontSize', label_font);
+set([ax1.Title ax2.Title], 'FontSize', title_font);
+set(lgd, 'FontSize', legend_font);
 
 sim_pdf = fullfile(fig_dir, 'ML_CV_Advantage_Integrated_Result.pdf');
 sim_png = fullfile(fig_dir, 'ML_CV_Advantage_Integrated_Result.png');

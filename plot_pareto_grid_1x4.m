@@ -50,14 +50,14 @@ if numel(config_indices) < numel(configs)
 end
 
 cfg = plot_config();
-font_scale = 0.65;
+font_scale = cfg.full_width_font_scale;
 cfg.axes_font = max(round(font_scale * cfg.axes_font), 1);
 cfg.label_font = max(round(font_scale * cfg.label_font), 1);
 cfg.title_font = max(round(font_scale * cfg.title_font), 1);
 cfg.legend_font = max(round(font_scale * cfg.legend_font), 1);
 cfg.panel_caption_font = max(round(font_scale * cfg.panel_caption_font), 1);
-cfg.curve_marker_size = max(round(font_scale * (cfg.marker_size + 3)), 1);
-cfg.boundary_marker_size = max(round(font_scale * (cfg.marker_size + 15)), 1);
+cfg.curve_marker_size = max(round(font_scale * cfg.marker_size), 1);
+cfg.boundary_marker_size = max(round(font_scale * cfg.boundary_marker_size), 1);
 fig_width = 1905;
 fig_height = 700;
 fig = figure('Position', [80 80 fig_width fig_height], 'Color', 'w');
@@ -410,28 +410,28 @@ c_prop = palette(1, :);
 c_direct = palette(2, :);
 c_crb = palette(7, :);
 c_mi = palette(4, :);
-c_comm = [0.20 0.62 0.22];
+c_comm = palette(3, :);
 c_sensing = palette(9, :);
 
 h_prop = plot(ax, sumrate_avg(valid_prop), y_prop(valid_prop), '--o', ...
     'Color', c_prop, 'MarkerFaceColor', c_prop, ...
-    'LineWidth', 1.4, 'MarkerSize', cfg.curve_marker_size, ...
+    'LineWidth', cfg.secondary_line_width, 'MarkerSize', cfg.curve_marker_size, ...
     'DisplayName', 'Proposed CV');
 h_direct = plot(ax, direct_sumrate_avg(valid_direct), y_direct(valid_direct), '--d', ...
     'Color', c_direct, 'MarkerFaceColor', c_direct, ...
-    'LineWidth', 1.2, 'MarkerSize', cfg.curve_marker_size, ...
+    'LineWidth', cfg.secondary_line_width, 'MarkerSize', cfg.curve_marker_size, ...
     'DisplayName', 'Direct SCA');
 plot(ax, crb_sumrate_avg(valid_crb), y_crb(valid_crb), '--^', ...
     'Color', c_crb, 'MarkerFaceColor', c_crb, ...
-    'LineWidth', 1.1, 'MarkerSize', cfg.curve_marker_size, ...
+    'LineWidth', cfg.secondary_line_width, 'MarkerSize', cfg.curve_marker_size, ...
     'DisplayName', 'CRB-inspired');
 plot(ax, mi_sumrate_avg(valid_mi), y_mi(valid_mi), '--v', ...
     'Color', c_mi, 'MarkerFaceColor', c_mi, ...
-    'LineWidth', 1.3, 'MarkerSize', cfg.curve_marker_size, ...
+    'LineWidth', cfg.secondary_line_width, 'MarkerSize', cfg.curve_marker_size, ...
     'DisplayName', 'MI-inspired');
-xline(ax, comm_sumrate, '--', 'Color', c_comm, 'LineWidth', 1.4, ...
+xline(ax, comm_sumrate, '--', 'Color', c_comm, 'LineWidth', cfg.secondary_line_width, ...
     'DisplayName', 'Communication-only');
-yline(ax, y_bound, '--', 'Color', c_sensing, 'LineWidth', 1.4, ...
+yline(ax, y_bound, '--', 'Color', c_sensing, 'LineWidth', cfg.secondary_line_width, ...
     'DisplayName', 'sensing-only');
 
 pareto_x = [sumrate_avg(valid_prop); direct_sumrate_avg(valid_direct)];
@@ -453,12 +453,13 @@ end
 
 x_focus = [sumrate_avg(valid_prop); direct_sumrate_avg(valid_direct); comm_sumrate];
 y_focus = [y_prop(valid_prop); y_direct(valid_direct); y_bound];
-[xl, yl] = corner_limits(x_focus, y_focus);
+[xl, yl] = deal(valid_axis_limits(x_focus, cfg), ...
+    valid_axis_limits(y_focus, cfg));
 xlim(ax, xl);
 ylim(ax, yl);
 add_enclosed_region_shade(ax, ...
     {sumrate_avg(valid_prop), direct_sumrate_avg(valid_direct)}, ...
-    {y_prop(valid_prop), y_direct(valid_direct)}, comm_sumrate, y_bound);
+    {y_prop(valid_prop), y_direct(valid_direct)}, comm_sumrate, y_bound, cfg);
 try
     uistack(h_direct, 'top');
     uistack(h_prop, 'top');
@@ -478,7 +479,7 @@ title_handle = title(ax, title_text, 'Interpreter', 'latex', ...
 title_handle.FontSize = cfg.title_font;
 end
 
-function add_enclosed_region_shade(ax, x_cells, y_cells, comm_x, bound_y)
+function add_enclosed_region_shade(ax, x_cells, y_cells, comm_x, bound_y, cfg)
 palette = paper_palette();
 [frontier_x, frontier_y] = outer_frontier(x_cells, y_cells);
 if numel(frontier_x) < 2 || ~isfinite(comm_x) || ~isfinite(bound_y)
@@ -495,7 +496,7 @@ axis_y = ylim(ax);
 poly_x = [axis_x(1); frontier_x(:); comm_x; comm_x; axis_x(1)];
 poly_y = [bound_y; frontier_y(:); frontier_y(end); axis_y(1); axis_y(1)];
 region = patch(ax, poly_x, poly_y, palette(1, :), ...
-    'FaceAlpha', 0.10, 'EdgeColor', 'none', 'HandleVisibility', 'off');
+    'FaceAlpha', cfg.region_face_alpha, 'EdgeColor', 'none', 'HandleVisibility', 'off');
 try
     uistack(region, 'bottom');
 catch
@@ -505,7 +506,7 @@ end
 function draw_pareto_grid_legend(fig, position, cfg)
 palette = paper_palette();
 colors = [palette(1, :); palette(2, :); palette(7, :); ...
-          palette(4, :); palette(9, :); 0.20 0.62 0.22];
+          palette(4, :); palette(9, :); palette(3, :)];
 labels = {'Proposed CV', 'Direct SCA', 'CRB-inspired', ...
           'MI-inspired', 'sensing-only', 'Communication-only'};
 markers = {'o', 'd', '^', 'v', 'p', 'p'};
@@ -514,12 +515,14 @@ ax_leg = axes(fig, 'Position', position, ...
     'XLim', [0 1], 'YLim', [0 1], 'Visible', 'off', 'Color', 'none');
 hold(ax_leg, 'on');
 rectangle(ax_leg, 'Position', [0.015 0.015 0.970 0.970], ...
-    'FaceColor', 'w', 'EdgeColor', [0.15 0.15 0.15], ...
+    'FaceColor', cfg.legend_background_color, ...
+    'FaceAlpha', cfg.legend_face_alpha, ...
+    'EdgeColor', cfg.legend_edge_color, ...
     'LineWidth', cfg.axes_line_width);
 
 legend_font = cfg.legend_font;
-legend_marker_size = max(1.15 * cfg.marker_size, 10);
-legend_star_size = max(1.85 * cfg.marker_size, 16);
+legend_marker_size = max(cfg.marker_size, 8);
+legend_star_size = max(cfg.boundary_marker_size, 12);
 legend_line_width = max(0.80 * cfg.line_width, 1.5);
 num_columns = 3;
 row_y = [0.650 0.350];

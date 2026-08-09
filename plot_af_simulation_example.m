@@ -72,7 +72,7 @@ for tau = 0:N-1
 end
 
 for nu = 1:N-1
-    cc = sum(P(nu+1:N) .* P(1:N-nu));
+    cc = sum(P .* circshift(P, nu));
     ESL(:, nu+1) = N^2 * cc;
 end
 
@@ -85,24 +85,34 @@ N = size(ESL, 1);
 tau_axis = 0:N-1;
 nu_axis = 0:N-1;
 ESL_plot_dB = ESL_dB;
-nu_list = [0 1 2 4 6 8 12 N-1];
+nu_list = [1 2 4 6 8 12 N-1];
 nu_list = unique(nu_list(nu_list <= N-1), 'stable');
 tau_plot = 0:N-1;
 
 cfg = plot_config();
 style = combined_figure_style(cfg);
-colors = muted_colors(numel(nu_list));
+style.contour_floor_dB = -20;
+sidelobe_values = ESL_plot_dB;
+sidelobe_values(1, 1) = -Inf;
+style.contour_ceiling_dB = 5 * ceil(max(sidelobe_values(:)) / 5);
+style.colorbar_ticks = linspace(style.contour_floor_dB, style.contour_ceiling_dB, 6);
+colors = muted_colors(numel(nu_list) + 1);
+colors = colors(2:end, :);
 fig = figure('Color', 'w', 'Position', style.figure_position);
 set(fig, 'PaperPositionMode', 'auto');
 
 ax1 = axes(fig, 'Position', style.left_axes_position);
-imagesc(ax1, tau_axis, nu_axis, max(ESL_plot_dB.', style.contour_floor_dB));
+heatmap_data = max(ESL_plot_dB.', style.contour_floor_dB);
+heatmap_data(1, 1) = NaN;
+heatmap_image = imagesc(ax1, tau_axis, nu_axis, heatmap_data);
+set(heatmap_image, 'AlphaData', ~isnan(heatmap_data));
+set(ax1, 'Color', 'k');
 axis(ax1, 'xy');
 axis(ax1, 'tight');
 pbaspect(ax1, [1 1 1]);
 box(ax1, 'on');
 colormap(ax1, high_contrast_af_colormap(256));
-clim(ax1, [style.contour_floor_dB 0]);
+clim(ax1, [style.contour_floor_dB style.contour_ceiling_dB]);
 ylabel_handle1 = ylabel(ax1, 'Doppler index \nu', 'Interpreter', 'tex', ...
                         'FontSize', style.label_font, ...
                         'FontWeight', 'normal');
@@ -136,13 +146,8 @@ grid(ax2, 'on');
 box(ax2, 'on');
 for idx = 1:numel(nu_list)
     nu = nu_list(idx);
-    if nu == 0
-        line_width = style.main_line_width;
-    else
-        line_width = style.line_width;
-    end
     plot(ax2, tau_plot, ESL_dB(:, nu+1), '-', ...
-         'LineWidth', line_width, ...
+         'LineWidth', style.line_width, ...
          'Color', colors(idx, :), ...
          'DisplayName', sprintf('\\nu=%d', nu));
 end
@@ -157,7 +162,11 @@ text(ax2, style.right_ylabel_x, 0.5, 'AF (dB)', ...
     'VerticalAlignment', 'middle', ...
     'Clipping', 'off');
 xlim(ax2, [-0.3 N-0.7]);
-ylim(ax2, [-40 2]);
+nonzero_values = ESL_dB(:, 2:end);
+cut_y_min = 0.5 * floor(min(nonzero_values(:)) / 0.5);
+cut_y_max = 0.5 * ceil(max(nonzero_values(:)) / 0.5);
+ylim(ax2, [cut_y_min cut_y_max]);
+yticks(ax2, cut_y_min:0.5:cut_y_max);
 pbaspect(ax2, [1 1 1]);
 set(ax2, 'FontSize', style.axes_font, 'TickLabelInterpreter', 'tex', ...
          'YAxisLocation', 'left', ...
