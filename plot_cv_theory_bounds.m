@@ -29,7 +29,7 @@ L = (kappa - 1) ./ (N + kappa - 1) + ...
     (N*(N + 2*kappa - 2)/(N + kappa - 1)) ./ ...
     ((N + kappa - 1)*cv.^2 + kappa - 1);
 
-[sim_cv, sim_pslr_dB, sim_cv_list, sim_pslr_min_dB, sim_pslr_max_dB] = ...
+[sim_cv, sim_pslr_dB, sim_cv_list, sim_pslr_low_dB, sim_pslr_high_dB] = ...
     load_or_generate_simulation_overlay(repo_dir, params, force_rerun);
 
 cfg = plot_config();
@@ -58,7 +58,7 @@ has_sim_range = ~isempty(sim_cv_list);
 if has_sim_range
     fill(ax1, ...
         [sim_cv_list, fliplr(sim_cv_list)], ...
-        [sim_pslr_max_dB, fliplr(sim_pslr_min_dB)], ...
+        [sim_pslr_high_dB, fliplr(sim_pslr_low_dB)], ...
         sim_color, 'FaceAlpha', cfg.band_face_alpha, 'EdgeColor', 'none', ...
         'HandleVisibility', 'off');
 end
@@ -89,7 +89,7 @@ ylabel(ax1, 'PSLR (dB)', 'FontSize', plot_style.label_font);
 set(ax1.XLabel, 'Units', 'normalized', 'Position', [0.5 -0.125 0]);
 set(ax1.YLabel, 'Units', 'normalized', 'Position', [-0.105 0.5 0]);
 all_pslr_dB = [10*log10(U(:)); 10*log10(L(:)); ...
-    sim_pslr_min_dB(:); sim_pslr_max_dB(:)];
+    sim_pslr_low_dB(:); sim_pslr_high_dB(:)];
 set(ax1, 'FontSize', plot_style.axes_font, 'XLim', [0 1], ...
          'XTick', 0:0.5:1, ...
          'XTickLabel', {'0', '0.5', '1.0'}, ...
@@ -112,13 +112,13 @@ tight_export_figure(fig, fullfile(out_dir, 'cv_pslr_theory.png'), ...
                     'TightPad', 0);
 end
 
-function [sim_cv, sim_pslr_dB, sim_cv_list, sim_pslr_min_dB, sim_pslr_max_dB] = ...
+function [sim_cv, sim_pslr_dB, sim_cv_list, sim_pslr_low_dB, sim_pslr_high_dB] = ...
     load_or_generate_simulation_overlay(repo_dir, params, force_rerun)
 sim_cv = [];
 sim_pslr_dB = [];
 sim_cv_list = [];
-sim_pslr_min_dB = [];
-sim_pslr_max_dB = [];
+sim_pslr_low_dB = [];
+sim_pslr_high_dB = [];
 
 result_candidates = { ...
     fullfile(repo_dir, 'results', 'pareto_grid_1x4_pslr', ...
@@ -133,7 +133,7 @@ for idx = 1:numel(result_candidates)
     end
     S = load(result_path, 'CV_max_list', 'pslr_lin_grid');
     if isfield(S, 'CV_max_list') && isfield(S, 'pslr_lin_grid')
-        [sim_cv, sim_pslr_dB, sim_cv_list, sim_pslr_min_dB, sim_pslr_max_dB] = ...
+        [sim_cv, sim_pslr_dB, sim_cv_list, sim_pslr_low_dB, sim_pslr_high_dB] = ...
             unpack_simulation_grid(S.CV_max_list, S.pslr_lin_grid);
         return;
     end
@@ -151,27 +151,49 @@ else
     save(cache_path, '-struct', 'S');
 end
 
-[sim_cv, sim_pslr_dB, sim_cv_list, sim_pslr_min_dB, sim_pslr_max_dB] = ...
+[sim_cv, sim_pslr_dB, sim_cv_list, sim_pslr_low_dB, sim_pslr_high_dB] = ...
     unpack_simulation_grid(S.CV_max_list, S.pslr_lin_grid);
 end
 
-function [sim_cv, sim_pslr_dB, sim_cv_list, sim_pslr_min_dB, sim_pslr_max_dB] = ...
+function [sim_cv, sim_pslr_dB, sim_cv_list, sim_pslr_low_dB, sim_pslr_high_dB] = ...
     unpack_simulation_grid(CV_max_list, pslr_lin_grid)
 sim_cv_list = CV_max_list(:).';
 pslr_dB_grid = 10*log10(pslr_lin_grid);
-sim_pslr_min_dB = min(pslr_dB_grid, [], 2, 'omitnan').';
-sim_pslr_max_dB = max(pslr_dB_grid, [], 2, 'omitnan').';
+sim_pslr_low_dB = row_percentile(pslr_dB_grid, 5).';
+sim_pslr_high_dB = row_percentile(pslr_dB_grid, 95).';
 valid_range = isfinite(sim_cv_list) & ...
-    isfinite(sim_pslr_min_dB) & isfinite(sim_pslr_max_dB);
+    isfinite(sim_pslr_low_dB) & isfinite(sim_pslr_high_dB);
 sim_cv_list = sim_cv_list(valid_range);
-sim_pslr_min_dB = sim_pslr_min_dB(valid_range);
-sim_pslr_max_dB = sim_pslr_max_dB(valid_range);
+sim_pslr_low_dB = sim_pslr_low_dB(valid_range);
+sim_pslr_high_dB = sim_pslr_high_dB(valid_range);
 [cv_grid, ~] = ndgrid(CV_max_list(:), 1:size(pslr_dB_grid, 2));
 sim_cv = cv_grid(:);
 sim_pslr_dB = pslr_dB_grid(:);
 valid_samples = isfinite(sim_cv) & isfinite(sim_pslr_dB);
 sim_cv = sim_cv(valid_samples);
 sim_pslr_dB = sim_pslr_dB(valid_samples);
+end
+
+function q = row_percentile(X, percentile)
+% ROW_PERCENTILE  Linear-interpolated empirical percentile per row.
+q = nan(size(X, 1), 1);
+probability = percentile / 100;
+for row_idx = 1:size(X, 1)
+    values = sort(X(row_idx, isfinite(X(row_idx, :))));
+    if isempty(values)
+        continue;
+    end
+    position = 1 + (numel(values) - 1) * probability;
+    lower_idx = floor(position);
+    upper_idx = ceil(position);
+    if lower_idx == upper_idx
+        q(row_idx) = values(lower_idx);
+    else
+        weight = position - lower_idx;
+        q(row_idx) = (1 - weight) * values(lower_idx) + ...
+            weight * values(upper_idx);
+    end
+end
 end
 
 function S = generate_profile_simulation_grid(params)

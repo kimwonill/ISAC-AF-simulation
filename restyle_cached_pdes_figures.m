@@ -31,6 +31,7 @@ for idx = 1:numel(axes_list)
     if strcmp(get(ax, 'Tag'), 'PDESLegendAxes') || strcmp(get(ax, 'Visible'), 'off')
         continue;
     end
+    set(ax.Title, 'String', '');
     lines = findall(ax, 'Type', 'line');
     x_values = [];
     y_values = [];
@@ -45,13 +46,14 @@ for idx = 1:numel(axes_list)
         xlim(ax, valid_axis_limits(x_values, cfg));
         set(ax, 'PositionConstraint', 'innerposition', ...
             'Units', 'normalized', 'Position', [0.130 0.230 0.820 0.620]);
-        set(ax.XLabel, 'Units', 'normalized', 'Position', [0.5 -0.120 0]);
-        set(ax.YLabel, 'Units', 'normalized', 'Position', [-0.120 0.5 0]);
+        set(ax.XLabel, 'Units', 'normalized', 'Position', [0.5 -0.145 0]);
+        set(ax.YLabel, 'Units', 'normalized', 'Position', [-0.075 0.5 0]);
     else
         xlim(ax, valid_axis_limits(x_values, cfg, 'Clip', x_clip));
         set(ax, 'PositionConstraint', 'innerposition', ...
             'Units', 'normalized', 'Position', [0.100 0.245 0.850 0.590]);
-        set(ax.XLabel, 'Units', 'normalized', 'Position', [0.5 -0.090 0]);
+        set(ax.XLabel, 'Units', 'normalized', 'Position', [0.5 -0.115 0]);
+        set(ax.YLabel, 'Units', 'normalized', 'Position', [-0.055 0.5 0]);
     end
     ylim(ax, valid_axis_limits(y_values, cfg));
 end
@@ -79,7 +81,7 @@ if ~isempty(legend_axes)
 end
 
 tight_export_figure(fig, sim_pdf, 'ContentType', 'image', ...
-    'Resolution', cfg.export_resolution, 'TightPad', 0, ...
+    'Resolution', cfg.export_resolution, 'TightPad', 3, ...
     'TightLayout', false);
 copyfile(sim_pdf, paper_pdf, 'f');
 clear cleanup;

@@ -6,7 +6,7 @@ function cfg = plot_config(target)
 %   plot_config(fig);   % also applies common font defaults to a figure
 
 cfg = struct();
-cfg.font_name = 'Pretendard';
+cfg.font_name = 'Times New Roman';
 cfg.axes_font = 28;
 cfg.label_font = 32;
 cfg.title_font = 33;

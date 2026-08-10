@@ -760,23 +760,22 @@ end
 function plot_learning_advantage(result_path, fig_dir, paper_fig_dir)
 M = load(result_path);
 cfg = plot_config();
-font_scale = cfg.compact_panel_font_scale;
-axes_font = round(font_scale * cfg.axes_font);
-label_font = round(font_scale * cfg.label_font);
-title_font = round(font_scale * cfg.title_font);
-legend_font = round(font_scale * cfg.legend_font);
-fig = figure('Position', [80 80 760 405], 'Color', 'w');
+axes_font = cfg.axes_font;
+label_font = cfg.label_font;
+title_font = cfg.panel_caption_font;
+legend_font = max(cfg.legend_font - 7, 1);
+fig = figure('Position', [80 80 1040 560], 'Color', 'w');
 palette = paper_palette();
 cv_color = palette(1, :);
 direct_color = palette(2, :);
-ax1 = axes(fig, 'Position', [0.125 0.225 0.320 0.485]);
+ax1 = axes(fig, 'Position', [0.115 0.285 0.340 0.500]);
 hold(ax1, 'on'); grid(ax1, 'on'); box(ax1, 'on');
 h_cv = plot(ax1, M.sweep.CV_grid, M.sweep.cv_sensing_feasibility, '-o', ...
     'Color', cv_color, 'MarkerFaceColor', cv_color, ...
-    'LineWidth', cfg.secondary_line_width, 'MarkerSize', cfg.compact_marker_size);
+    'LineWidth', cfg.line_width, 'MarkerSize', cfg.marker_size);
 h_direct = plot(ax1, M.sweep.CV_grid, M.sweep.direct_sensing_feasibility, '--s', ...
     'Color', direct_color, 'MarkerFaceColor', direct_color, ...
-    'LineWidth', cfg.secondary_line_width, 'MarkerSize', cfg.compact_marker_size);
+    'LineWidth', cfg.line_width, 'MarkerSize', cfg.marker_size);
 xlabel(ax1, 'CV_{max}', 'Interpreter', 'tex');
 ylabel(ax1, 'Feasibility');
 title(ax1, '(a) Constraint tightness', 'FontWeight', 'normal');
@@ -784,14 +783,14 @@ xlim(ax1, valid_axis_limits(M.sweep.CV_grid, cfg, 'Clip', [0 1]));
 ylim(ax1, [0 1]);
 xticks(ax1, [0.5 1.0]); yticks(ax1, [0 0.5 1]);
 
-ax2 = axes(fig, 'Position', [0.635 0.225 0.320 0.485]);
+ax2 = axes(fig, 'Position', [0.620 0.285 0.340 0.500]);
 hold(ax2, 'on'); grid(ax2, 'on'); box(ax2, 'on');
 plot(ax2, M.sweep.CV_grid, M.sweep.cv_sumrate, '-o', ...
     'Color', cv_color, 'MarkerFaceColor', cv_color, ...
-    'LineWidth', cfg.secondary_line_width, 'MarkerSize', cfg.compact_marker_size);
+    'LineWidth', cfg.line_width, 'MarkerSize', cfg.marker_size);
 plot(ax2, M.sweep.CV_grid, M.sweep.direct_sumrate, '--s', ...
     'Color', direct_color, 'MarkerFaceColor', direct_color, ...
-    'LineWidth', cfg.secondary_line_width, 'MarkerSize', cfg.compact_marker_size);
+    'LineWidth', cfg.line_width, 'MarkerSize', cfg.marker_size);
 xlabel(ax2, 'CV_{max}', 'Interpreter', 'tex');
 ylabel(ax2, 'Rate (bps/Hz)');
 title(ax2, '(b) Fixed training budget', 'FontWeight', 'normal');
@@ -803,10 +802,12 @@ ylim(ax2, valid_axis_limits(rate_values, cfg, 'Clip', [0 Inf]));
 set([ax1 ax2], 'FontName', cfg.font_name, 'FontSize', axes_font, ...
     'LineWidth', cfg.axes_line_width, 'LabelFontSizeMultiplier', 1);
 set([ax1.XLabel ax1.YLabel ax2.XLabel ax2.YLabel], 'FontSize', label_font);
+set([ax1.XLabel ax2.XLabel], 'Units', 'normalized', ...
+    'Position', [0.5 -0.150 0]);
 set([ax1.Title ax2.Title], 'FontSize', title_font);
 lgd = legend(ax1, [h_cv h_direct], {'CV-NN + safety', 'Direct-PSLR NN penalty'}, ...
     'Orientation', 'horizontal', 'NumColumns', 2, 'Location', 'none');
-set(lgd, 'Units', 'normalized', 'Position', [0.205 0.855 0.590 0.085], ...
+set(lgd, 'Units', 'normalized', 'Position', [0.185 0.875 0.630 0.085], ...
     'FontName', cfg.font_name, 'FontSize', legend_font, 'Box', 'on', ...
     'Color', cfg.legend_background_color, 'EdgeColor', cfg.legend_edge_color);
 try
@@ -816,6 +817,8 @@ end
 plot_config(fig);
 set([ax1 ax2], 'FontSize', axes_font);
 set([ax1.XLabel ax1.YLabel ax2.XLabel ax2.YLabel], 'FontSize', label_font);
+set([ax1.XLabel ax2.XLabel], 'Units', 'normalized', ...
+    'Position', [0.5 -0.150 0]);
 set([ax1.Title ax2.Title], 'FontSize', title_font);
 set(lgd, 'FontSize', legend_font);
 
@@ -823,9 +826,9 @@ sim_pdf = fullfile(fig_dir, 'ML_CV_Advantage_Integrated_Result.pdf');
 sim_png = fullfile(fig_dir, 'ML_CV_Advantage_Integrated_Result.png');
 tight_export_figure(fig, sim_pdf, ...
     'ContentType', 'image', 'Resolution', 300, ...
-    'TightLayout', false, 'TightPad', 0);
+    'TightLayout', false, 'TightPad', 3);
 tight_export_figure(fig, sim_png, ...
-    'Resolution', 300, 'TightLayout', false, 'TightPad', 0);
+    'Resolution', 300, 'TightLayout', false, 'TightPad', 3);
 copyfile(sim_pdf, fullfile(paper_fig_dir, 'ML_CV_Advantage_Integrated_Result.pdf'));
 copyfile(sim_png, fullfile(paper_fig_dir, 'ML_CV_Advantage_Integrated_Result.png'));
 end
