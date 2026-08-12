@@ -46,6 +46,10 @@ params.direct_ao_max_iter = 5;
 params.direct_sca_max_iter = 5;
 params.direct_sca_tol = 1e-3;
 params.direct_constraint_relax = 1e-5;
+params.post_evd_feas_tol = 1e-4; % numerical tolerance for rank-one feasibility audit
+params.gaussian_randomization_trials = 10;
+params.gaussian_randomization_seed = []; % caller may set deterministic per-point seed
+params.result_schema_version = 6; % v6 records pre-GR and post-GR rank-one feasibility
 params.direct_pslr_target_mode = 'proposed'; % PSLR-active: match each proposed point's PSLR
 params.direct_pslr_target_relax = 1e-4;
 params.direct_pslr_active_islr_cv_gap = 0.2; % finite ISLR cap: c_I = CV_max + gap
