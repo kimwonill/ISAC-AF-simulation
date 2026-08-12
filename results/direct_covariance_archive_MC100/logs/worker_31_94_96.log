@@ -1,0 +1,786 @@
+=== attempt 1/3 started 2026-08-12T05:33:34Z ===
+[Warning: OpenGL Startup options will be removed in a future release.] 
+[Warning: Function narginchk has the same name as a MATLAB built-in. We suggest
+you rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 96)] 
+Direct-only covariance archive: NT=4, N=16, MC=100, worker range 94:96, CV points=10
+Threshold source: /home/wonill/work/ISAC-AF-simulation/results/pareto_grid_1x4_pslr/pareto_pslr_NT4_N16_MC100.mat
+TBB Warning: The number of workers is currently limited to 0. The request for 31 workers is ignored. Further requests for more workers will be silently ignored until the limit changes.
+
+CVX Warning:
+   Models involving "log" or other functions in the log, exp, and entropy
+   family are solved using an experimental successive approximation method.
+   This method is slower and less reliable than the method CVX employs for
+   other models. Please see the section of the user's guide entitled
+       <a href="file:////home/wonill/matlab/cvx/doc/advanced.html#the-successive-approximation-method">The successive approximation method</a>
+   for more details about the approach, and for instructions on how to
+   suppress this warning message in the future.
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N16 MC 094 CV 0.0: feasible=1, status=Solved, 18.89s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N16 MC 094 CV 0.1: feasible=1, status=Solved, 28.24s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N16 MC 094 CV 0.2: feasible=1, status=Solved, 23.02s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N16 MC 094 CV 0.3: feasible=1, status=Solved, 13.87s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N16 MC 094 CV 0.4: feasible=1, status=Solved, 10.43s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N16 MC 094 CV 0.5: feasible=1, status=Solved, 11.22s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N16 MC 094 CV 0.6: feasible=1, status=Solved, 10.91s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N16 MC 094 CV 0.7: feasible=1, status=Solved, 11.85s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N16 MC 094 CV 0.8: feasible=1, status=Solved, 12.82s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N16 MC 094 CV 0.9: feasible=1, status=Solved, 10.03s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N16 MC 095 CV 0.0: feasible=1, status=Solved, 14.53s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N16 MC 095 CV 0.1: feasible=1, status=Solved, 17.47s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N16 MC 095 CV 0.2: feasible=1, status=Solved, 13.97s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N16 MC 095 CV 0.3: feasible=1, status=Solved, 13.40s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N16 MC 095 CV 0.4: feasible=1, status=Solved, 11.83s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N16 MC 095 CV 0.5: feasible=1, status=Solved, 9.22s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N16 MC 095 CV 0.6: feasible=1, status=Solved, 13.04s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N16 MC 095 CV 0.7: feasible=1, status=Solved, 12.89s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N16 MC 095 CV 0.8: feasible=1, status=Solved, 13.58s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N16 MC 095 CV 0.9: feasible=1, status=Solved, 9.49s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N16 MC 096 CV 0.0: feasible=1, status=Solved, 33.83s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N16 MC 096 CV 0.1: feasible=1, status=Solved, 20.81s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N16 MC 096 CV 0.2: feasible=1, status=Solved, 12.19s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N16 MC 096 CV 0.3: feasible=1, status=Solved, 16.66s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N16 MC 096 CV 0.4: feasible=1, status=Solved, 10.43s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N16 MC 096 CV 0.5: feasible=1, status=Solved, 12.30s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N16 MC 096 CV 0.6: feasible=1, status=Solved, 12.48s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N16 MC 096 CV 0.7: feasible=1, status=Solved, 9.97s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N16 MC 096 CV 0.8: feasible=1, status=Solved, 12.30s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N16 MC 096 CV 0.9: feasible=1, status=Solved, 5.93s
+Direct-only covariance archive: NT=4, N=32, MC=100, worker range 94:96, CV points=10
+Threshold source: /home/wonill/work/ISAC-AF-simulation/results/pareto_grid_1x4_pslr/pareto_pslr_NT4_N32_MC100.mat
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N32 MC 094 CV 0.0: feasible=1, status=Solved, 25.62s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N32 MC 094 CV 0.1: feasible=1, status=Solved, 36.70s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N32 MC 094 CV 0.2: feasible=1, status=Solved, 21.86s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N32 MC 094 CV 0.3: feasible=1, status=Solved, 14.83s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N32 MC 094 CV 0.4: feasible=1, status=Solved, 14.84s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N32 MC 094 CV 0.5: feasible=1, status=Solved, 14.06s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N32 MC 094 CV 0.6: feasible=1, status=Solved, 11.92s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N32 MC 094 CV 0.7: feasible=1, status=Solved, 10.05s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N32 MC 094 CV 0.8: feasible=1, status=Solved, 5.04s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N32 MC 094 CV 0.9: feasible=1, status=Solved, 5.45s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N32 MC 095 CV 0.0: feasible=1, status=Solved, 14.65s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N32 MC 095 CV 0.1: feasible=1, status=Solved, 12.41s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N32 MC 095 CV 0.2: feasible=1, status=Solved, 7.61s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N32 MC 095 CV 0.3: feasible=1, status=Solved, 5.02s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N32 MC 095 CV 0.4: feasible=1, status=Solved, 4.88s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N32 MC 095 CV 0.5: feasible=1, status=Solved, 4.83s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N32 MC 095 CV 0.6: feasible=1, status=Solved, 4.94s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N32 MC 095 CV 0.7: feasible=1, status=Solved, 5.52s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N32 MC 095 CV 0.8: feasible=1, status=Solved, 5.47s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N32 MC 095 CV 0.9: feasible=1, status=Solved, 2.72s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N32 MC 096 CV 0.0: feasible=1, status=Solved, 14.59s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N32 MC 096 CV 0.1: feasible=1, status=Solved, 12.66s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N32 MC 096 CV 0.2: feasible=1, status=Solved, 7.58s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N32 MC 096 CV 0.3: feasible=1, status=Solved, 7.76s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N32 MC 096 CV 0.4: feasible=1, status=Solved, 5.15s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N32 MC 096 CV 0.5: feasible=1, status=Solved, 5.27s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N32 MC 096 CV 0.6: feasible=1, status=Solved, 4.98s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N32 MC 096 CV 0.7: feasible=1, status=Solved, 5.04s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N32 MC 096 CV 0.8: feasible=1, status=Solved, 4.95s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT4 N32 MC 096 CV 0.9: feasible=1, status=Solved, 2.56s
+Direct-only covariance archive: NT=8, N=16, MC=100, worker range 94:96, CV points=10
+Threshold source: /home/wonill/work/ISAC-AF-simulation/results/pareto_grid_1x4_pslr/pareto_pslr_NT8_N16_MC100.mat
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N16 MC 094 CV 0.0: feasible=1, status=Solved, 8.09s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N16 MC 094 CV 0.1: feasible=1, status=Solved, 8.01s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N16 MC 094 CV 0.2: feasible=1, status=Solved, 5.01s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N16 MC 094 CV 0.3: feasible=1, status=Solved, 5.23s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N16 MC 094 CV 0.4: feasible=1, status=Solved, 4.90s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N16 MC 094 CV 0.5: feasible=1, status=Solved, 3.16s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N16 MC 094 CV 0.6: feasible=1, status=Solved, 3.15s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N16 MC 094 CV 0.7: feasible=1, status=Solved, 3.28s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N16 MC 094 CV 0.8: feasible=1, status=Solved, 3.20s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N16 MC 094 CV 0.9: feasible=1, status=Solved, 3.28s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N16 MC 095 CV 0.0: feasible=1, status=Solved, 8.00s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N16 MC 095 CV 0.1: feasible=1, status=Solved, 7.84s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N16 MC 095 CV 0.2: feasible=1, status=Solved, 4.72s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N16 MC 095 CV 0.3: feasible=1, status=Solved, 5.07s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N16 MC 095 CV 0.4: feasible=1, status=Solved, 4.64s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N16 MC 095 CV 0.5: feasible=1, status=Solved, 5.08s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N16 MC 095 CV 0.6: feasible=1, status=Solved, 3.52s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N16 MC 095 CV 0.7: feasible=1, status=Solved, 3.58s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N16 MC 095 CV 0.8: feasible=1, status=Solved, 3.16s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N16 MC 095 CV 0.9: feasible=1, status=Solved, 3.12s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N16 MC 096 CV 0.0: feasible=1, status=Solved, 8.08s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N16 MC 096 CV 0.1: feasible=1, status=Solved, 10.16s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N16 MC 096 CV 0.2: feasible=1, status=Solved, 4.72s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N16 MC 096 CV 0.3: feasible=1, status=Solved, 3.38s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N16 MC 096 CV 0.4: feasible=1, status=Solved, 3.12s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N16 MC 096 CV 0.5: feasible=1, status=Solved, 3.56s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N16 MC 096 CV 0.6: feasible=1, status=Solved, 3.33s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N16 MC 096 CV 0.7: feasible=1, status=Solved, 3.16s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N16 MC 096 CV 0.8: feasible=1, status=Solved, 3.21s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N16 MC 096 CV 0.9: feasible=1, status=Solved, 3.69s
+Direct-only covariance archive: NT=8, N=32, MC=100, worker range 94:96, CV points=10
+Threshold source: /home/wonill/work/ISAC-AF-simulation/results/pareto_grid_1x4_pslr/pareto_pslr_NT8_N32_MC100.mat
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N32 MC 094 CV 0.0: feasible=1, status=Solved, 36.69s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N32 MC 094 CV 0.1: feasible=1, status=Solved, 32.22s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N32 MC 094 CV 0.2: feasible=1, status=Solved, 23.29s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N32 MC 094 CV 0.3: feasible=1, status=Solved, 15.55s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N32 MC 094 CV 0.4: feasible=1, status=Solved, 13.48s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N32 MC 094 CV 0.5: feasible=1, status=Solved, 14.36s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N32 MC 094 CV 0.6: feasible=1, status=Solved, 12.14s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N32 MC 094 CV 0.7: feasible=1, status=Solved, 13.30s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N32 MC 094 CV 0.8: feasible=1, status=Solved, 14.10s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N32 MC 094 CV 0.9: feasible=1, status=Solved, 15.41s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N32 MC 095 CV 0.0: feasible=1, status=Solved, 40.76s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N32 MC 095 CV 0.1: feasible=1, status=Solved, 33.44s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N32 MC 095 CV 0.2: feasible=1, status=Solved, 19.74s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N32 MC 095 CV 0.3: feasible=1, status=Solved, 20.18s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N32 MC 095 CV 0.4: feasible=1, status=Solved, 14.08s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N32 MC 095 CV 0.5: feasible=1, status=Solved, 12.70s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N32 MC 095 CV 0.6: feasible=1, status=Solved, 14.90s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N32 MC 095 CV 0.7: feasible=1, status=Solved, 12.92s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N32 MC 095 CV 0.8: feasible=1, status=Solved, 11.50s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N32 MC 095 CV 0.9: feasible=1, status=Solved, 15.21s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N32 MC 096 CV 0.0: feasible=1, status=Solved, 53.51s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N32 MC 096 CV 0.1: feasible=1, status=Solved, 29.71s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N32 MC 096 CV 0.2: feasible=1, status=Solved, 22.60s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N32 MC 096 CV 0.3: feasible=1, status=Solved, 24.42s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N32 MC 096 CV 0.4: feasible=1, status=Solved, 12.74s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N32 MC 096 CV 0.5: feasible=1, status=Solved, 13.12s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N32 MC 096 CV 0.6: feasible=1, status=Solved, 12.89s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N32 MC 096 CV 0.7: feasible=1, status=Solved, 10.86s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N32 MC 096 CV 0.8: feasible=1, status=Solved, 10.55s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+  NT8 N32 MC 096 CV 0.9: feasible=1, status=Solved, 10.88s
+Worker range 94:96 completed for 4 configurations in 24.3 min.
+=== worker completed 2026-08-12T05:58:03Z ===

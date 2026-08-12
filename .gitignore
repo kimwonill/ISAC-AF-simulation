@@ -1,0 +1,2 @@
+# Runtime lock used by the sharded Direct covariance archive runner.
+results/direct_covariance_archive_MC*/run.lock

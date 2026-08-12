@@ -1,9 +1,10 @@
-function run_direct_covariance_archive(num_mc, force_rerun, mc_indices)
+function run_direct_covariance_archive(num_mc, force_rerun, mc_indices, config_indices)
 %RUN_DIRECT_COVARIANCE_ARCHIVE Save H, alpha, and W for Direct-SCA MC points.
 %   The function runs only the Direct-SCA baseline. Proposed CV, CRB, and
 %   MI optimizations are never invoked. Direct PSLR thresholds are read from
 %   the tracked MC=100 Pareto cache so the original experiment is replayed
-%   with the same channel seeds and operating points.
+%   with the same channel seeds and operating points. By default all four
+%   Figure 3 antenna/subcarrier configurations are archived.
 
 if nargin < 1 || isempty(num_mc)
     num_mc = 100;
@@ -14,116 +15,135 @@ end
 if nargin < 3 || isempty(mc_indices)
     mc_indices = 1:num_mc;
 end
+if nargin < 4 || isempty(config_indices)
+    config_indices = 1:4;
+end
 mc_indices = unique(mc_indices(:).', 'stable');
 if any(mc_indices < 1) || any(mc_indices > num_mc) || ...
         any(mc_indices ~= floor(mc_indices))
     error('mc_indices must contain integers in 1:num_mc.');
 end
+config_indices = unique(config_indices(:).', 'stable');
+configs = [4, 16; 4, 32; 8, 16; 8, 32];
+if any(config_indices < 1) || any(config_indices > size(configs, 1)) || ...
+        any(config_indices ~= floor(config_indices))
+    error('config_indices must contain integers from 1 to 4.');
+end
 
 sim_dir = fileparts(mfilename('fullpath'));
-source_file = fullfile(sim_dir, 'results', 'pareto_grid_1x4_pslr', ...
-    'pareto_pslr_NT4_N16_MC100.mat');
-if exist(source_file, 'file') ~= 2
-    error('Missing direct-threshold source: %s', source_file);
-end
-source = load(source_file, 'params', 'CV_max_list', 'pslr_lin_grid');
-if num_mc > size(source.pslr_lin_grid, 2)
-    error('Threshold source contains only %d channel realizations.', ...
-        size(source.pslr_lin_grid, 2));
-end
-
-if ~isfield(source, 'params') || ~isstruct(source.params)
-    error('Threshold source does not contain the original parameter set.');
-end
-params = source.params;
-if params.NT ~= 4 || params.N ~= 16 || params.K ~= 5
-    error('Unexpected source configuration: NT=%d, N=%d, K=%d.', ...
-        params.NT, params.N, params.K);
-end
-if ~isfield(params, 'direct_pslr_target_relax')
-    error('Source parameters do not define direct_pslr_target_relax.');
-end
-params.cvx_solver = 'mosek';
-params.cvx_solver_threads = 1;
-cv_grid = source.CV_max_list(:).';
-num_cv = numel(cv_grid);
-if size(source.pslr_lin_grid, 1) ~= num_cv
-    error('CV grid and threshold-grid dimensions do not agree.');
-end
-archive_version = 1;
-output_dir = fullfile(sim_dir, 'results', sprintf( ...
+archive_version = 2;
+archive_root = fullfile(sim_dir, 'results', sprintf( ...
     'direct_covariance_archive_MC%d', num_mc));
-if exist(output_dir, 'dir') ~= 7
-    mkdir(output_dir);
+if exist(archive_root, 'dir') ~= 7
+    mkdir(archive_root);
 end
-
-fprintf(['Direct-only covariance archive: MC=%d, worker range %d:%d, ' ...
-    'CV points=%d\n'], num_mc, mc_indices(1), mc_indices(end), num_cv);
-fprintf('Threshold source: %s\n', source_file);
 
 t_worker = tic;
-for mc = mc_indices
-    channel_seed = mc;
-    rng(channel_seed, 'twister');
-    H = generate_channel(params);
-    alpha_warm = [];
-    W_warm = [];
+for config_index = config_indices
+    NT = configs(config_index, 1);
+    N = configs(config_index, 2);
+    source_file = fullfile(sim_dir, 'results', 'pareto_grid_1x4_pslr', ...
+        sprintf('pareto_pslr_NT%d_N%d_MC100.mat', NT, N));
+    if exist(source_file, 'file') ~= 2
+        error('Missing direct-threshold source: %s', source_file);
+    end
+    source = load(source_file, 'params', 'CV_max_list', 'pslr_lin_grid');
+    if num_mc > size(source.pslr_lin_grid, 2)
+        error('Threshold source contains only %d channel realizations.', ...
+            size(source.pslr_lin_grid, 2));
+    end
+    if ~isfield(source, 'params') || ~isstruct(source.params)
+        error('Threshold source does not contain the original parameter set.');
+    end
+    params = source.params;
+    if params.NT ~= NT || params.N ~= N || params.K ~= 5
+        error('Unexpected source configuration: NT=%d, N=%d, K=%d.', ...
+            params.NT, params.N, params.K);
+    end
+    if ~isfield(params, 'direct_pslr_target_relax')
+        error('Source parameters do not define direct_pslr_target_relax.');
+    end
+    params.cvx_solver = 'mosek';
+    params.cvx_solver_threads = 1;
+    cv_grid = source.CV_max_list(:).';
+    num_cv = numel(cv_grid);
+    if size(source.pslr_lin_grid, 1) ~= num_cv
+        error('CV grid and threshold-grid dimensions do not agree.');
+    end
+    output_dir = fullfile(archive_root, sprintf('points_NT%d_N%d', NT, N));
+    if exist(output_dir, 'dir') ~= 7
+        mkdir(output_dir);
+    end
 
-    for cv_index = 1:num_cv
-        achieved_pslr = source.pslr_lin_grid(cv_index, mc);
-        if ~isfinite(achieved_pslr)
-            error('Missing proposed PSLR threshold at MC=%d, CV index=%d.', ...
-                mc, cv_index);
-        end
-        CV_max = cv_grid(cv_index);
-        pslr_min = achieved_pslr * ...
-            (1 - params.direct_pslr_target_relax);
-        point_file = archive_point_path( ...
-            output_dir, mc, cv_index);
-        if ~force_rerun && valid_existing_point( ...
-                point_file, archive_version, mc, cv_index, CV_max, ...
-                pslr_min, H, params)
-            saved = load(point_file, 'W', 'alpha', 'solver_feasible');
-            if saved.solver_feasible
-                W_warm = saved.W;
-                alpha_warm = saved.alpha;
+    fprintf(['Direct-only covariance archive: NT=%d, N=%d, MC=%d, ' ...
+        'worker range %d:%d, CV points=%d\n'], NT, N, num_mc, ...
+        mc_indices(1), mc_indices(end), num_cv);
+    fprintf('Threshold source: %s\n', source_file);
+
+    for mc = mc_indices
+        channel_seed = mc;
+        rng(channel_seed, 'twister');
+        H = generate_channel(params);
+        alpha_warm = [];
+        W_warm = [];
+
+        for cv_index = 1:num_cv
+            achieved_pslr = source.pslr_lin_grid(cv_index, mc);
+            if ~isfinite(achieved_pslr)
+                error(['Missing proposed PSLR threshold at NT=%d, N=%d, ' ...
+                    'MC=%d, CV index=%d.'], NT, N, mc, cv_index);
+            end
+            CV_max = cv_grid(cv_index);
+            pslr_min = achieved_pslr * ...
+                (1 - params.direct_pslr_target_relax);
+            point_file = archive_point_path( ...
+                output_dir, mc, cv_index);
+            if ~force_rerun && valid_existing_point( ...
+                    point_file, archive_version, mc, cv_index, CV_max, ...
+                    pslr_min, H, params)
+                saved = load(point_file, 'W', 'alpha', 'solver_feasible');
+                if saved.solver_feasible
+                    W_warm = saved.W;
+                    alpha_warm = saved.alpha;
+                else
+                    W_warm = [];
+                    alpha_warm = [];
+                end
+                fprintf('  NT%d N%d MC %03d CV %.1f: reused\n', ...
+                    NT, N, mc, cv_grid(cv_index));
+                continue;
+            end
+
+            t_point = tic;
+            result = run_direct_sca_covariance( ...
+                H, pslr_min, params, alpha_warm, W_warm);
+            elapsed_seconds = toc(t_point);
+            W = result.W;
+            alpha = result.alpha;
+            solver_feasible = result.solver_feasible;
+            solver_status = result.status;
+
+            temporary_file = [tempname(output_dir), '.mat'];
+            save(temporary_file, 'W', 'alpha', 'H', 'solver_feasible', ...
+                'solver_status', 'channel_seed', 'cv_index', 'CV_max', ...
+                'pslr_min', 'archive_version', '-v7.3');
+            movefile(temporary_file, point_file, 'f');
+
+            if solver_feasible
+                W_warm = W;
+                alpha_warm = alpha;
             else
                 W_warm = [];
                 alpha_warm = [];
             end
-            fprintf('  MC %03d CV %.1f: reused\n', mc, cv_grid(cv_index));
-            continue;
+            fprintf(['  NT%d N%d MC %03d CV %.1f: feasible=%d, ' ...
+                'status=%s, %.2fs\n'], NT, N, mc, CV_max, ...
+                solver_feasible, char(string(solver_status)), elapsed_seconds);
         end
-
-        t_point = tic;
-        result = run_direct_sca_covariance( ...
-            H, pslr_min, params, alpha_warm, W_warm);
-        elapsed_seconds = toc(t_point);
-        W = result.W;
-        alpha = result.alpha;
-        solver_feasible = result.solver_feasible;
-        solver_status = result.status;
-
-        temporary_file = [tempname(output_dir), '.mat'];
-        save(temporary_file, 'W', 'alpha', 'H', 'solver_feasible', ...
-            'solver_status', 'channel_seed', 'cv_index', 'CV_max', ...
-            'pslr_min', 'archive_version', '-v7.3');
-        movefile(temporary_file, point_file, 'f');
-
-        if solver_feasible
-            W_warm = W;
-            alpha_warm = alpha;
-        else
-            W_warm = [];
-            alpha_warm = [];
-        end
-        fprintf(['  MC %03d CV %.1f: feasible=%d, status=%s, ' ...
-            '%.2fs\n'], mc, CV_max, solver_feasible, ...
-            char(string(solver_status)), elapsed_seconds);
     end
 end
-fprintf('Worker range %d:%d completed in %.1f min.\n', ...
-    mc_indices(1), mc_indices(end), toc(t_worker) / 60);
+fprintf('Worker range %d:%d completed for %d configurations in %.1f min.\n', ...
+    mc_indices(1), mc_indices(end), numel(config_indices), toc(t_worker) / 60);
 end
 
 function path = archive_point_path(output_dir, mc, cv_index)
