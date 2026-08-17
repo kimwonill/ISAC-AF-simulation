@@ -34,8 +34,12 @@ params.warm_start_cv = false;
 params.sdp_quiet = true;
 
 CV_grid = 0:0.1:1.0;
-num_train_mc = 8;
-num_val_mc = 28;
+% Use enough independent channels for a credible learning/validation study.
+% With 11 CV operating points, these defaults produce 8,800 training and 2,200
+% validation channel-threshold pairs while keeping channel realizations
+% disjoint through the separate seed ranges below.
+num_train_mc = 800;
+num_val_mc = 200;
 if ~isempty(num_train_mc_override)
     num_train_mc = num_train_mc_override;
 end
