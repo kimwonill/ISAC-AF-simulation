@@ -1,4 +1,4 @@
-function run_cv_stress_axis_experiment(num_mc_override, force_rerun, mc_indices)
+function run_cv_stress_axis_experiment(num_mc_override, force_rerun, mc_indices, cv_step_override, export_figures)
 % RUN_CV_STRESS_AXIS_EXPERIMENT
 % Stress-axis diagnostic with CV on the vertical axis.
 %
@@ -14,6 +14,17 @@ end
 if nargin < 3 || isempty(mc_indices)
     mc_indices = [];
 end
+if nargin < 4 || isempty(cv_step_override)
+    cv_step_override = 0.1;
+end
+if nargin < 5 || isempty(export_figures)
+    export_figures = true;
+end
+if ~isscalar(cv_step_override) || ~isfinite(cv_step_override) || ...
+        cv_step_override <= 0 || cv_step_override > 1 || ...
+        abs(round(1 / cv_step_override) * cv_step_override - 1) > 1e-10
+    error('cv_step_override must be a positive scalar that divides 1 exactly.');
+end
 is_shard = ~isempty(mc_indices);
 close all; clc;
 
@@ -24,11 +35,16 @@ if exist(out_data_dir, 'dir') ~= 7, mkdir(out_data_dir); end
 if exist(fig_dir, 'dir') ~= 7, mkdir(fig_dir); end
 addpath(genpath(sim_dir));
 
-CV_grid = 0:0.1:1.0;
+num_positive_cv = round(1 / cv_step_override);
+CV_grid = (0:num_positive_cv) * cv_step_override;
+CV_grid(end) = 1.0;
+cv_tag = sprintf('CV%d', num_positive_cv);
 num_cv = numel(CV_grid);
 num_mc = num_mc_override;
 scenarios = build_scenarios();
 num_scenarios = numel(scenarios);
+base_params = setup_params();
+result_schema_version = base_params.result_schema_version;
 time_budget_seconds = feasibility_time_budgets(scenarios);
 budget_policy = ['Common per-scenario wall-clock budget for both methods; ' ...
     '3 s for S2/S4 and 4 s for S3.'];
@@ -45,21 +61,30 @@ else
 end
 
 source_path = fullfile(out_data_dir, sprintf( ...
-    'cv_stress_axis_pslr_only_S2S3S4_CV10_NT4_N16_MC%d.mat', num_mc));
+    'cv_stress_axis_pslr_only_S2S3S4_%s_NT4_N16_MC%d.mat', cv_tag, num_mc));
 if is_shard
     source_path = fullfile(out_data_dir, sprintf( ...
-        'cv_stress_axis_pslr_only_S2S3S4_CV10_NT4_N16_MC%d_shard_%03d_%03d.mat', ...
-        num_mc, mc_indices(1), mc_indices(end)));
+        'cv_stress_axis_pslr_only_S2S3S4_%s_NT4_N16_MC%d_shard_%03d_%03d.mat', ...
+        cv_tag, num_mc, mc_indices(1), mc_indices(end)));
 end
 
 if exist(source_path, 'file') == 2 && ~force_rerun
-    fprintf('Using cached CV stress-axis result: %s\n', source_path);
-    if is_shard
+    cache_meta = load(source_path, 'result_schema_version');
+    cache_is_current = isfield(cache_meta, 'result_schema_version') && ...
+        cache_meta.result_schema_version >= result_schema_version;
+    if cache_is_current
+        fprintf('Using cached CV stress-axis result: %s\n', source_path);
+        if is_shard
+            return;
+        end
+        if export_figures
+            plot_cv_stress_axis_results(source_path);
+        end
+        print_summary(source_path);
         return;
     end
-    plot_cv_stress_axis_results(source_path);
-    print_summary(source_path);
-    return;
+    fprintf('Ignoring pre-rank-one cache (schema < %d): %s\n', ...
+        result_schema_version, source_path);
 end
 
 prop_success = false(num_scenarios, num_cv, num_mc);
@@ -75,6 +100,7 @@ fprintf('============================================================\n');
 fprintf('  CV Stress-Axis Diagnostic: CV-SDP vs Direct PSLR SCA\n');
 fprintf('============================================================\n');
 fprintf('  MC=%d, CV grid=[%s]\n', num_mc, num2str(CV_grid));
+fprintf('  CV step=%.4g, export figures=%d\n', cv_step_override, export_figures);
 fprintf('  Scenarios: S2 Higher Illumination, S3 More Targets, S4 Joint Stress\n');
 fprintf('  N_T is fixed at 4 for all scenarios.\n');
 fprintf('  Common method budgets by scenario: [%s] s\n', num2str(time_budget_seconds.'));
@@ -104,6 +130,9 @@ for s = 1:num_scenarios
 
             run_count = run_count + 1;
             t_run = tic;
+            point_seed = 900000 + 10000 * s + 100 * mc + c;
+            params.gaussian_randomization_seed = point_seed;
+            params_profile.gaussian_randomization_seed = point_seed;
             prop = run_proposed(H, CV_max, params, alpha0);
             prop_time(s, c, mc) = toc(t_run);
             prop_profile = run_proposed(H, CV_max, params_profile, alpha0);
@@ -127,10 +156,12 @@ for s = 1:num_scenarios
     end
 
     save(source_path, 'CV_grid', 'num_mc', 'scenarios', ...
+        'cv_step_override', 'cv_tag', ...
         'time_budget_seconds', 'budget_policy', ...
         'prop_success', 'direct_success', 'prop_status', 'direct_status', ...
         'prop_time', 'direct_time', ...
-        'prop_cvx_solver_iters', 'direct_cvx_solver_iters');
+        'prop_cvx_solver_iters', 'direct_cvx_solver_iters', ...
+        'result_schema_version');
 end
 
 if is_shard
@@ -138,7 +169,9 @@ if is_shard
     return;
 end
 
-plot_cv_stress_axis_results(source_path);
+if export_figures
+    plot_cv_stress_axis_results(source_path);
+end
 print_summary(source_path);
 
 fprintf('------------------------------------------------------------\n');

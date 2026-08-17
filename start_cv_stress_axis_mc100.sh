@@ -15,7 +15,7 @@ if [[ -f "$PID_FILE" ]]; then
     fi
 fi
 
-nohup setsid env MC=100 WORKERS="${WORKERS:-4}" FORCE_RERUN=1 MAX_RETRIES=3 \
+nohup setsid env MC=100 WORKERS="${WORKERS:-1}" CV_STEP="${CV_STEP:-0.05}" FORCE_RERUN=1 MAX_RETRIES=3 \
     bash "${SIM_DIR}/run_cv_stress_axis_sharded.sh" \
     >"$MASTER_LOG" 2>&1 < /dev/null &
 job_pid=$!

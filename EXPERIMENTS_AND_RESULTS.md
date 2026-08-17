@@ -23,6 +23,7 @@ Important naming conventions:
 - `MC100` means 100 Monte Carlo channel realizations.
 - `NT4_N16` means four transmit antennas and 16 OFDM subcarriers.
 - `CV10` means a CV grid with step 0.1, not `CV = 10`.
+- `CV20` means a CV grid with step 0.05.
 - `_grid` variables normally retain values for every operating point and
   Monte Carlo realization. Means and confidence intervals should be derived
   from these arrays rather than from a rendered figure.
@@ -110,6 +111,12 @@ Parallel helpers for this workflow are described in Section 7.
 | Final figures | `figures/CV_Stress_Axis_Diagnostic.png/.pdf` and `figures/CV_Stress_Axis_Diagnostic_OneColumn_1x3.png/.pdf` |
 | Parallel runner | `run_cv_stress_axis_sharded.sh` |
 | Detached launcher | `start_cv_stress_axis_mc100.sh` |
+
+The server launcher now defaults to `MC=100`, `WORKERS=1`, and
+`CV_STEP=0.05`, producing a `CV20` cache. Override these environment variables
+explicitly to reproduce a different execution configuration. A local example
+that preserves the 0.1 sweep without exporting manuscript figures is
+`run_cv_stress_axis_experiment(10, true, [], 0.1, false)`.
 
 The canonical MC=100 file currently contains:
 

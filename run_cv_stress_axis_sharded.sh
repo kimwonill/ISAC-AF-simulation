@@ -3,7 +3,8 @@ set -euo pipefail
 
 SIM_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MC="${MC:-100}"
-WORKERS="${WORKERS:-16}"
+WORKERS="${WORKERS:-1}"
+CV_STEP="${CV_STEP:-0.05}"
 FORCE_RERUN="${FORCE_RERUN:-0}"
 MAX_RETRIES="${MAX_RETRIES:-3}"
 CVX_DIR="${CVX_DIR:-/home/wonill/matlab/cvx}"
@@ -21,8 +22,8 @@ finish_run() {
     fi
 }
 trap finish_run EXIT
-printf 'RUNNING mc=%s workers=%s started=%s\n' \
-    "$MC" "$WORKERS" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" >"$STATUS_FILE"
+printf 'RUNNING mc=%s workers=%s cv_step=%s started=%s\n' \
+    "$MC" "$WORKERS" "$CV_STEP" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" >"$STATUS_FILE"
 
 if (( MC < 1 || WORKERS < 1 )); then
     echo "MC and WORKERS must be positive integers." >&2
@@ -31,6 +32,7 @@ fi
 if (( WORKERS > MC )); then
     WORKERS="$MC"
 fi
+CV_POINTS="$(awk -v step="$CV_STEP" 'BEGIN { printf "%d", 1 / step + 0.5 }')"
 
 # Independent Monte Carlo realizations are split across MATLAB processes.
 # -singleCompThread prevents each CVX worker from oversubscribing the CPU.
@@ -59,7 +61,7 @@ run_shard() {
             "$attempt" "$MAX_RETRIES" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
             >>"$worker_log"
         if matlab -singleCompThread -softwareopengl -batch \
-            "restoredefaultpath; addpath('$MOSEK_MATLAB_DIR'); addpath(genpath('$CVX_DIR')); cd('$SIM_DIR'); addpath(genpath(pwd)); run_cv_stress_axis_experiment(${MC}, true, ${mc_start}:${mc_end});" \
+            "restoredefaultpath; addpath('$MOSEK_MATLAB_DIR'); addpath(genpath('$CVX_DIR')); cd('$SIM_DIR'); addpath(genpath(pwd)); run_cv_stress_axis_experiment(${MC}, true, ${mc_start}:${mc_end}, ${CV_STEP}, false);" \
             >>"$worker_log" 2>&1; then
             printf '=== shard completed %s ===\n' \
                 "$(date -u +%Y-%m-%dT%H:%M:%SZ)" >>"$worker_log"
@@ -75,7 +77,7 @@ run_shard() {
 for range in "${ranges[@]}"; do
     read -r mc_start mc_end <<< "$range"
     worker=$((worker + 1))
-    shard_path="${SIM_DIR}/results/cv_stress_axis_pslr_only_S2S3S4_CV10_NT4_N16_MC${MC}_shard_$(printf '%03d' "$mc_start")_$(printf '%03d' "$mc_end").mat"
+    shard_path="${SIM_DIR}/results/cv_stress_axis_pslr_only_S2S3S4_CV${CV_POINTS}_NT4_N16_MC${MC}_shard_$(printf '%03d' "$mc_start")_$(printf '%03d' "$mc_end").mat"
     if [[ "$FORCE_RERUN" != "1" && -f "$shard_path" ]]; then
         echo "Reusing completed shard ${mc_start}:${mc_end}"
         continue
@@ -96,4 +98,4 @@ if [[ "$status" -ne 0 ]]; then
 fi
 
 matlab -singleCompThread -softwareopengl -batch \
-    "restoredefaultpath; addpath('$MOSEK_MATLAB_DIR'); addpath(genpath('$CVX_DIR')); cd('$SIM_DIR'); addpath(genpath(pwd)); merge_cv_stress_axis_shards(${MC},${matlab_ranges}); run_cv_stress_axis_experiment(${MC}, false);"
+    "restoredefaultpath; addpath('$MOSEK_MATLAB_DIR'); addpath(genpath('$CVX_DIR')); cd('$SIM_DIR'); addpath(genpath(pwd)); merge_cv_stress_axis_shards(${MC},${matlab_ranges},${CV_STEP}); run_cv_stress_axis_experiment(${MC}, false, [], ${CV_STEP}, true);"
