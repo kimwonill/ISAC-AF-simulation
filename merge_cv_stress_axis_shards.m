@@ -46,6 +46,16 @@ for shard = 1:size(shard_ranges, 1)
         error('Missing Figure 7 shard: %s', shard_path);
     end
     part = load(shard_path);
+    if ~isequal(part.CV_grid, merged.CV_grid) || ...
+            ~isequaln(part.scenarios, merged.scenarios) || ...
+            part.num_mc ~= num_mc
+        error('Shard metadata mismatch: %s', shard_path);
+    end
+    if isfield(merged, 'result_schema_version') && ...
+            (~isfield(part, 'result_schema_version') || ...
+             part.result_schema_version ~= merged.result_schema_version)
+        error('Shard schema mismatch: %s', shard_path);
+    end
     for i = 1:numel(fields)
         name = fields{i};
         if ~isfield(part, name)
@@ -65,6 +75,20 @@ for i = 1:numel(numeric_fields)
     end
 end
 
-save(canonical_path, '-struct', 'merged');
+merged.num_mc = num_mc;
+merged.cv_step_override = cv_step;
+merged.cv_tag = cv_tag;
+if ~isfield(merged, 'experiment_metadata')
+    merged.experiment_metadata = struct();
+end
+merged.experiment_metadata.mc_indices = 1:num_mc;
+merged.experiment_metadata.shard_ranges = shard_ranges;
+merged.experiment_metadata.num_shards = size(shard_ranges, 1);
+merged.experiment_metadata.merged_at_utc = char(datetime( ...
+    'now', 'TimeZone', 'UTC', 'Format', 'yyyy-MM-dd''T''HH:mm:ss''Z'''));
+
+temporary_path = [tempname(out_dir), '.mat'];
+save(temporary_path, '-struct', 'merged');
+movefile(temporary_path, canonical_path, 'f');
 fprintf('Merged %d Figure 7 shards into %s\n', size(shard_ranges, 1), canonical_path);
 end

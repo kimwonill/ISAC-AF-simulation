@@ -5,6 +5,7 @@ SIM_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MC="${MC:-100}"
 WORKERS="${WORKERS:-1}"
 CV_STEP="${CV_STEP:-0.05}"
+TIME_BUDGET="${TIME_BUDGET:-3}"
 FORCE_RERUN="${FORCE_RERUN:-0}"
 MAX_RETRIES="${MAX_RETRIES:-3}"
 CVX_DIR="${CVX_DIR:-/home/wonill/matlab/cvx}"
@@ -22,8 +23,9 @@ finish_run() {
     fi
 }
 trap finish_run EXIT
-printf 'RUNNING mc=%s workers=%s cv_step=%s started=%s\n' \
-    "$MC" "$WORKERS" "$CV_STEP" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" >"$STATUS_FILE"
+printf 'RUNNING mc=%s workers=%s cv_step=%s time_budget=%ss started=%s\n' \
+    "$MC" "$WORKERS" "$CV_STEP" "$TIME_BUDGET" \
+    "$(date -u +%Y-%m-%dT%H:%M:%SZ)" >"$STATUS_FILE"
 
 if (( MC < 1 || WORKERS < 1 )); then
     echo "MC and WORKERS must be positive integers." >&2
@@ -31,6 +33,11 @@ if (( MC < 1 || WORKERS < 1 )); then
 fi
 if (( WORKERS > MC )); then
     WORKERS="$MC"
+fi
+if [[ ! "$TIME_BUDGET" =~ ^[0-9]+([.][0-9]+)?$ ]] || \
+        ! awk -v value="$TIME_BUDGET" 'BEGIN { exit !(value > 0) }'; then
+    echo "TIME_BUDGET must be one positive numeric value in seconds." >&2
+    exit 2
 fi
 CV_POINTS="$(awk -v step="$CV_STEP" 'BEGIN { printf "%d", 1 / step + 0.5 }')"
 
@@ -98,4 +105,4 @@ if [[ "$status" -ne 0 ]]; then
 fi
 
 matlab -singleCompThread -softwareopengl -batch \
-    "restoredefaultpath; addpath('$MOSEK_MATLAB_DIR'); addpath(genpath('$CVX_DIR')); cd('$SIM_DIR'); addpath(genpath(pwd)); merge_cv_stress_axis_shards(${MC},${matlab_ranges},${CV_STEP}); run_cv_stress_axis_experiment(${MC}, false, [], ${CV_STEP}, true);"
+    "restoredefaultpath; addpath('$MOSEK_MATLAB_DIR'); addpath(genpath('$CVX_DIR')); cd('$SIM_DIR'); addpath(genpath(pwd)); merge_cv_stress_axis_shards(${MC},${matlab_ranges},${CV_STEP}); run_cv_stress_axis_experiment(${MC}, false, [], ${CV_STEP}, true, ${TIME_BUDGET});"

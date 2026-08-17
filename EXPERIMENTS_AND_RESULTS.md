@@ -105,17 +105,17 @@ Parallel helpers for this workflow are described in Section 7.
 | Item | Description |
 | --- | --- |
 | Entry point | `run_cv_stress_axis_experiment.m` |
-| Purpose | Compares CV-SDP and direct PSLR SCA over `CV_max = 0:0.1:1` for three stressed scenarios. |
+| Purpose | Compares CV-SDP and direct PSLR SCA over a configurable `CV_max` grid for three stressed scenarios. The server run uses `0:0.05:1`. |
 | Scenarios | S2 higher illumination, S3 more targets, and S4 joint QoS/illumination stress |
-| Canonical MC=100 data | `results/cv_stress_axis_pslr_only_S2S3S4_CV10_NT4_N16_MC100.mat` |
+| Canonical server data | `results/cv_stress_axis_pslr_only_S2S3S4_CV20_NT4_N16_MC100.mat` |
 | Final figures | `figures/CV_Stress_Axis_Diagnostic.png/.pdf` and `figures/CV_Stress_Axis_Diagnostic_OneColumn_1x3.png/.pdf` |
 | Parallel runner | `run_cv_stress_axis_sharded.sh` |
 | Detached launcher | `start_cv_stress_axis_mc100.sh` |
 
-The server launcher now defaults to `MC=100`, `WORKERS=1`, and
-`CV_STEP=0.05`, producing a `CV20` cache. Override these environment variables
-explicitly to reproduce a different execution configuration. A local example
-that preserves the 0.1 sweep without exporting manuscript figures is
+The server launcher defaults to `MC=100`, `WORKERS=1`, `CV_STEP=0.05`, and
+`TIME_BUDGET=3`, producing a `CV20` cache. The time budget is post-processing
+only and never changes or stops an optimization. A local example that preserves
+the 0.1 sweep without exporting manuscript figures is
 `run_cv_stress_axis_experiment(10, true, [], 0.1, false)`.
 
 The canonical MC=100 file currently contains:
@@ -125,20 +125,74 @@ The canonical MC=100 file currently contains:
 - `prop_status` and `direct_status` CVX status strings.
 - `prop_time` and `direct_time` measured runtimes.
 - `prop_cvx_solver_iters` and `direct_cvx_solver_iters`.
-- `time_budget_seconds` and `budget_policy` used for post-processing.
+- `time_budget_seconds` and `budget_policy` used as the default post-processing
+  configuration.
+- `experiment_metadata`, including the CV grid, MC indices, seed rules, timing
+  protocol, MATLAB/platform information, Git commit, and merge provenance.
 
-The time budget is a post-processing feasibility threshold. It does not stop
-an optimization after that number of seconds. A run is counted as budget
-feasible only when it reports a solved status and its measured runtime is no
-larger than the scenario budget.
+The final 3-by-3 figure keeps the second and third rows unchanged: mean runtime
+and total IPM iterations. The first row overlays two quantities for each method:
 
-#### Important provenance note for the current Figure 7 cache
+- solid line / filled diamond: solve feasibility over all MC samples;
+- dashed line / open circle: the fraction with runtime no larger than the
+  selected budget **among solver-feasible samples**.
 
-The current MC=100 cache was generated with the code path that measured
+If a grid point has no solver-feasible sample, its conditional budgeted rate is
+stored as `NaN` and no dashed marker is drawn. All three scenarios use the same
+scalar budget when the server runner is used.
+
+Every figure export also writes a budget-tagged sidecar next to the canonical
+cache, for example
+`results/cv_stress_axis_pslr_only_S2S3S4_CV20_NT4_N16_MC100_figure_B3_3_3s.mat`.
+It stores the selected budgets, feasible and budget-pass counts, solver and
+conditional-budget rates, runtime/IPM means, and ratios. Thus a new budget can
+be audited without rerunning MC samples.
+
+#### Server pull and run
+
+Run the following from the server checkout:
+
+```bash
+cd /home/wonill/work/ISAC-AF-simulation
+git status --short
+git pull --ff-only origin main
+chmod +x run_cv_stress_axis_sharded.sh start_cv_stress_axis_mc100.sh
+WORKERS=1 CV_STEP=0.05 TIME_BUDGET=3 ./start_cv_stress_axis_mc100.sh
+```
+
+Monitor the detached job with:
+
+```bash
+tail -f results/cv_stress_axis_sharded_mc100/master.log
+cat results/cv_stress_axis_sharded_mc100/status.txt
+```
+
+The launcher intentionally starts a fresh MC=100 run. To reuse completed shard
+files after an interrupted run, invoke the runner directly with
+`FORCE_RERUN=0`:
+
+```bash
+MC=100 WORKERS=1 CV_STEP=0.05 TIME_BUDGET=3 FORCE_RERUN=0 \
+  ./run_cv_stress_axis_sharded.sh
+```
+
+After the canonical `CV20` cache exists, regenerate the same three-row figure
+with any common budget without rerunning the simulation:
+
+```matlab
+run_cv_stress_axis_experiment(100, false, [], 0.05, true, 5)
+```
+
+A scenario-specific override is also accepted, for example `[3 4 3]`. Omitting
+the sixth argument uses the default budget saved in the canonical result.
+
+#### Important provenance note for the legacy CV10 cache
+
+The older `CV10` MC=100 cache was generated with the code path that measured
 runtime in a quiet timed run and obtained IPM counts from a separate
 solver-log replay. It does **not** yet store convex-subproblem counts,
 per-solve IPM histories, solver/CVX/MATLAB version strings, Git commit, or a
-complete provenance structure. Therefore, do not interpret this cache as if
+complete provenance structure. Therefore, do not interpret that cache as if
 it already follows a timed-run-only solve-count protocol. If Figure 7 is
 regenerated under a revised protocol, both this documentation and the saved
 schema should be updated together.
@@ -274,9 +328,9 @@ calling a plotting file on a new machine.
 | `run_config4_sharded.sh` | Splits only the most expensive fourth Figure 4 configuration across eight MC shards, merges them, and re-plots. |
 | `merge_pareto_grid_1x4_shards.m` | Validates and merges Figure 4 shards into a canonical configuration cache. |
 | `finalize_pareto_grid_1x4.sh` | Waits for supplied worker PIDs and exports the combined Figure 4. |
-| `run_cv_stress_axis_sharded.sh` | Splits Figure 7 MC indices across workers, retries failed shards, merges them, and renders the final figure. Environment variables include `MC`, `WORKERS`, `FORCE_RERUN`, `MAX_RETRIES`, `CVX_DIR`, and `MOSEK_MATLAB_DIR`. |
+| `run_cv_stress_axis_sharded.sh` | Splits CV-stress MC indices across workers, retries failed shards, merges them, and renders the final three-row figure. Environment variables include `MC`, `WORKERS`, `CV_STEP`, `TIME_BUDGET`, `FORCE_RERUN`, `MAX_RETRIES`, `CVX_DIR`, and `MOSEK_MATLAB_DIR`. |
 | `merge_cv_stress_axis_shards.m` | Validates full MC coverage and merges Figure 7 shards. |
-| `start_cv_stress_axis_mc100.sh` | Starts a detached Figure 7 MC=100 run, defaulting to four workers, and writes master PID/log/status files. |
+| `start_cv_stress_axis_mc100.sh` | Starts a detached MC=100, CV-step-0.05 run, defaulting to one worker and a 3-second post-processing budget, and writes master PID/log/status files. |
 | `run_remaining_figures_queue.sh` | Historical server-specific queue for Figures 7, 8, and 10. It contains a fixed PID and fixed paths and should not be used unchanged on another machine. |
 
 The final Figure 7 MC=100 run recorded in the repository took approximately
