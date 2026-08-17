@@ -39,10 +39,21 @@ end
 function cases = load_or_build_right_cases(data_dir, force_rerun)
 cache_path = fullfile(data_dir, 'multitarget_worst_af_zero_doppler_NT8_N16_CV01_results.mat');
 if exist(cache_path, 'file') == 2 && ~force_rerun
-    S = load(cache_path, 'cases');
-    cases = S.cases;
-    fprintf('Loaded right-panel cache: %s\n', cache_path);
-    return;
+    S = load(cache_path);
+    if all(isfield(S.cases, {'Pn', 'kappa'}))
+        cases = S.cases;
+        fprintf('Loaded right-panel cache: %s\n', cache_path);
+        return;
+    end
+    if all(isfield(S, {'H', 'params', 'CV_max'}))
+        fprintf('Upgrading right-panel cache with fractional-delay inputs: %s\n', cache_path);
+        cases = rebuild_selected_right_cases(S);
+        H = S.H;
+        params = S.params;
+        CV_max = S.CV_max;
+        save(cache_path, 'cases', 'params', 'CV_max', 'H');
+        return;
+    end
 end
 
 params = setup_params();
@@ -57,6 +68,39 @@ H = generate_channel(params);
 cases = optimize_multitarget_cases(H, params, CV_max);
 save(cache_path, 'cases', 'params', 'CV_max', 'H');
 fprintf('Saved right-panel cache: %s\n', cache_path);
+end
+
+function cases = rebuild_selected_right_cases(S)
+params = S.params;
+default_params = setup_params();
+default_fields = fieldnames(default_params);
+for i = 1:numel(default_fields)
+    name = default_fields{i};
+    if ~isfield(params, name)
+        params.(name) = default_params.(name);
+    end
+end
+params.sdp_quiet = true;
+params.stop_if_alpha_unchanged = true;
+A = compute_steering(params);
+
+proposed = run_proposed(S.H, S.CV_max, params);
+if isempty(proposed.W) || isnan(proposed.sumrate)
+    error('Proposed CV cache upgrade failed: %s', proposed.status);
+end
+cases = result_to_worst_case('Proposed CV', 'Proposed', NaN, ...
+    proposed, A, params);
+
+for i = 2:numel(S.cases)
+    mode = lower(S.cases(i).short);
+    eta = S.cases(i).eta;
+    result = run_surrogate_baseline(S.H, mode, eta, params);
+    if isempty(result.W) || isnan(result.sumrate)
+        error('%s cache upgrade failed: %s', upper(mode), result.status);
+    end
+    cases(i) = result_to_worst_case(sprintf('%s-based', upper(mode)), ...
+        upper(mode), eta, result, A, params);
+end
 end
 
 function cases = optimize_multitarget_cases(H, params, CV_max)
@@ -116,12 +160,14 @@ num_targets = params.L;
 pslr_per_target = zeros(num_targets, 1);
 islr_per_target = zeros(num_targets, 1);
 ESL_dB_per_target = cell(num_targets, 1);
+Pn_per_target = cell(num_targets, 1);
 
 for l = 1:num_targets
     Pn = compute_directional_power(result.W, A(:, l));
     pslr_per_target(l) = compute_pslr(Pn, params.kappa);
     islr_per_target(l) = compute_islr(Pn, params.kappa);
     ESL_dB_per_target{l} = af_from_power(Pn, params.kappa);
+    Pn_per_target{l} = Pn;
 end
 
 [~, worst_idx] = min(pslr_per_target);
@@ -136,6 +182,8 @@ case_out.pslr_per_target = pslr_per_target;
 case_out.islr_per_target = islr_per_target;
 case_out.worst_target_idx = worst_idx;
 case_out.worst_theta_deg = params.theta(worst_idx) * 180 / pi;
+case_out.Pn = Pn_per_target{worst_idx};
+case_out.kappa = params.kappa;
 case_out.ESL_dB = ESL_dB_per_target{worst_idx};
 case_out.status = result.status;
 end
@@ -199,8 +247,9 @@ for p = 1:numel(panels)
     for i = 1:numel(panels(p).cases)
         c = panels(p).cases(i);
         zero_doppler_cut_dB = c.ESL_dB(:, 1);
-        [tau_samples, cut_samples_dB] = center_zero_delay_sample_grid(zero_doppler_cut_dB);
-        smooth_cut_dB = interpft_centered_zero_delay(zero_doppler_cut_dB, num_fine);
+        [~, cut_samples_dB] = center_zero_delay_sample_grid(zero_doppler_cut_dB);
+        smooth_cut_dB = fractional_zero_doppler_esl( ...
+            c.Pn, c.kappa, tau_fine);
         y_min_seen = min([y_min_seen; smooth_cut_dB(:); cut_samples_dB(:)]);
         y_max_seen = max([y_max_seen; smooth_cut_dB(:); cut_samples_dB(:)]);
         h = plot(ax, tau_fine, smooth_cut_dB, '-d', ...
@@ -308,10 +357,15 @@ tau_samples = [tau_samples; N/2];
 cut_centered_dB = [cut_centered_dB; cut_centered_dB(1)];
 end
 
-function interp_centered_dB = interpft_centered_zero_delay(cut_dB, num_fine)
-interp_periodic_dB = real(interpft(cut_dB(:), num_fine));
-interp_centered_dB = fftshift(interp_periodic_dB);
-interp_centered_dB = [interp_centered_dB; interp_centered_dB(1)];
+function ESL_dB = fractional_zero_doppler_esl(P, kappa, tau)
+N = numel(P);
+P = P(:);
+n = (0:N-1).';
+V = exp(-1j * 2*pi * n * tau(:).' / N);
+mainlobe = N^2 * ((kappa - 1) * sum(P.^2) + sum(P)^2);
+ESL = N^2 * ((kappa - 1) * sum(P.^2) + abs(P.' * V).^2);
+ESL_dB = 10 * log10(max(real(ESL), realmin) / mainlobe);
+ESL_dB = ESL_dB(:);
 end
 
 function str = legend_label(c)
