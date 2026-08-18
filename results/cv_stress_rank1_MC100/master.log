@@ -1,0 +1,12 @@
+[Warning: OpenGL Startup options will be removed in a future release.] 
+[Warning: Function narginchk has the same name as a MATLAB built-in. We suggest
+you rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 96)] 
+Stress rank-one summary over CV=0.1:0.1:1.0
+  S1: budget 93.3%/4.0%, EVD 93.2%/98.3%, EVD+GR 93.9%/98.5%
+  S2: budget 75.4%/4.4%, EVD 74.8%/93.3%, EVD+GR 77.2%/93.4%
+  S3: budget 91.7%/6.2%, EVD 91.4%/98.1%, EVD+GR 92.2%/98.2%
+  Exceptions: CV=0, Direct=0
+Saved square-panel 2-by-3 stress figure: /home/wonill/work/ISAC-AF-simulation/figures/CV_Stress_RankOne_2x3.pdf
+Saved canonical stress result: /home/wonill/work/ISAC-AF-simulation/results/cv_stress_rank1_S1S2S3_CV10_NT4_N16_MC100.mat

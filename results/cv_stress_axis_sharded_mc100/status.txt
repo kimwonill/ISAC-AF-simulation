@@ -1,1 +1,1 @@
-COMPLETED 2026-08-08T17:50:41Z
+RUNNING mc=100 workers=1 cv_step=0.05 time_budget=3s started=2026-08-17T13:58:34Z
