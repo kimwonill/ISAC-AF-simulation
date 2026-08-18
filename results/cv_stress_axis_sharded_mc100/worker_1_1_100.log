@@ -86206,3 +86206,1713 @@ NOTE: custom settings have been set for this solver.
 [ 97.4% 12272/12600] Direct S4-Joint MC 93/100 CV=0.15 | time=  2.43s | IPM=   39 | Solved | ETA 18.1min
 NOTE: custom settings have been set for this solver.
 ------------------------------------------------------------
+[ 97.4% 12273/12600] CV-SDP S4-Joint MC 93/100 CV=0.20 | time=  0.28s | IPM=   17 | Solved | ETA 18.0min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.4% 12274/12600] Direct S4-Joint MC 93/100 CV=0.20 | time=  4.50s | IPM=   36 | Solved | ETA 18.0min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.4% 12275/12600] CV-SDP S4-Joint MC 93/100 CV=0.25 | time=  0.29s | IPM=   22 | Solved | ETA 17.9min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.4% 12276/12600] Direct S4-Joint MC 93/100 CV=0.25 | time=  2.55s | IPM=   36 | Solved | ETA 17.9min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.4% 12277/12600] CV-SDP S4-Joint MC 93/100 CV=0.30 | time=  0.30s | IPM=   30 | Solved | ETA 17.8min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.4% 12278/12600] Direct S4-Joint MC 93/100 CV=0.30 | time=  2.51s | IPM=   37 | Solved | ETA 17.8min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.5% 12279/12600] CV-SDP S4-Joint MC 93/100 CV=0.35 | time=  0.27s | IPM=   17 | Solved | ETA 17.7min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.5% 12280/12600] Direct S4-Joint MC 93/100 CV=0.35 | time=  2.47s | IPM=   39 | Solved | ETA 17.7min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.5% 12281/12600] CV-SDP S4-Joint MC 93/100 CV=0.40 | time=  0.27s | IPM=   14 | Solved | ETA 17.6min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.5% 12282/12600] Direct S4-Joint MC 93/100 CV=0.40 | time=  1.63s | IPM=   25 | Solved | ETA 17.5min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.5% 12283/12600] CV-SDP S4-Joint MC 93/100 CV=0.45 | time=  0.28s | IPM=   20 | Solved | ETA 17.5min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.5% 12284/12600] Direct S4-Joint MC 93/100 CV=0.45 | time=  1.65s | IPM=   24 | Solved | ETA 17.4min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.5% 12285/12600] CV-SDP S4-Joint MC 93/100 CV=0.50 | time=  0.29s | IPM=   27 | Solved | ETA 17.4min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.5% 12286/12600] Direct S4-Joint MC 93/100 CV=0.50 | time=  1.65s | IPM=   24 | Solved | ETA 17.3min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.5% 12287/12600] CV-SDP S4-Joint MC 93/100 CV=0.55 | time=  0.27s | IPM=   15 | Solved | ETA 17.3min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.5% 12288/12600] Direct S4-Joint MC 93/100 CV=0.55 | time=  1.64s | IPM=   24 | Solved | ETA 17.2min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.5% 12289/12600] CV-SDP S4-Joint MC 93/100 CV=0.60 | time=  0.27s | IPM=   15 | Solved | ETA 17.2min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.5% 12290/12600] Direct S4-Joint MC 93/100 CV=0.60 | time=  1.66s | IPM=   24 | Solved | ETA 17.1min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.5% 12291/12600] CV-SDP S4-Joint MC 93/100 CV=0.65 | time=  0.31s | IPM=   33 | Solved | ETA 17.0min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.6% 12292/12600] Direct S4-Joint MC 93/100 CV=0.65 | time=  1.65s | IPM=   24 | Solved | ETA 17.0min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.6% 12293/12600] CV-SDP S4-Joint MC 93/100 CV=0.70 | time=  0.29s | IPM=   18 | Solved | ETA 16.9min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.6% 12294/12600] Direct S4-Joint MC 93/100 CV=0.70 | time=  1.65s | IPM=   24 | Solved | ETA 16.9min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.6% 12295/12600] CV-SDP S4-Joint MC 93/100 CV=0.75 | time=  0.30s | IPM=   28 | Solved | ETA 16.8min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.6% 12296/12600] Direct S4-Joint MC 93/100 CV=0.75 | time=  1.69s | IPM=   24 | Solved | ETA 16.8min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.6% 12297/12600] CV-SDP S4-Joint MC 93/100 CV=0.80 | time=  0.28s | IPM=   16 | Solved | ETA 16.7min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.6% 12298/12600] Direct S4-Joint MC 93/100 CV=0.80 | time=  1.68s | IPM=   24 | Solved | ETA 16.7min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.6% 12299/12600] CV-SDP S4-Joint MC 93/100 CV=0.85 | time=  0.28s | IPM=   15 | Solved | ETA 16.6min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.6% 12300/12600] Direct S4-Joint MC 93/100 CV=0.85 | time=  1.67s | IPM=   24 | Solved | ETA 16.5min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.6% 12301/12600] CV-SDP S4-Joint MC 93/100 CV=0.90 | time=  0.28s | IPM=   17 | Solved | ETA 16.5min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.6% 12302/12600] Direct S4-Joint MC 93/100 CV=0.90 | time=  1.68s | IPM=   24 | Solved | ETA 16.4min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.6% 12303/12600] CV-SDP S4-Joint MC 93/100 CV=0.95 | time=  0.28s | IPM=   21 | Solved | ETA 16.4min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.7% 12304/12600] Direct S4-Joint MC 93/100 CV=0.95 | time=  1.68s | IPM=   24 | Solved | ETA 16.3min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.7% 12305/12600] CV-SDP S4-Joint MC 93/100 CV=1.00 | time=  0.28s | IPM=   14 | Solved | ETA 16.3min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.7% 12306/12600] Direct S4-Joint MC 93/100 CV=1.00 | time=  1.70s | IPM=   24 | Solved | ETA 16.2min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.7% 12307/12600] CV-SDP S4-Joint MC 94/100 CV=0.00 | time=  0.29s | IPM=   23 | Solved | ETA 16.2min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.7% 12308/12600] Direct S4-Joint MC 94/100 CV=0.00 | time=  0.84s | IPM=   18 | Infeasible | ETA 16.1min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.7% 12309/12600] CV-SDP S4-Joint MC 94/100 CV=0.05 | time=  0.28s | IPM=   18 | Solved | ETA 16.0min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.7% 12310/12600] Direct S4-Joint MC 94/100 CV=0.05 | time=  2.51s | IPM=   39 | Solved | ETA 16.0min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.7% 12311/12600] CV-SDP S4-Joint MC 94/100 CV=0.10 | time=  0.30s | IPM=   24 | Solved | ETA 15.9min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.7% 12312/12600] Direct S4-Joint MC 94/100 CV=0.10 | time=  2.55s | IPM=   36 | Solved | ETA 15.9min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.7% 12313/12600] CV-SDP S4-Joint MC 94/100 CV=0.15 | time=  0.29s | IPM=   22 | Solved | ETA 15.8min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.7% 12314/12600] Direct S4-Joint MC 94/100 CV=0.15 | time=  2.50s | IPM=   36 | Solved | ETA 15.8min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.7% 12315/12600] CV-SDP S4-Joint MC 94/100 CV=0.20 | time=  0.27s | IPM=   20 | Solved | ETA 15.7min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.7% 12316/12600] Direct S4-Joint MC 94/100 CV=0.20 | time=  2.50s | IPM=   39 | Solved | ETA 15.7min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.8% 12317/12600] CV-SDP S4-Joint MC 94/100 CV=0.25 | time=  0.27s | IPM=   15 | Solved | ETA 15.6min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.8% 12318/12600] Direct S4-Joint MC 94/100 CV=0.25 | time=  2.40s | IPM=   39 | Solved | ETA 15.5min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.8% 12319/12600] CV-SDP S4-Joint MC 94/100 CV=0.30 | time=  0.29s | IPM=   24 | Solved | ETA 15.5min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.8% 12320/12600] Direct S4-Joint MC 94/100 CV=0.30 | time=  2.40s | IPM=   39 | Solved | ETA 15.4min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.8% 12321/12600] CV-SDP S4-Joint MC 94/100 CV=0.35 | time=  0.31s | IPM=   34 | Solved | ETA 15.4min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.8% 12322/12600] Direct S4-Joint MC 94/100 CV=0.35 | time=  2.47s | IPM=   39 | Solved | ETA 15.3min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.8% 12323/12600] CV-SDP S4-Joint MC 94/100 CV=0.40 | time=  0.26s | IPM=   19 | Solved | ETA 15.3min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.8% 12324/12600] Direct S4-Joint MC 94/100 CV=0.40 | time=  2.43s | IPM=   36 | Solved | ETA 15.2min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.8% 12325/12600] CV-SDP S4-Joint MC 94/100 CV=0.45 | time=  0.27s | IPM=   22 | Solved | ETA 15.2min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.8% 12326/12600] Direct S4-Joint MC 94/100 CV=0.45 | time=  2.49s | IPM=   36 | Solved | ETA 15.1min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.8% 12327/12600] CV-SDP S4-Joint MC 94/100 CV=0.50 | time=  0.30s | IPM=   26 | Solved | ETA 15.0min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.8% 12328/12600] Direct S4-Joint MC 94/100 CV=0.50 | time=  1.67s | IPM=   24 | Solved | ETA 15.0min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.8% 12329/12600] CV-SDP S4-Joint MC 94/100 CV=0.55 | time=  0.28s | IPM=   21 | Solved | ETA 14.9min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.9% 12330/12600] Direct S4-Joint MC 94/100 CV=0.55 | time=  1.68s | IPM=   26 | Solved | ETA 14.9min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.9% 12331/12600] CV-SDP S4-Joint MC 94/100 CV=0.60 | time=  0.32s | IPM=   36 | Solved | ETA 14.8min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.9% 12332/12600] Direct S4-Joint MC 94/100 CV=0.60 | time=  1.71s | IPM=   26 | Solved | ETA 14.8min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.9% 12333/12600] CV-SDP S4-Joint MC 94/100 CV=0.65 | time=  0.26s | IPM=   20 | Solved | ETA 14.7min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.9% 12334/12600] Direct S4-Joint MC 94/100 CV=0.65 | time=  1.64s | IPM=   26 | Solved | ETA 14.7min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.9% 12335/12600] CV-SDP S4-Joint MC 94/100 CV=0.70 | time=  0.28s | IPM=   26 | Solved | ETA 14.6min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.9% 12336/12600] Direct S4-Joint MC 94/100 CV=0.70 | time=  1.64s | IPM=   26 | Solved | ETA 14.5min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.9% 12337/12600] CV-SDP S4-Joint MC 94/100 CV=0.75 | time=  0.28s | IPM=   15 | Solved | ETA 14.5min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.9% 12338/12600] Direct S4-Joint MC 94/100 CV=0.75 | time=  1.68s | IPM=   26 | Solved | ETA 14.4min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.9% 12339/12600] CV-SDP S4-Joint MC 94/100 CV=0.80 | time=  0.27s | IPM=   14 | Solved | ETA 14.4min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.9% 12340/12600] Direct S4-Joint MC 94/100 CV=0.80 | time=  1.69s | IPM=   26 | Solved | ETA 14.3min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 97.9% 12341/12600] CV-SDP S4-Joint MC 94/100 CV=0.85 | time=  0.29s | IPM=   21 | Solved | ETA 14.3min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.0% 12342/12600] Direct S4-Joint MC 94/100 CV=0.85 | time=  1.68s | IPM=   26 | Solved | ETA 14.2min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.0% 12343/12600] CV-SDP S4-Joint MC 94/100 CV=0.90 | time=  0.28s | IPM=   15 | Solved | ETA 14.2min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.0% 12344/12600] Direct S4-Joint MC 94/100 CV=0.90 | time=  1.66s | IPM=   26 | Solved | ETA 14.1min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.0% 12345/12600] CV-SDP S4-Joint MC 94/100 CV=0.95 | time=  0.29s | IPM=   21 | Solved | ETA 14.0min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.0% 12346/12600] Direct S4-Joint MC 94/100 CV=0.95 | time=  1.66s | IPM=   26 | Solved | ETA 14.0min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.0% 12347/12600] CV-SDP S4-Joint MC 94/100 CV=1.00 | time=  0.28s | IPM=   18 | Solved | ETA 13.9min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.0% 12348/12600] Direct S4-Joint MC 94/100 CV=1.00 | time=  1.66s | IPM=   26 | Solved | ETA 13.9min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.0% 12349/12600] CV-SDP S4-Joint MC 95/100 CV=0.00 | time=  2.22s | IPM=   77 | Post-EVD Infeasible (max residual 3.393e-02) | ETA 13.8min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.0% 12350/12600] Direct S4-Joint MC 95/100 CV=0.00 | time=  0.82s | IPM=   18 | Infeasible | ETA 13.8min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.0% 12351/12600] CV-SDP S4-Joint MC 95/100 CV=0.05 | time=  2.00s | IPM=  102 | Post-EVD Infeasible (max residual 4.447e-03) | ETA 13.7min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.0% 12352/12600] Direct S4-Joint MC 95/100 CV=0.05 | time=  7.30s | IPM=  127 | Post-EVD Infeasible (max residual 3.668e-04) | ETA 13.7min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.0% 12353/12600] CV-SDP S4-Joint MC 95/100 CV=0.10 | time=  0.28s | IPM=   18 | Solved | ETA 13.6min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.0% 12354/12600] Direct S4-Joint MC 95/100 CV=0.10 | time=  2.53s | IPM=   36 | Solved | ETA 13.5min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.1% 12355/12600] CV-SDP S4-Joint MC 95/100 CV=0.15 | time=  0.28s | IPM=   17 | Solved | ETA 13.5min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.1% 12356/12600] Direct S4-Joint MC 95/100 CV=0.15 | time=  2.53s | IPM=   36 | Solved | ETA 13.4min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.1% 12357/12600] CV-SDP S4-Joint MC 95/100 CV=0.20 | time=  0.30s | IPM=   20 | Solved | ETA 13.4min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.1% 12358/12600] Direct S4-Joint MC 95/100 CV=0.20 | time=  2.53s | IPM=   39 | Solved | ETA 13.3min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.1% 12359/12600] CV-SDP S4-Joint MC 95/100 CV=0.25 | time=  0.27s | IPM=   23 | Solved | ETA 13.3min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.1% 12360/12600] Direct S4-Joint MC 95/100 CV=0.25 | time=  2.36s | IPM=   36 | Solved | ETA 13.2min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.1% 12361/12600] CV-SDP S4-Joint MC 95/100 CV=0.30 | time=  0.29s | IPM=   27 | Solved | ETA 13.2min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.1% 12362/12600] Direct S4-Joint MC 95/100 CV=0.30 | time=  2.39s | IPM=   36 | Solved | ETA 13.1min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.1% 12363/12600] CV-SDP S4-Joint MC 95/100 CV=0.35 | time=  0.27s | IPM=   17 | Solved | ETA 13.1min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.1% 12364/12600] Direct S4-Joint MC 95/100 CV=0.35 | time=  2.43s | IPM=   39 | Solved | ETA 13.0min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.1% 12365/12600] CV-SDP S4-Joint MC 95/100 CV=0.40 | time=  0.27s | IPM=   15 | Solved | ETA 12.9min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.1% 12366/12600] Direct S4-Joint MC 95/100 CV=0.40 | time=  2.41s | IPM=   36 | Solved | ETA 12.9min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.2% 12367/12600] CV-SDP S4-Joint MC 95/100 CV=0.45 | time=  0.26s | IPM=   24 | Solved | ETA 12.8min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.2% 12368/12600] Direct S4-Joint MC 95/100 CV=0.45 | time=  2.33s | IPM=   37 | Solved | ETA 12.8min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.2% 12369/12600] CV-SDP S4-Joint MC 95/100 CV=0.50 | time=  0.25s | IPM=   16 | Solved | ETA 12.7min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.2% 12370/12600] Direct S4-Joint MC 95/100 CV=0.50 | time=  2.34s | IPM=   39 | Solved | ETA 12.7min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.2% 12371/12600] CV-SDP S4-Joint MC 95/100 CV=0.55 | time=  0.26s | IPM=   22 | Solved | ETA 12.6min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.2% 12372/12600] Direct S4-Joint MC 95/100 CV=0.55 | time=  2.31s | IPM=   39 | Solved | ETA 12.6min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.2% 12373/12600] CV-SDP S4-Joint MC 95/100 CV=0.60 | time=  0.28s | IPM=   16 | Solved | ETA 12.5min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.2% 12374/12600] Direct S4-Joint MC 95/100 CV=0.60 | time=  1.67s | IPM=   25 | Solved | ETA 12.4min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.2% 12375/12600] CV-SDP S4-Joint MC 95/100 CV=0.65 | time=  0.28s | IPM=   15 | Solved | ETA 12.4min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.2% 12376/12600] Direct S4-Joint MC 95/100 CV=0.65 | time=  1.68s | IPM=   25 | Solved | ETA 12.3min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.2% 12377/12600] CV-SDP S4-Joint MC 95/100 CV=0.70 | time=  0.31s | IPM=   35 | Solved | ETA 12.3min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.2% 12378/12600] Direct S4-Joint MC 95/100 CV=0.70 | time=  1.68s | IPM=   26 | Solved | ETA 12.2min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.2% 12379/12600] CV-SDP S4-Joint MC 95/100 CV=0.75 | time=  0.28s | IPM=   19 | Solved | ETA 12.2min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.3% 12380/12600] Direct S4-Joint MC 95/100 CV=0.75 | time=  1.67s | IPM=   26 | Solved | ETA 12.1min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.3% 12381/12600] CV-SDP S4-Joint MC 95/100 CV=0.80 | time=  0.29s | IPM=   21 | Solved | ETA 12.1min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.3% 12382/12600] Direct S4-Joint MC 95/100 CV=0.80 | time=  1.71s | IPM=   26 | Solved | ETA 12.0min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.3% 12383/12600] CV-SDP S4-Joint MC 95/100 CV=0.85 | time=  0.26s | IPM=   18 | Solved | ETA 11.9min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.3% 12384/12600] Direct S4-Joint MC 95/100 CV=0.85 | time=  1.65s | IPM=   26 | Solved | ETA 11.9min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.3% 12385/12600] CV-SDP S4-Joint MC 95/100 CV=0.90 | time=  0.26s | IPM=   17 | Solved | ETA 11.8min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.3% 12386/12600] Direct S4-Joint MC 95/100 CV=0.90 | time=  1.65s | IPM=   26 | Solved | ETA 11.8min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.3% 12387/12600] CV-SDP S4-Joint MC 95/100 CV=0.95 | time=  0.28s | IPM=   24 | Solved | ETA 11.7min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.3% 12388/12600] Direct S4-Joint MC 95/100 CV=0.95 | time=  1.64s | IPM=   24 | Solved | ETA 11.7min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.3% 12389/12600] CV-SDP S4-Joint MC 95/100 CV=1.00 | time=  0.26s | IPM=   18 | Solved | ETA 11.6min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.3% 12390/12600] Direct S4-Joint MC 95/100 CV=1.00 | time=  1.64s | IPM=   24 | Solved | ETA 11.6min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.3% 12391/12600] CV-SDP S4-Joint MC 96/100 CV=0.00 | time=  0.27s | IPM=   13 | Solved | ETA 11.5min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.3% 12392/12600] Direct S4-Joint MC 96/100 CV=0.00 | time=  0.85s | IPM=   20 | Infeasible | ETA 11.4min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.4% 12393/12600] CV-SDP S4-Joint MC 96/100 CV=0.05 | time=  0.28s | IPM=   17 | Solved | ETA 11.4min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.4% 12394/12600] Direct S4-Joint MC 96/100 CV=0.05 | time=  2.52s | IPM=   36 | Solved | ETA 11.3min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.4% 12395/12600] CV-SDP S4-Joint MC 96/100 CV=0.10 | time=  0.29s | IPM=   23 | Solved | ETA 11.3min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.4% 12396/12600] Direct S4-Joint MC 96/100 CV=0.10 | time=  2.54s | IPM=   39 | Solved | ETA 11.2min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.4% 12397/12600] CV-SDP S4-Joint MC 96/100 CV=0.15 | time=  0.26s | IPM=   14 | Solved | ETA 11.2min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.4% 12398/12600] Direct S4-Joint MC 96/100 CV=0.15 | time=  2.47s | IPM=   39 | Solved | ETA 11.1min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.4% 12399/12600] CV-SDP S4-Joint MC 96/100 CV=0.20 | time=  0.28s | IPM=   26 | Solved | ETA 11.1min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.4% 12400/12600] Direct S4-Joint MC 96/100 CV=0.20 | time=  2.47s | IPM=   39 | Solved | ETA 11.0min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.4% 12401/12600] CV-SDP S4-Joint MC 96/100 CV=0.25 | time=  0.29s | IPM=   15 | Solved | ETA 10.9min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.4% 12402/12600] Direct S4-Joint MC 96/100 CV=0.25 | time=  2.57s | IPM=   38 | Solved | ETA 10.9min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.4% 12403/12600] CV-SDP S4-Joint MC 96/100 CV=0.30 | time=  0.28s | IPM=   14 | Solved | ETA 10.8min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.4% 12404/12600] Direct S4-Joint MC 96/100 CV=0.30 | time=  2.54s | IPM=   39 | Solved | ETA 10.8min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.5% 12405/12600] CV-SDP S4-Joint MC 96/100 CV=0.35 | time=  0.29s | IPM=   18 | Solved | ETA 10.7min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.5% 12406/12600] Direct S4-Joint MC 96/100 CV=0.35 | time=  2.52s | IPM=   42 | Solved | ETA 10.7min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.5% 12407/12600] CV-SDP S4-Joint MC 96/100 CV=0.40 | time=  0.29s | IPM=   21 | Solved | ETA 10.6min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.5% 12408/12600] Direct S4-Joint MC 96/100 CV=0.40 | time=  1.68s | IPM=   26 | Solved | ETA 10.6min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.5% 12409/12600] CV-SDP S4-Joint MC 96/100 CV=0.45 | time=  0.30s | IPM=   31 | Solved | ETA 10.5min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.5% 12410/12600] Direct S4-Joint MC 96/100 CV=0.45 | time=  1.68s | IPM=   26 | Solved | ETA 10.5min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.5% 12411/12600] CV-SDP S4-Joint MC 96/100 CV=0.50 | time=  0.29s | IPM=   23 | Solved | ETA 10.4min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.5% 12412/12600] Direct S4-Joint MC 96/100 CV=0.50 | time=  1.68s | IPM=   26 | Solved | ETA 10.3min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.5% 12413/12600] CV-SDP S4-Joint MC 96/100 CV=0.55 | time=  0.27s | IPM=   21 | Solved | ETA 10.3min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.5% 12414/12600] Direct S4-Joint MC 96/100 CV=0.55 | time=  1.61s | IPM=   26 | Solved | ETA 10.2min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.5% 12415/12600] CV-SDP S4-Joint MC 96/100 CV=0.60 | time=  0.27s | IPM=   16 | Solved | ETA 10.2min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.5% 12416/12600] Direct S4-Joint MC 96/100 CV=0.60 | time=  1.57s | IPM=   26 | Solved | ETA 10.1min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.5% 12417/12600] CV-SDP S4-Joint MC 96/100 CV=0.65 | time=  0.32s | IPM=   45 | Solved | ETA 10.1min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.6% 12418/12600] Direct S4-Joint MC 96/100 CV=0.65 | time=  1.58s | IPM=   26 | Solved | ETA 10.0min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.6% 12419/12600] CV-SDP S4-Joint MC 96/100 CV=0.70 | time=  0.27s | IPM=   17 | Solved | ETA 10.0min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.6% 12420/12600] Direct S4-Joint MC 96/100 CV=0.70 | time=  1.60s | IPM=   27 | Solved | ETA 9.9min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.6% 12421/12600] CV-SDP S4-Joint MC 96/100 CV=0.75 | time=  0.29s | IPM=   21 | Solved | ETA 9.8min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.6% 12422/12600] Direct S4-Joint MC 96/100 CV=0.75 | time=  1.58s | IPM=   27 | Solved | ETA 9.8min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.6% 12423/12600] CV-SDP S4-Joint MC 96/100 CV=0.80 | time=  0.26s | IPM=   14 | Solved | ETA 9.7min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.6% 12424/12600] Direct S4-Joint MC 96/100 CV=0.80 | time=  1.59s | IPM=   27 | Solved | ETA 9.7min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.6% 12425/12600] CV-SDP S4-Joint MC 96/100 CV=0.85 | time=  0.27s | IPM=   14 | Solved | ETA 9.6min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.6% 12426/12600] Direct S4-Joint MC 96/100 CV=0.85 | time=  1.60s | IPM=   26 | Solved | ETA 9.6min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.6% 12427/12600] CV-SDP S4-Joint MC 96/100 CV=0.90 | time=  0.27s | IPM=   18 | Solved | ETA 9.5min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.6% 12428/12600] Direct S4-Joint MC 96/100 CV=0.90 | time=  1.58s | IPM=   26 | Solved | ETA 9.5min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.6% 12429/12600] CV-SDP S4-Joint MC 96/100 CV=0.95 | time=  0.26s | IPM=   21 | Solved | ETA 9.4min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.7% 12430/12600] Direct S4-Joint MC 96/100 CV=0.95 | time=  1.53s | IPM=   26 | Solved | ETA 9.3min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.7% 12431/12600] CV-SDP S4-Joint MC 96/100 CV=1.00 | time=  0.25s | IPM=   14 | Solved | ETA 9.3min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.7% 12432/12600] Direct S4-Joint MC 96/100 CV=1.00 | time=  1.57s | IPM=   26 | Solved | ETA 9.2min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.7% 12433/12600] CV-SDP S4-Joint MC 97/100 CV=0.00 | time=  0.25s | IPM=   20 | Solved | ETA 9.2min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.7% 12434/12600] Direct S4-Joint MC 97/100 CV=0.00 | time=  0.80s | IPM=   17 | Infeasible | ETA 9.1min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.7% 12435/12600] CV-SDP S4-Joint MC 97/100 CV=0.05 | time=  0.27s | IPM=   20 | Solved | ETA 9.1min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.7% 12436/12600] Direct S4-Joint MC 97/100 CV=0.05 | time=  2.45s | IPM=   39 | Solved | ETA 9.0min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.7% 12437/12600] CV-SDP S4-Joint MC 97/100 CV=0.10 | time=  0.27s | IPM=   19 | Solved | ETA 9.0min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.7% 12438/12600] Direct S4-Joint MC 97/100 CV=0.10 | time=  2.38s | IPM=   39 | Solved | ETA 8.9min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.7% 12439/12600] CV-SDP S4-Joint MC 97/100 CV=0.15 | time=  0.28s | IPM=   26 | Solved | ETA 8.8min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.7% 12440/12600] Direct S4-Joint MC 97/100 CV=0.15 | time=  2.35s | IPM=   39 | Solved | ETA 8.8min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.7% 12441/12600] CV-SDP S4-Joint MC 97/100 CV=0.20 | time=  0.28s | IPM=   20 | Solved | ETA 8.7min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.7% 12442/12600] Direct S4-Joint MC 97/100 CV=0.20 | time=  2.39s | IPM=   36 | Solved | ETA 8.7min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.8% 12443/12600] CV-SDP S4-Joint MC 97/100 CV=0.25 | time=  0.28s | IPM=   24 | Solved | ETA 8.6min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.8% 12444/12600] Direct S4-Joint MC 97/100 CV=0.25 | time=  2.43s | IPM=   39 | Solved | ETA 8.6min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.8% 12445/12600] CV-SDP S4-Joint MC 97/100 CV=0.30 | time=  0.29s | IPM=   22 | Solved | ETA 8.5min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.8% 12446/12600] Direct S4-Joint MC 97/100 CV=0.30 | time=  2.40s | IPM=   36 | Solved | ETA 8.5min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.8% 12447/12600] CV-SDP S4-Joint MC 97/100 CV=0.35 | time=  0.27s | IPM=   22 | Solved | ETA 8.4min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.8% 12448/12600] Direct S4-Joint MC 97/100 CV=0.35 | time=  2.33s | IPM=   39 | Solved | ETA 8.4min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.8% 12449/12600] CV-SDP S4-Joint MC 97/100 CV=0.40 | time=  0.27s | IPM=   14 | Solved | ETA 8.3min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.8% 12450/12600] Direct S4-Joint MC 97/100 CV=0.40 | time=  2.38s | IPM=   37 | Solved | ETA 8.2min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.8% 12451/12600] CV-SDP S4-Joint MC 97/100 CV=0.45 | time=  0.28s | IPM=   21 | Solved | ETA 8.2min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.8% 12452/12600] Direct S4-Joint MC 97/100 CV=0.45 | time=  1.59s | IPM=   24 | Solved | ETA 8.1min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.8% 12453/12600] CV-SDP S4-Joint MC 97/100 CV=0.50 | time=  0.27s | IPM=   14 | Solved | ETA 8.1min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.8% 12454/12600] Direct S4-Joint MC 97/100 CV=0.50 | time=  1.67s | IPM=   24 | Solved | ETA 8.0min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.8% 12455/12600] CV-SDP S4-Joint MC 97/100 CV=0.55 | time=  0.28s | IPM=   14 | Solved | ETA 8.0min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.9% 12456/12600] Direct S4-Joint MC 97/100 CV=0.55 | time=  1.68s | IPM=   24 | Solved | ETA 7.9min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.9% 12457/12600] CV-SDP S4-Joint MC 97/100 CV=0.60 | time=  0.28s | IPM=   17 | Solved | ETA 7.9min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.9% 12458/12600] Direct S4-Joint MC 97/100 CV=0.60 | time=  1.67s | IPM=   24 | Solved | ETA 7.8min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.9% 12459/12600] CV-SDP S4-Joint MC 97/100 CV=0.65 | time=  0.31s | IPM=   31 | Solved | ETA 7.7min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.9% 12460/12600] Direct S4-Joint MC 97/100 CV=0.65 | time=  1.68s | IPM=   24 | Solved | ETA 7.7min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.9% 12461/12600] CV-SDP S4-Joint MC 97/100 CV=0.70 | time=  0.30s | IPM=   27 | Solved | ETA 7.6min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.9% 12462/12600] Direct S4-Joint MC 97/100 CV=0.70 | time=  1.67s | IPM=   25 | Solved | ETA 7.6min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.9% 12463/12600] CV-SDP S4-Joint MC 97/100 CV=0.75 | time=  0.27s | IPM=   20 | Solved | ETA 7.5min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.9% 12464/12600] Direct S4-Joint MC 97/100 CV=0.75 | time=  1.65s | IPM=   25 | Solved | ETA 7.5min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.9% 12465/12600] CV-SDP S4-Joint MC 97/100 CV=0.80 | time=  0.28s | IPM=   19 | Solved | ETA 7.4min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.9% 12466/12600] Direct S4-Joint MC 97/100 CV=0.80 | time=  1.68s | IPM=   25 | Solved | ETA 7.4min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 98.9% 12467/12600] CV-SDP S4-Joint MC 97/100 CV=0.85 | time=  0.28s | IPM=   19 | Solved | ETA 7.3min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.0% 12468/12600] Direct S4-Joint MC 97/100 CV=0.85 | time=  1.67s | IPM=   25 | Solved | ETA 7.2min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.0% 12469/12600] CV-SDP S4-Joint MC 97/100 CV=0.90 | time=  0.31s | IPM=   32 | Solved | ETA 7.2min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.0% 12470/12600] Direct S4-Joint MC 97/100 CV=0.90 | time=  1.65s | IPM=   24 | Solved | ETA 7.1min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.0% 12471/12600] CV-SDP S4-Joint MC 97/100 CV=0.95 | time=  0.28s | IPM=   16 | Solved | ETA 7.1min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.0% 12472/12600] Direct S4-Joint MC 97/100 CV=0.95 | time=  1.67s | IPM=   24 | Solved | ETA 7.0min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.0% 12473/12600] CV-SDP S4-Joint MC 97/100 CV=1.00 | time=  0.28s | IPM=   17 | Solved | ETA 7.0min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.0% 12474/12600] Direct S4-Joint MC 97/100 CV=1.00 | time=  1.65s | IPM=   24 | Solved | ETA 6.9min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.0% 12475/12600] CV-SDP S4-Joint MC 98/100 CV=0.00 | time=  2.15s | IPM=   79 | Post-EVD Infeasible (max residual 3.125e-01) | ETA 6.9min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.0% 12476/12600] Direct S4-Joint MC 98/100 CV=0.00 | time=  0.84s | IPM=   18 | Infeasible | ETA 6.8min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.0% 12477/12600] CV-SDP S4-Joint MC 98/100 CV=0.05 | time=  2.21s | IPM=   76 | Post-EVD Infeasible (max residual 2.700e-01) | ETA 6.8min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.0% 12478/12600] Direct S4-Joint MC 98/100 CV=0.05 | time=  7.34s | IPM=   93 | Post-EVD Infeasible (max residual 1.223e+01) | ETA 6.7min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.0% 12479/12600] CV-SDP S4-Joint MC 98/100 CV=0.10 | time=  2.24s | IPM=   80 | Post-EVD Infeasible (max residual 2.293e-01) | ETA 6.6min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.0% 12480/12600] Direct S4-Joint MC 98/100 CV=0.10 | time=  7.38s | IPM=  102 | Post-EVD Infeasible (max residual 1.859e+00) | ETA 6.6min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.1% 12481/12600] CV-SDP S4-Joint MC 98/100 CV=0.15 | time=  2.11s | IPM=   85 | Post-EVD Infeasible (max residual 1.891e-01) | ETA 6.5min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.1% 12482/12600] Direct S4-Joint MC 98/100 CV=0.15 | time=  2.50s | IPM=   39 | Solved | ETA 6.5min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.1% 12483/12600] CV-SDP S4-Joint MC 98/100 CV=0.20 | time=  2.20s | IPM=   84 | Post-EVD Infeasible (max residual 1.487e-01) | ETA 6.4min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.1% 12484/12600] Direct S4-Joint MC 98/100 CV=0.20 | time=  2.49s | IPM=   36 | Solved | ETA 6.4min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.1% 12485/12600] CV-SDP S4-Joint MC 98/100 CV=0.25 | time=  2.18s | IPM=   86 | Post-EVD Infeasible (max residual 1.076e-01) | ETA 6.3min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.1% 12486/12600] Direct S4-Joint MC 98/100 CV=0.25 | time=  2.48s | IPM=   38 | Solved | ETA 6.3min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.1% 12487/12600] CV-SDP S4-Joint MC 98/100 CV=0.30 | time=  2.22s | IPM=   92 | Post-EVD Infeasible (max residual 6.749e-02) | ETA 6.2min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.1% 12488/12600] Direct S4-Joint MC 98/100 CV=0.30 | time=  2.52s | IPM=   39 | Solved | ETA 6.2min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.1% 12489/12600] CV-SDP S4-Joint MC 98/100 CV=0.35 | time=  2.20s | IPM=   95 | Post-EVD Infeasible (max residual 4.824e-02) | ETA 6.1min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.1% 12490/12600] Direct S4-Joint MC 98/100 CV=0.35 | time=  2.32s | IPM=   39 | Solved | ETA 6.0min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.1% 12491/12600] CV-SDP S4-Joint MC 98/100 CV=0.40 | time=  2.12s | IPM=  103 | Post-EVD Infeasible (max residual 2.832e-02) | ETA 6.0min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.1% 12492/12600] Direct S4-Joint MC 98/100 CV=0.40 | time=  1.65s | IPM=   24 | Solved | ETA 5.9min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.2% 12493/12600] CV-SDP S4-Joint MC 98/100 CV=0.45 | time=  1.44s | IPM=   73 | Solved | ETA 5.9min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.2% 12494/12600] Direct S4-Joint MC 98/100 CV=0.45 | time=  1.60s | IPM=   26 | Solved | ETA 5.8min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.2% 12495/12600] CV-SDP S4-Joint MC 98/100 CV=0.50 | time=  0.28s | IPM=   16 | Solved | ETA 5.8min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.2% 12496/12600] Direct S4-Joint MC 98/100 CV=0.50 | time=  1.67s | IPM=   24 | Solved | ETA 5.7min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.2% 12497/12600] CV-SDP S4-Joint MC 98/100 CV=0.55 | time=  0.26s | IPM=   14 | Solved | ETA 5.7min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.2% 12498/12600] Direct S4-Joint MC 98/100 CV=0.55 | time=  1.67s | IPM=   24 | Solved | ETA 5.6min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.2% 12499/12600] CV-SDP S4-Joint MC 98/100 CV=0.60 | time=  0.29s | IPM=   19 | Solved | ETA 5.5min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.2% 12500/12600] Direct S4-Joint MC 98/100 CV=0.60 | time=  1.64s | IPM=   26 | Solved | ETA 5.5min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.2% 12501/12600] CV-SDP S4-Joint MC 98/100 CV=0.65 | time=  0.27s | IPM=   23 | Solved | ETA 5.4min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.2% 12502/12600] Direct S4-Joint MC 98/100 CV=0.65 | time=  1.66s | IPM=   26 | Solved | ETA 5.4min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.2% 12503/12600] CV-SDP S4-Joint MC 98/100 CV=0.70 | time=  0.26s | IPM=   15 | Solved | ETA 5.3min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.2% 12504/12600] Direct S4-Joint MC 98/100 CV=0.70 | time=  1.66s | IPM=   26 | Solved | ETA 5.3min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.2% 12505/12600] CV-SDP S4-Joint MC 98/100 CV=0.75 | time=  0.26s | IPM=   17 | Solved | ETA 5.2min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.3% 12506/12600] Direct S4-Joint MC 98/100 CV=0.75 | time=  1.66s | IPM=   26 | Solved | ETA 5.2min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.3% 12507/12600] CV-SDP S4-Joint MC 98/100 CV=0.80 | time=  0.27s | IPM=   22 | Solved | ETA 5.1min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.3% 12508/12600] Direct S4-Joint MC 98/100 CV=0.80 | time=  1.66s | IPM=   25 | Solved | ETA 5.1min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.3% 12509/12600] CV-SDP S4-Joint MC 98/100 CV=0.85 | time=  0.30s | IPM=   35 | Solved | ETA 5.0min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.3% 12510/12600] Direct S4-Joint MC 98/100 CV=0.85 | time=  1.69s | IPM=   24 | Solved | ETA 4.9min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.3% 12511/12600] CV-SDP S4-Joint MC 98/100 CV=0.90 | time=  0.29s | IPM=   20 | Solved | ETA 4.9min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.3% 12512/12600] Direct S4-Joint MC 98/100 CV=0.90 | time=  1.65s | IPM=   24 | Solved | ETA 4.8min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.3% 12513/12600] CV-SDP S4-Joint MC 98/100 CV=0.95 | time=  0.30s | IPM=   27 | Solved | ETA 4.8min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.3% 12514/12600] Direct S4-Joint MC 98/100 CV=0.95 | time=  1.66s | IPM=   24 | Solved | ETA 4.7min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.3% 12515/12600] CV-SDP S4-Joint MC 98/100 CV=1.00 | time=  0.29s | IPM=   27 | Solved | ETA 4.7min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.3% 12516/12600] Direct S4-Joint MC 98/100 CV=1.00 | time=  1.68s | IPM=   24 | Solved | ETA 4.6min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.3% 12517/12600] CV-SDP S4-Joint MC 99/100 CV=0.00 | time=  0.28s | IPM=   17 | Solved | ETA 4.6min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.3% 12518/12600] Direct S4-Joint MC 99/100 CV=0.00 | time=  0.85s | IPM=   19 | Infeasible | ETA 4.5min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.4% 12519/12600] CV-SDP S4-Joint MC 99/100 CV=0.05 | time=  0.28s | IPM=   19 | Solved | ETA 4.4min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.4% 12520/12600] Direct S4-Joint MC 99/100 CV=0.05 | time=  2.54s | IPM=   45 | Solved | ETA 4.4min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.4% 12521/12600] CV-SDP S4-Joint MC 99/100 CV=0.10 | time=  0.28s | IPM=   14 | Solved | ETA 4.3min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.4% 12522/12600] Direct S4-Joint MC 99/100 CV=0.10 | time=  2.49s | IPM=   36 | Solved | ETA 4.3min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.4% 12523/12600] CV-SDP S4-Joint MC 99/100 CV=0.15 | time=  0.32s | IPM=   37 | Solved | ETA 4.2min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.4% 12524/12600] Direct S4-Joint MC 99/100 CV=0.15 | time=  2.53s | IPM=   36 | Solved | ETA 4.2min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.4% 12525/12600] CV-SDP S4-Joint MC 99/100 CV=0.20 | time=  0.31s | IPM=   31 | Solved | ETA 4.1min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.4% 12526/12600] Direct S4-Joint MC 99/100 CV=0.20 | time=  2.51s | IPM=   39 | Solved | ETA 4.1min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.4% 12527/12600] CV-SDP S4-Joint MC 99/100 CV=0.25 | time=  0.29s | IPM=   19 | Solved | ETA 4.0min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.4% 12528/12600] Direct S4-Joint MC 99/100 CV=0.25 | time=  2.51s | IPM=   39 | Solved | ETA 4.0min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.4% 12529/12600] CV-SDP S4-Joint MC 99/100 CV=0.30 | time=  0.27s | IPM=   14 | Solved | ETA 3.9min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.4% 12530/12600] Direct S4-Joint MC 99/100 CV=0.30 | time=  2.52s | IPM=   36 | Solved | ETA 3.8min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.5% 12531/12600] CV-SDP S4-Joint MC 99/100 CV=0.35 | time=  0.30s | IPM=   27 | Solved | ETA 3.8min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.5% 12532/12600] Direct S4-Joint MC 99/100 CV=0.35 | time=  2.53s | IPM=   41 | Solved | ETA 3.7min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.5% 12533/12600] CV-SDP S4-Joint MC 99/100 CV=0.40 | time=  0.29s | IPM=   22 | Solved | ETA 3.7min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.5% 12534/12600] Direct S4-Joint MC 99/100 CV=0.40 | time=  1.67s | IPM=   24 | Solved | ETA 3.6min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.5% 12535/12600] CV-SDP S4-Joint MC 99/100 CV=0.45 | time=  0.29s | IPM=   19 | Solved | ETA 3.6min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.5% 12536/12600] Direct S4-Joint MC 99/100 CV=0.45 | time=  1.67s | IPM=   24 | Solved | ETA 3.5min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.5% 12537/12600] CV-SDP S4-Joint MC 99/100 CV=0.50 | time=  0.28s | IPM=   19 | Solved | ETA 3.5min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.5% 12538/12600] Direct S4-Joint MC 99/100 CV=0.50 | time=  1.68s | IPM=   24 | Solved | ETA 3.4min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.5% 12539/12600] CV-SDP S4-Joint MC 99/100 CV=0.55 | time=  0.30s | IPM=   26 | Solved | ETA 3.3min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.5% 12540/12600] Direct S4-Joint MC 99/100 CV=0.55 | time=  1.69s | IPM=   24 | Solved | ETA 3.3min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.5% 12541/12600] CV-SDP S4-Joint MC 99/100 CV=0.60 | time=  0.28s | IPM=   14 | Solved | ETA 3.2min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.5% 12542/12600] Direct S4-Joint MC 99/100 CV=0.60 | time=  1.66s | IPM=   24 | Solved | ETA 3.2min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.5% 12543/12600] CV-SDP S4-Joint MC 99/100 CV=0.65 | time=  0.29s | IPM=   19 | Solved | ETA 3.1min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.6% 12544/12600] Direct S4-Joint MC 99/100 CV=0.65 | time=  1.66s | IPM=   24 | Solved | ETA 3.1min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.6% 12545/12600] CV-SDP S4-Joint MC 99/100 CV=0.70 | time=  0.27s | IPM=   14 | Solved | ETA 3.0min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.6% 12546/12600] Direct S4-Joint MC 99/100 CV=0.70 | time=  1.67s | IPM=   26 | Solved | ETA 3.0min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.6% 12547/12600] CV-SDP S4-Joint MC 99/100 CV=0.75 | time=  0.28s | IPM=   15 | Solved | ETA 2.9min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.6% 12548/12600] Direct S4-Joint MC 99/100 CV=0.75 | time=  1.69s | IPM=   26 | Solved | ETA 2.9min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.6% 12549/12600] CV-SDP S4-Joint MC 99/100 CV=0.80 | time=  0.29s | IPM=   20 | Solved | ETA 2.8min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.6% 12550/12600] Direct S4-Joint MC 99/100 CV=0.80 | time=  1.68s | IPM=   26 | Solved | ETA 2.7min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.6% 12551/12600] CV-SDP S4-Joint MC 99/100 CV=0.85 | time=  0.28s | IPM=   16 | Solved | ETA 2.7min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.6% 12552/12600] Direct S4-Joint MC 99/100 CV=0.85 | time=  1.69s | IPM=   26 | Solved | ETA 2.6min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.6% 12553/12600] CV-SDP S4-Joint MC 99/100 CV=0.90 | time=  0.29s | IPM=   23 | Solved | ETA 2.6min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.6% 12554/12600] Direct S4-Joint MC 99/100 CV=0.90 | time=  1.69s | IPM=   26 | Solved | ETA 2.5min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.6% 12555/12600] CV-SDP S4-Joint MC 99/100 CV=0.95 | time=  0.33s | IPM=   33 | Solved | ETA 2.5min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.7% 12556/12600] Direct S4-Joint MC 99/100 CV=0.95 | time=  1.67s | IPM=   26 | Solved | ETA 2.4min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.7% 12557/12600] CV-SDP S4-Joint MC 99/100 CV=1.00 | time=  0.30s | IPM=   29 | Solved | ETA 2.4min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.7% 12558/12600] Direct S4-Joint MC 99/100 CV=1.00 | time=  1.67s | IPM=   26 | Solved | ETA 2.3min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.7% 12559/12600] CV-SDP S4-Joint MC 100/100 CV=0.00 | time=  0.28s | IPM=   15 | Solved | ETA 2.2min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.7% 12560/12600] Direct S4-Joint MC 100/100 CV=0.00 | time=  0.84s | IPM=   18 | Infeasible | ETA 2.2min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.7% 12561/12600] CV-SDP S4-Joint MC 100/100 CV=0.05 | time=  0.27s | IPM=   14 | Solved | ETA 2.1min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.7% 12562/12600] Direct S4-Joint MC 100/100 CV=0.05 | time=  2.52s | IPM=   36 | Solved | ETA 2.1min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.7% 12563/12600] CV-SDP S4-Joint MC 100/100 CV=0.10 | time=  0.27s | IPM=   14 | Solved | ETA 2.0min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.7% 12564/12600] Direct S4-Joint MC 100/100 CV=0.10 | time=  2.52s | IPM=   36 | Solved | ETA 2.0min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.7% 12565/12600] CV-SDP S4-Joint MC 100/100 CV=0.15 | time=  0.27s | IPM=   15 | Solved | ETA 1.9min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.7% 12566/12600] Direct S4-Joint MC 100/100 CV=0.15 | time=  2.54s | IPM=   39 | Solved | ETA 1.9min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.7% 12567/12600] CV-SDP S4-Joint MC 100/100 CV=0.20 | time=  0.27s | IPM=   13 | Solved | ETA 1.8min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.7% 12568/12600] Direct S4-Joint MC 100/100 CV=0.20 | time=  2.49s | IPM=   36 | Solved | ETA 1.8min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.8% 12569/12600] CV-SDP S4-Joint MC 100/100 CV=0.25 | time=  0.29s | IPM=   24 | Solved | ETA 1.7min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.8% 12570/12600] Direct S4-Joint MC 100/100 CV=0.25 | time=  2.51s | IPM=   42 | Solved | ETA 1.6min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.8% 12571/12600] CV-SDP S4-Joint MC 100/100 CV=0.30 | time=  0.29s | IPM=   23 | Solved | ETA 1.6min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.8% 12572/12600] Direct S4-Joint MC 100/100 CV=0.30 | time=  2.52s | IPM=   39 | Solved | ETA 1.5min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.8% 12573/12600] CV-SDP S4-Joint MC 100/100 CV=0.35 | time=  0.31s | IPM=   27 | Solved | ETA 1.5min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.8% 12574/12600] Direct S4-Joint MC 100/100 CV=0.35 | time=  2.52s | IPM=   39 | Solved | ETA 1.4min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.8% 12575/12600] CV-SDP S4-Joint MC 100/100 CV=0.40 | time=  0.28s | IPM=   14 | Solved | ETA 1.4min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.8% 12576/12600] Direct S4-Joint MC 100/100 CV=0.40 | time=  1.68s | IPM=   24 | Solved | ETA 1.3min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.8% 12577/12600] CV-SDP S4-Joint MC 100/100 CV=0.45 | time=  0.28s | IPM=   20 | Solved | ETA 1.3min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.8% 12578/12600] Direct S4-Joint MC 100/100 CV=0.45 | time=  1.69s | IPM=   25 | Solved | ETA 1.2min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.8% 12579/12600] CV-SDP S4-Joint MC 100/100 CV=0.50 | time=  0.29s | IPM=   29 | Solved | ETA 1.2min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.8% 12580/12600] Direct S4-Joint MC 100/100 CV=0.50 | time=  1.67s | IPM=   24 | Solved | ETA 1.1min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.8% 12581/12600] CV-SDP S4-Joint MC 100/100 CV=0.55 | time=  0.29s | IPM=   24 | Solved | ETA 1.0min
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.9% 12582/12600] Direct S4-Joint MC 100/100 CV=0.55 | time=  1.67s | IPM=   25 | Solved | ETA 59s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.9% 12583/12600] CV-SDP S4-Joint MC 100/100 CV=0.60 | time=  0.28s | IPM=   18 | Solved | ETA 56s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.9% 12584/12600] Direct S4-Joint MC 100/100 CV=0.60 | time=  1.65s | IPM=   26 | Solved | ETA 53s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.9% 12585/12600] CV-SDP S4-Joint MC 100/100 CV=0.65 | time=  0.27s | IPM=   20 | Solved | ETA 49s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.9% 12586/12600] Direct S4-Joint MC 100/100 CV=0.65 | time=  1.61s | IPM=   26 | Solved | ETA 46s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.9% 12587/12600] CV-SDP S4-Joint MC 100/100 CV=0.70 | time=  0.27s | IPM=   16 | Solved | ETA 43s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.9% 12588/12600] Direct S4-Joint MC 100/100 CV=0.70 | time=  1.67s | IPM=   26 | Solved | ETA 39s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.9% 12589/12600] CV-SDP S4-Joint MC 100/100 CV=0.75 | time=  0.28s | IPM=   21 | Solved | ETA 36s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.9% 12590/12600] Direct S4-Joint MC 100/100 CV=0.75 | time=  1.65s | IPM=   26 | Solved | ETA 33s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.9% 12591/12600] CV-SDP S4-Joint MC 100/100 CV=0.80 | time=  0.27s | IPM=   21 | Solved | ETA 30s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.9% 12592/12600] Direct S4-Joint MC 100/100 CV=0.80 | time=  1.58s | IPM=   26 | Solved | ETA 26s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[ 99.9% 12593/12600] CV-SDP S4-Joint MC 100/100 CV=0.85 | time=  0.28s | IPM=   27 | Solved | ETA 23s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[100.0% 12594/12600] Direct S4-Joint MC 100/100 CV=0.85 | time=  1.59s | IPM=   25 | Solved | ETA 20s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[100.0% 12595/12600] CV-SDP S4-Joint MC 100/100 CV=0.90 | time=  0.27s | IPM=   16 | Solved | ETA 16s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[100.0% 12596/12600] Direct S4-Joint MC 100/100 CV=0.90 | time=  1.60s | IPM=   25 | Solved | ETA 13s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[100.0% 12597/12600] CV-SDP S4-Joint MC 100/100 CV=0.95 | time=  0.25s | IPM=   15 | Solved | ETA 10s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[100.0% 12598/12600] Direct S4-Joint MC 100/100 CV=0.95 | time=  1.55s | IPM=   25 | Solved | ETA 7s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[100.0% 12599/12600] CV-SDP S4-Joint MC 100/100 CV=1.00 | time=  0.28s | IPM=   28 | Solved | ETA 3s
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+NOTE: custom settings have been set for this solver.
+------------------------------------------------------------
+[100.0% 12600/12600] Direct S4-Joint MC 100/100 CV=1.00 | time=  1.56s | IPM=   26 | Solved | ETA 0s
+Saved Figure 7 shard: /home/wonill/work/ISAC-AF-simulation/results/cv_stress_axis_pslr_only_S2S3S4_CV20_NT4_N16_MC100_shard_001_100.mat
+=== shard completed 2026-08-18T01:29:08Z ===

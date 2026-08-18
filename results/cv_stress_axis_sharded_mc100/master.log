@@ -1,0 +1,82 @@
+[Warning: OpenGL Startup options will be removed in a future release.] 
+[Warning: Function narginchk has the same name as a MATLAB built-in. We suggest
+you rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 96)] 
+Merged 1 Figure 7 shards into /home/wonill/work/ISAC-AF-simulation/results/cv_stress_axis_pslr_only_S2S3S4_CV20_NT4_N16_MC100.mat
+Using cached CV stress-axis result: /home/wonill/work/ISAC-AF-simulation/results/cv_stress_axis_pslr_only_S2S3S4_CV20_NT4_N16_MC100.mat
+Saved Figure 7 post-processing summary: /home/wonill/work/ISAC-AF-simulation/results/cv_stress_axis_pslr_only_S2S3S4_CV20_NT4_N16_MC100_figure_B3_3_3s.mat
+Saved CV stress-axis figure: /home/wonill/work/ISAC-AF-simulation/figures/CV_Stress_Axis_Diagnostic.pdf
+Saved CV stress-axis figure: /home/wonill/work/ISAC-AF-simulation/figures/CV_Stress_Axis_Diagnostic.png
+Saved CV stress-axis figure: /home/wonill/work/ISAC-AF-simulation/figures/CV_Stress_Axis_Diagnostic_OneColumn_1x3.pdf
+Saved CV stress-axis figure: /home/wonill/work/ISAC-AF-simulation/figures/CV_Stress_Axis_Diagnostic_OneColumn_1x3.png
+
+Stress-axis summary by scenario:
+  S2-Illum | budget 3s | CV solve 92.3%, budgeted 99.9% | Direct solve 97.1%, budgeted 97.2% | runtime 5.5x | IPM 1.2x
+  S3-Tgts | budget 3s | CV solve 75.2%, budgeted 99.4% | Direct solve 91.9%, budgeted 60.1% | runtime 5.2x | IPM 1.0x
+  S4-Joint | budget 3s | CV solve 91.1%, budgeted 99.9% | Direct solve 96.8%, budgeted 98.7% | runtime 5.1x | IPM 1.2x
+
+By CV target:
+  S2-Illum
+    CV=0.05: CV solve 58%, budgeted 100% | Direct solve 55%, budgeted 95% | runtime 4.1x | IPM 1.4x
+    CV=0.10: CV solve 63%, budgeted 98% | Direct solve 87%, budgeted 92% | runtime 3.2x | IPM 1.0x
+    CV=0.15: CV solve 67%, budgeted 100% | Direct solve 100%, budgeted 98% | runtime 2.7x | IPM 0.8x
+    CV=0.20: CV solve 78%, budgeted 100% | Direct solve 100%, budgeted 97% | runtime 3.5x | IPM 1.0x
+    CV=0.25: CV solve 84%, budgeted 100% | Direct solve 100%, budgeted 96% | runtime 4.4x | IPM 1.2x
+    CV=0.30: CV solve 96%, budgeted 100% | Direct solve 100%, budgeted 96% | runtime 6.8x | IPM 1.6x
+    CV=0.35: CV solve 100%, budgeted 100% | Direct solve 100%, budgeted 96% | runtime 7.8x | IPM 1.7x
+    CV=0.40: CV solve 100%, budgeted 100% | Direct solve 100%, budgeted 98% | runtime 7.2x | IPM 1.5x
+    CV=0.45: CV solve 100%, budgeted 100% | Direct solve 100%, budgeted 98% | runtime 6.3x | IPM 1.2x
+    CV=0.50: CV solve 100%, budgeted 100% | Direct solve 100%, budgeted 98% | runtime 6.1x | IPM 1.3x
+    CV=0.55: CV solve 100%, budgeted 100% | Direct solve 100%, budgeted 98% | runtime 5.8x | IPM 1.2x
+    CV=0.60: CV solve 100%, budgeted 100% | Direct solve 100%, budgeted 98% | runtime 5.8x | IPM 1.2x
+    CV=0.65: CV solve 100%, budgeted 100% | Direct solve 100%, budgeted 98% | runtime 5.8x | IPM 1.2x
+    CV=0.70: CV solve 100%, budgeted 100% | Direct solve 100%, budgeted 98% | runtime 5.8x | IPM 1.2x
+    CV=0.75: CV solve 100%, budgeted 100% | Direct solve 100%, budgeted 98% | runtime 5.8x | IPM 1.1x
+    CV=0.80: CV solve 100%, budgeted 100% | Direct solve 100%, budgeted 98% | runtime 5.8x | IPM 1.2x
+    CV=0.85: CV solve 100%, budgeted 100% | Direct solve 100%, budgeted 98% | runtime 5.9x | IPM 1.2x
+    CV=0.90: CV solve 100%, budgeted 100% | Direct solve 100%, budgeted 98% | runtime 5.9x | IPM 1.2x
+    CV=0.95: CV solve 100%, budgeted 100% | Direct solve 100%, budgeted 98% | runtime 6.0x | IPM 1.3x
+    CV=1.00: CV solve 100%, budgeted 100% | Direct solve 100%, budgeted 98% | runtime 6.0x | IPM 1.4x
+  S3-Tgts
+    CV=0.05: CV solve 2%, budgeted 100% | Direct solve 12%, budgeted 0% | runtime 4.4x | IPM 1.3x
+    CV=0.10: CV solve 8%, budgeted 88% | Direct solve 34%, budgeted 0% | runtime 3.8x | IPM 1.1x
+    CV=0.15: CV solve 11%, budgeted 100% | Direct solve 92%, budgeted 0% | runtime 2.2x | IPM 0.7x
+    CV=0.20: CV solve 25%, budgeted 100% | Direct solve 100%, budgeted 0% | runtime 1.9x | IPM 0.5x
+    CV=0.25: CV solve 32%, budgeted 100% | Direct solve 100%, budgeted 0% | runtime 1.9x | IPM 0.5x
+    CV=0.30: CV solve 56%, budgeted 100% | Direct solve 100%, budgeted 1% | runtime 2.5x | IPM 0.6x
+    CV=0.35: CV solve 78%, budgeted 100% | Direct solve 100%, budgeted 7% | runtime 3.4x | IPM 0.7x
+    CV=0.40: CV solve 93%, budgeted 100% | Direct solve 100%, budgeted 35% | runtime 4.6x | IPM 0.9x
+    CV=0.45: CV solve 99%, budgeted 100% | Direct solve 100%, budgeted 66% | runtime 6.4x | IPM 1.1x
+    CV=0.50: CV solve 100%, budgeted 100% | Direct solve 100%, budgeted 95% | runtime 6.4x | IPM 1.1x
+    CV=0.55: CV solve 100%, budgeted 100% | Direct solve 100%, budgeted 98% | runtime 6.7x | IPM 1.2x
+    CV=0.60: CV solve 100%, budgeted 100% | Direct solve 100%, budgeted 100% | runtime 6.7x | IPM 1.2x
+    CV=0.65: CV solve 100%, budgeted 100% | Direct solve 100%, budgeted 100% | runtime 6.7x | IPM 1.1x
+    CV=0.70: CV solve 100%, budgeted 100% | Direct solve 100%, budgeted 100% | runtime 6.7x | IPM 1.2x
+    CV=0.75: CV solve 100%, budgeted 100% | Direct solve 100%, budgeted 100% | runtime 6.7x | IPM 1.2x
+    CV=0.80: CV solve 100%, budgeted 100% | Direct solve 100%, budgeted 100% | runtime 6.8x | IPM 1.2x
+    CV=0.85: CV solve 100%, budgeted 100% | Direct solve 100%, budgeted 100% | runtime 6.8x | IPM 1.2x
+    CV=0.90: CV solve 100%, budgeted 100% | Direct solve 100%, budgeted 100% | runtime 6.7x | IPM 1.2x
+    CV=0.95: CV solve 100%, budgeted 100% | Direct solve 100%, budgeted 100% | runtime 6.8x | IPM 1.2x
+    CV=1.00: CV solve 100%, budgeted 100% | Direct solve 100%, budgeted 100% | runtime 6.7x | IPM 1.2x
+  S4-Joint
+    CV=0.05: CV solve 59%, budgeted 100% | Direct solve 57%, budgeted 95% | runtime 4.1x | IPM 1.4x
+    CV=0.10: CV solve 64%, budgeted 100% | Direct solve 81%, budgeted 98% | runtime 3.4x | IPM 1.1x
+    CV=0.15: CV solve 70%, budgeted 99% | Direct solve 97%, budgeted 99% | runtime 2.9x | IPM 0.9x
+    CV=0.20: CV solve 76%, budgeted 100% | Direct solve 100%, budgeted 97% | runtime 3.3x | IPM 0.9x
+    CV=0.25: CV solve 78%, budgeted 100% | Direct solve 100%, budgeted 100% | runtime 3.4x | IPM 1.0x
+    CV=0.30: CV solve 84%, budgeted 100% | Direct solve 100%, budgeted 100% | runtime 3.8x | IPM 1.0x
+    CV=0.35: CV solve 94%, budgeted 99% | Direct solve 100%, budgeted 100% | runtime 5.1x | IPM 1.2x
+    CV=0.40: CV solve 97%, budgeted 100% | Direct solve 100%, budgeted 99% | runtime 5.3x | IPM 1.2x
+    CV=0.45: CV solve 99%, budgeted 100% | Direct solve 100%, budgeted 99% | runtime 5.6x | IPM 1.2x
+    CV=0.50: CV solve 100%, budgeted 100% | Direct solve 100%, budgeted 99% | runtime 5.8x | IPM 1.2x
+    CV=0.55: CV solve 100%, budgeted 100% | Direct solve 100%, budgeted 99% | runtime 5.9x | IPM 1.2x
+    CV=0.60: CV solve 100%, budgeted 100% | Direct solve 100%, budgeted 99% | runtime 5.8x | IPM 1.2x
+    CV=0.65: CV solve 100%, budgeted 100% | Direct solve 100%, budgeted 98% | runtime 6.1x | IPM 1.2x
+    CV=0.70: CV solve 100%, budgeted 100% | Direct solve 100%, budgeted 99% | runtime 5.9x | IPM 1.2x
+    CV=0.75: CV solve 100%, budgeted 100% | Direct solve 100%, budgeted 99% | runtime 6.0x | IPM 1.3x
+    CV=0.80: CV solve 100%, budgeted 100% | Direct solve 100%, budgeted 99% | runtime 6.0x | IPM 1.3x
+    CV=0.85: CV solve 100%, budgeted 100% | Direct solve 100%, budgeted 99% | runtime 5.8x | IPM 1.2x
+    CV=0.90: CV solve 100%, budgeted 100% | Direct solve 100%, budgeted 99% | runtime 5.9x | IPM 1.3x
+    CV=0.95: CV solve 100%, budgeted 100% | Direct solve 100%, budgeted 99% | runtime 6.0x | IPM 1.3x
+    CV=1.00: CV solve 100%, budgeted 100% | Direct solve 100%, budgeted 99% | runtime 6.0x | IPM 1.3x
