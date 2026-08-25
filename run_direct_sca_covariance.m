@@ -32,16 +32,21 @@ status_best = 'Not Solved';
 stop_reason = 'max_iter';
 prev_sumrate = -Inf;
 inner_used = 0;
+cvx_solver_iters = 0;
+cvx_solver_iters_history = nan(outer_max * inner_max, 1);
 
 for t = 1:outer_max
     P_ref = directional_power_grid(W_ref, A);
 
     for m = 1:inner_max
-        [W, sumrate, status] = solve_direct_sca_sdp( ...
+        [W, sumrate, status, slvitr] = solve_direct_sca_sdp( ...
             H, alpha, A, pslr_min, P_ref, params);
         inner_used = inner_used + 1;
+        cvx_solver_iters_history(inner_used) = slvitr;
+        cvx_solver_iters = cvx_solver_iters + zero_if_nan(slvitr);
         if isempty(W)
-            result = failed_result(status, alpha, t, inner_used);
+            result = failed_result(status, alpha, t, inner_used, ...
+                cvx_solver_iters, cvx_solver_iters_history);
             return;
         end
 
@@ -84,10 +89,14 @@ result.status = status_best;
 result.solver_feasible = ~isempty(W_best) && isfinite(best_sumrate);
 result.iters = t;
 result.inner_iters = inner_used;
+result.cvx_solver_iters = cvx_solver_iters;
+result.cvx_solver_iters_history = ...
+    cvx_solver_iters_history(1:inner_used);
 result.stop_reason = stop_reason;
 end
 
-function result = failed_result(status, alpha, t, inner_used)
+function result = failed_result(status, alpha, t, inner_used, ...
+    cvx_solver_iters, cvx_solver_iters_history)
 result.W = [];
 result.alpha = alpha;
 result.sumrate = NaN;
@@ -95,6 +104,9 @@ result.status = status;
 result.solver_feasible = false;
 result.iters = t;
 result.inner_iters = inner_used;
+result.cvx_solver_iters = cvx_solver_iters;
+result.cvx_solver_iters_history = ...
+    cvx_solver_iters_history(1:inner_used);
 result.stop_reason = 'failed';
 end
 
@@ -103,5 +115,14 @@ if isfield(params, name)
     value = params.(name);
 else
     value = default_value;
+end
+end
+
+function value = zero_if_nan(value)
+value = value(isfinite(value));
+if isempty(value)
+    value = 0;
+else
+    value = sum(value(:));
 end
 end

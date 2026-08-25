@@ -51,6 +51,7 @@ scenarios = build_scenarios();
 num_scenarios = numel(scenarios);
 base_params = setup_params();
 result_schema_version = base_params.result_schema_version;
+experiment_protocol = 'covariance_only_v1';
 time_budget_seconds = feasibility_time_budgets(scenarios);
 budget_policy = ['Post-processing only: budgeted feasibility is the fraction ' ...
     'with runtime no larger than the budget among solver-feasible samples.'];
@@ -66,7 +67,8 @@ else
     end
 end
 experiment_metadata = build_experiment_metadata( ...
-    sim_dir, num_mc, CV_grid, mc_indices, time_budget_seconds);
+    sim_dir, num_mc, CV_grid, mc_indices, time_budget_seconds, ...
+    experiment_protocol);
 
 source_path = fullfile(out_data_dir, sprintf( ...
     'cv_stress_axis_pslr_only_S2S3S4_%s_NT4_N16_MC%d.mat', cv_tag, num_mc));
@@ -77,9 +79,12 @@ if is_shard
 end
 
 if exist(source_path, 'file') == 2 && ~force_rerun
-    cache_meta = load(source_path, 'result_schema_version');
+    cache_meta = load(source_path, 'result_schema_version', ...
+        'experiment_protocol');
     cache_is_current = isfield(cache_meta, 'result_schema_version') && ...
-        cache_meta.result_schema_version >= result_schema_version;
+        cache_meta.result_schema_version >= result_schema_version && ...
+        isfield(cache_meta, 'experiment_protocol') && ...
+        strcmp(cache_meta.experiment_protocol, experiment_protocol);
     if cache_is_current
         fprintf('Using cached CV stress-axis result: %s\n', source_path);
         if is_shard
@@ -91,8 +96,8 @@ if exist(source_path, 'file') == 2 && ~force_rerun
         print_summary(source_path, time_budget_override);
         return;
     end
-    fprintf('Ignoring pre-rank-one cache (schema < %d): %s\n', ...
-        result_schema_version, source_path);
+    fprintf('Ignoring cache from a different experiment protocol: %s\n', ...
+        source_path);
 end
 
 prop_success = false(num_scenarios, num_cv, num_mc);
@@ -111,6 +116,7 @@ fprintf('  MC=%d, CV grid=[%s]\n', num_mc, num2str(CV_grid));
 fprintf('  CV step=%.4g, export figures=%d\n', cv_step_override, export_figures);
 fprintf('  Scenarios: S2 Higher Illumination, S3 More Targets, S4 Joint Stress\n');
 fprintf('  N_T is fixed at 4 for all scenarios.\n');
+fprintf('  Protocol: covariance-only (no rank-one audit or recovery).\n');
 fprintf('  Common method budgets by scenario: [%s] s\n', num2str(time_budget_seconds.'));
 fprintf('  Timed runs are quiet; solver-log replay is used for total IPM iterations.\n');
 fprintf('------------------------------------------------------------\n');
@@ -138,26 +144,26 @@ for s = 1:num_scenarios
 
             run_count = run_count + 1;
             t_run = tic;
-            point_seed = 900000 + 10000 * s + 100 * mc + c;
-            params.gaussian_randomization_seed = point_seed;
-            params_profile.gaussian_randomization_seed = point_seed;
-            prop = run_proposed(H, CV_max, params, alpha0);
+            prop = run_proposed_covariance(H, CV_max, params, alpha0);
             prop_time(s, c, mc) = toc(t_run);
-            prop_profile = run_proposed(H, CV_max, params_profile, alpha0);
+            prop_profile = run_proposed_covariance( ...
+                H, CV_max, params_profile, alpha0);
             prop_cvx_solver_iters(s, c, mc) = prop_profile.cvx_solver_iters;
             prop_status(s, c, mc) = string(prop.status);
-            prop_success(s, c, mc) = is_solved(prop.status);
+            prop_success(s, c, mc) = prop.solver_feasible;
             print_progress('CV-SDP', run_count, total_runs, scenarios(s).short, mc, num_mc, ...
                 CV_max, prop_time(s, c, mc), prop_cvx_solver_iters(s, c, mc), prop.status, t_global);
 
             run_count = run_count + 1;
             t_run = tic;
-            direct = run_direct_sca(H, pslr_min, params, alpha0, W0);
+            direct = run_direct_sca_covariance( ...
+                H, pslr_min, params, alpha0, W0);
             direct_time(s, c, mc) = toc(t_run);
-            direct_profile = run_direct_sca(H, pslr_min, params_profile, alpha0, W0);
+            direct_profile = run_direct_sca_covariance( ...
+                H, pslr_min, params_profile, alpha0, W0);
             direct_cvx_solver_iters(s, c, mc) = direct_profile.cvx_solver_iters;
             direct_status(s, c, mc) = string(direct.status);
-            direct_success(s, c, mc) = is_solved(direct.status);
+            direct_success(s, c, mc) = direct.solver_feasible;
             print_progress('Direct', run_count, total_runs, scenarios(s).short, mc, num_mc, ...
                 CV_max, direct_time(s, c, mc), direct_cvx_solver_iters(s, c, mc), direct.status, t_global);
         end
@@ -169,7 +175,8 @@ for s = 1:num_scenarios
         'prop_success', 'direct_success', 'prop_status', 'direct_status', ...
         'prop_time', 'direct_time', ...
         'prop_cvx_solver_iters', 'direct_cvx_solver_iters', ...
-        'result_schema_version', 'experiment_metadata');
+        'result_schema_version', 'experiment_protocol', ...
+        'experiment_metadata');
 end
 
 if is_shard
@@ -243,10 +250,6 @@ params.direct_sca_max_iter = 5;
 params.direct_sca_tol = 1e-3;
 end
 
-function tf = is_solved(status)
-tf = contains(string(status), 'Solved');
-end
-
 function alpha = init_alpha_qos_safe(H, params)
 K = params.K;
 N = params.N;
@@ -292,12 +295,15 @@ num_scenarios = numel(S.scenarios);
 time_budget = result_time_budgets(S, time_budget_override);
 [cv_budget_feas, direct_budget_feas, ~, ~, ...
     cv_time, direct_time, cv_ipm, direct_ipm, ...
-    cv_feas, direct_feas] = summarize_grids(S, time_budget);
+    ~, ~] = summarize_grids(S, time_budget);
 save_figure_summary(source_path, S, time_budget);
-keep = S.CV_grid(:) > 1e-12;
+% Preserve the full-resolution result cache, but show the publication sweep
+% only at CV_max = 0.1, 0.2, ..., 1.0.
+publication_cv_step = 0.1;
+keep = S.CV_grid(:) > 1e-12 & ...
+    abs(S.CV_grid(:) / publication_cv_step - ...
+        round(S.CV_grid(:) / publication_cv_step)) < 1e-9;
 CV = S.CV_grid(keep).';
-cv_feas = cv_feas(:, keep);
-direct_feas = direct_feas(:, keep);
 cv_budget_feas = cv_budget_feas(:, keep);
 direct_budget_feas = direct_budget_feas(:, keep);
 cv_time = cv_time(:, keep);
@@ -314,7 +320,7 @@ plot_style = struct( ...
     'row_y', [0.700 0.385 0.070], ...
     'axes_width', 0.265, ...
     'axes_height', 0.245, ...
-    'legend_position', [0.795 0.710 0.180 0.062], ...
+    'legend_position', [0.805 0.720 0.170 0.048], ...
     'axes_font', round(cfg.tall_panel_font_scale * cfg.axes_font), ...
     'label_font', round(cfg.tall_panel_font_scale * cfg.label_font), ...
     'title_font', round(cfg.tall_panel_font_scale * cfg.title_font), ...
@@ -345,31 +351,21 @@ for s = 1:num_scenarios
         'LineWidth', plot_style.axes_line_width, ...
         'LabelFontSizeMultiplier', 1);
 
-    plot(ax_feas, CV, 100*cv_feas(s, :).', '-d', ...
+    plot(ax_feas, CV, 100*cv_budget_feas(s, :).', '-d', ...
         'Color', cv_color, 'MarkerFaceColor', cv_color, ...
         'MarkerEdgeColor', cv_color, 'LineWidth', plot_style.line_width, ...
         'MarkerSize', plot_style.marker_size, 'DisplayName', 'CV-SDP');
-    plot(ax_feas, CV, 100*direct_feas(s, :).', '-d', ...
+    plot(ax_feas, CV, 100*direct_budget_feas(s, :).', '-d', ...
         'Color', direct_color, 'MarkerFaceColor', direct_color, ...
         'MarkerEdgeColor', direct_color, 'LineWidth', plot_style.line_width, ...
         'MarkerSize', plot_style.marker_size, 'DisplayName', 'Direct SCA');
-    plot(ax_feas, CV, 100*cv_budget_feas(s, :).', '--o', ...
-        'Color', cv_color, 'MarkerFaceColor', 'w', ...
-        'MarkerEdgeColor', cv_color, 'LineWidth', plot_style.line_width, ...
-        'MarkerSize', round(0.75 * plot_style.marker_size), ...
-        'DisplayName', 'CV-SDP, budgeted among feasible');
-    plot(ax_feas, CV, 100*direct_budget_feas(s, :).', '--o', ...
-        'Color', direct_color, 'MarkerFaceColor', 'w', ...
-        'MarkerEdgeColor', direct_color, 'LineWidth', plot_style.line_width, ...
-        'MarkerSize', round(0.75 * plot_style.marker_size), ...
-        'DisplayName', 'Direct SCA, budgeted among feasible');
     xlim(ax_feas, x_limits);
     ylim(ax_feas, row_limits{1});
     yticks(ax_feas, row_ticks{1});
     xticks(ax_feas, [0 0.5 1]);
     set_row_xticklabels(ax_feas, s);
     if s == 1
-        ylabel(ax_feas, 'Feasibility (%)', ...
+        ylabel(ax_feas, 'Budgeted feasibility (%)', ...
             'FontSize', plot_style.label_font, 'FontWeight', 'normal');
     else
         yticklabels(ax_feas, []);
@@ -474,7 +470,7 @@ set(ax_grid(3, 1).YLabel, 'Units', 'normalized', ...
     'FontSize', plot_style.label_font, 'FontWeight', 'normal');
 draw_row_xlabels(fig, plot_style, cfg);
 draw_stress_legend(fig, plot_style.legend_position, ...
-    cv_color, direct_color, plot_style, cfg, time_budget);
+    cv_color, direct_color, plot_style, cfg);
 
 out_png = fullfile(fig_dir, 'CV_Stress_Axis_Diagnostic.png');
 out_pdf = fullfile(fig_dir, 'CV_Stress_Axis_Diagnostic.pdf');
@@ -516,7 +512,7 @@ for row_idx = 1:numel(style.row_y)
 end
 end
 
-function draw_stress_legend(fig, position, cv_color, direct_color, style, cfg, time_budget)
+function draw_stress_legend(fig, position, cv_color, direct_color, style, cfg)
 ax_leg = axes(fig, 'Position', position, ...
     'XLim', [0 1], 'YLim', [0 1], ...
     'Visible', 'off', ...
@@ -529,7 +525,7 @@ rectangle(ax_leg, 'Position', [0.010 0.020 0.980 0.960], ...
     'LineWidth', style.axes_line_width);
 
 legend_font = style.legend_font;
-y_pos = [0.760 0.450];
+y_pos = [0.690 0.310];
 labels = {'CV-SDP', 'Direct SCA'};
 colors = [cv_color; direct_color];
 for idx = 1:numel(labels)
@@ -554,19 +550,6 @@ for idx = 1:numel(labels)
         'HorizontalAlignment', 'left', ...
         'VerticalAlignment', 'middle');
 end
-if all(abs(time_budget - time_budget(1)) < 1e-12)
-    budget_legend = sprintf('dashed/open: <= %.3g s | feasible', time_budget(1));
-else
-    budget_legend = 'dashed/open: scenario budget | feasible';
-end
-text(ax_leg, 0.045, 0.135, ...
-    {'solid/filled: feasible', budget_legend}, ...
-    'Interpreter', 'tex', ...
-    'FontName', cfg.font_name, ...
-    'FontSize', round(0.42 * legend_font), ...
-    'FontWeight', 'normal', ...
-    'HorizontalAlignment', 'left', ...
-    'VerticalAlignment', 'middle');
 try
     uistack(ax_leg, 'top');
 catch
@@ -754,7 +737,8 @@ tokens = arrayfun(@(x) strrep(sprintf('%.3g', x), '.', 'p'), ...
 tag = ['B' strjoin(tokens, '_') 's'];
 end
 
-function metadata = build_experiment_metadata(sim_dir, num_mc, CV_grid, mc_indices, default_budget)
+function metadata = build_experiment_metadata(sim_dir, num_mc, CV_grid, ...
+    mc_indices, default_budget, experiment_protocol)
 metadata = struct();
 metadata.saved_at_utc = utc_timestamp();
 metadata.matlab_version = version;
@@ -764,8 +748,11 @@ metadata.cv_grid = CV_grid;
 metadata.mc_indices = mc_indices;
 metadata.default_time_budget_seconds = default_budget(:);
 metadata.channel_seed_rule = 'rng(2000*scenario_index + mc_index, ''twister'')';
-metadata.recovery_seed_rule = '900000 + 10000*scenario + 100*mc + cv_index';
-metadata.runtime_protocol = ['Quiet timed solve including rank-one recovery; ' ...
+metadata.experiment_protocol = experiment_protocol;
+metadata.rank_one_audit_enabled = false;
+metadata.rank_one_recovery_enabled = false;
+metadata.runtime_protocol = ['Quiet covariance-level AO/SCA solve without ' ...
+    'rank-one audit or recovery; ' ...
     'IPM iteration counts come from a separate solver-log replay.'];
 metadata.budget_is_postprocessing_only = true;
 metadata.budget_rate_is_conditional_on_feasible = true;
